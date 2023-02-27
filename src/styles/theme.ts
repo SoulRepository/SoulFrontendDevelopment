@@ -28,7 +28,7 @@ const themeConfig: DeepPartial<ThemeOverride> = {
   breakpoints: {
     sm: '375px',
     md: '768px',
-    xl: '1440px',
+    xl: '1920px',
   },
   config: {
     initialColorMode: 'dark',
