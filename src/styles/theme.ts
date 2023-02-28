@@ -31,7 +31,7 @@ const themeConfig: DeepPartial<ThemeOverride> = {
     xl: '1920px',
   },
   config: {
-    initialColorMode: 'dark',
+    initialColorMode: 'light',
   },
   components: {
     ...defaultTheme.components,
