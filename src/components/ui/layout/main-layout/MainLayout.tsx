@@ -15,15 +15,9 @@ type Props = ILayoutProps &
   DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export const MainLayout: FC<Props> = ({ children, ...props }) => (
-  <Flex
-    bgColor="#F4F7FA"
-    flexDir="column"
-    minH="100%"
-    position="relative"
-    {...props}
-  >
+  <Flex flexDir="column" minH="100%" position="relative" {...props}>
     <Header />
-    <Flex as="main" px={mainPx}>
+    <Flex as="main" px={mainPx} bgColor="#F4F7FA">
       <Blur />
       {children}
     </Flex>
