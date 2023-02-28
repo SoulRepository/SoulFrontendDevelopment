@@ -31,7 +31,7 @@ export const Header = () => {
   const isShowBg = true;
 
   return (
-    <Flex sx={headerStyles(isShowBg)}>
+    <Flex as='header' sx={headerStyles(isShowBg)}>
       <Flex className="logo">
         <Link href="/">
           <Image

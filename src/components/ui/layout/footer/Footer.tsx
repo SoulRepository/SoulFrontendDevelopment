@@ -41,7 +41,7 @@ const socialLinks = [
 ];
 
 export const Footer = () => (
-  <Flex sx={footerStyles}>
+  <Flex as='footer' sx={footerStyles}>
     <Flex className="desk-column">
       <Image
         width={185}

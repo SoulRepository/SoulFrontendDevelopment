@@ -1,6 +1,6 @@
 import { SystemStyleObject } from '@chakra-ui/react';
 import { lightColor } from '@app/styles/colorScheme';
-import { mainPx } from '@app/pages/styleVars';
+import { mainPx } from '@app/styles/styleVars';
 
 export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
   h: '85px',

@@ -1,5 +1,5 @@
 import { SystemStyleObject } from '@chakra-ui/react';
-import { mainPx } from '@app/pages/styleVars';
+import { mainPx } from '@app/styles/styleVars';
 import { lightColor } from '@app/styles/colorScheme';
 
 export const footerStyles: SystemStyleObject = {
