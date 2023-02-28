@@ -5,6 +5,7 @@ import { mainPx } from '@app/styles/styleVars';
 export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
   h: '85px',
   w: '100%',
+  zIndex: '1',
   px: mainPx,
   alignItems: 'center',
   justifyContent: 'center',

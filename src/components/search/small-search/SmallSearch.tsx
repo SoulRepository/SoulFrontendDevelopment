@@ -7,7 +7,7 @@ import { smallSearchStyles } from '@app/components/search/small-search/smallSear
 export const SmallSearch = () => (
   <InputGroup sx={smallSearchStyles}>
     <InputLeftElement pointerEvents="none">
-      <SearchIcon />
+      <SearchIcon color='white' />
     </InputLeftElement>
     <Input className="search-input" type="tel" placeholder="Search here" />
   </InputGroup>

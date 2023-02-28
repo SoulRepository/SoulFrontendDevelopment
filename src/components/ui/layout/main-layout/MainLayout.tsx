@@ -4,6 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import { Footer, Header } from '@app/components/ui/layout';
 
 import { mainPx } from '@app/styles/styleVars';
+import { Blur } from '@app/components/ui/blur/Blur';
 
 interface ILayoutProps {
   children?: ReactNode;
@@ -14,9 +15,16 @@ type Props = ILayoutProps &
   DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export const MainLayout: FC<Props> = ({ children, ...props }) => (
-  <Flex flexDir="column" minH="100%" position="relative" {...props}>
+  <Flex
+    bgColor="#F4F7FA"
+    flexDir="column"
+    minH="100%"
+    position="relative"
+    {...props}
+  >
     <Header />
     <Flex as="main" px={mainPx}>
+      <Blur />
       {children}
     </Flex>
     <Footer />

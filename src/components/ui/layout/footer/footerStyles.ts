@@ -7,6 +7,7 @@ export const footerStyles: SystemStyleObject = {
   px: mainPx,
   justifyContent: 'space-between',
   pt: '93px',
+  bgColor: 'white',
   '.h3-footer': {
     fontWeight: 600,
     fontSize: '18px',
