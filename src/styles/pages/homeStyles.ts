@@ -1,4 +1,5 @@
 import { SystemStyleObject } from '@chakra-ui/react';
+import { mainPx } from '@app/styles/styleVars';
 
 export const HomeStyles: SystemStyleObject = {
   height: '100%',
@@ -8,7 +9,7 @@ export const HomeStyles: SystemStyleObject = {
   flexDirection: 'column',
   position: 'relative',
   py: '279px',
-  px: '146px',
+  px: `calc(146px + ${mainPx})`,
   h1: {
     fontSize: '100px',
     fontWeight: 600,
