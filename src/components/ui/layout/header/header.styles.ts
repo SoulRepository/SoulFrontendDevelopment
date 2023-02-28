@@ -1,13 +1,14 @@
 import { SystemStyleObject } from '@chakra-ui/react';
 import { lightColor } from '@app/styles/colorScheme';
 
-export const headerStyles: SystemStyleObject = {
+export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
   h: '85px',
   w: '100%',
   px: '17.03%',
   alignItems: 'center',
   justifyContent: 'center',
-  bgColor: lightColor.headerBgColor,
+  bgColor: isShowBg ? lightColor.headerBgColor : 'transparent',
+  position: isShowBg ? 'relative' : 'absolute',
   '.search': {
     mr: '95px',
   },
@@ -15,7 +16,7 @@ export const headerStyles: SystemStyleObject = {
   '.logo': {
     mr: '39px',
   },
-};
+});
 
 export const menuStyles: SystemStyleObject = {
   display: 'flex',

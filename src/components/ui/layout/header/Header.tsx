@@ -10,7 +10,7 @@ import {
 import { getImgPath } from '@app/utils';
 import { SmallSearch } from '@app/components/search/small-search/SmallSearch';
 import { WalletButtonConnect } from '@app/components/wallet-button-connect/WalletButtonConnect';
-import { ThemeToggle } from '@app/components/ui/theme-toggle/ThemeToggle';
+import { ThemeToggle } from '@app/components/ui/theme-toggle/ThemeToggle'
 
 const navLinks = [
   {
@@ -27,33 +27,37 @@ const navLinks = [
   },
 ];
 
-export const Header = () => (
-  <Flex sx={headerStyles}>
-    <Flex className="logo">
-      <Link href="/">
-        <Image
-          width={185}
-          height={27}
-          src={getImgPath('logo-white.png')}
-          alt="logo"
-        />
-      </Link>
+export const Header = () => {
+  const isShowBg = true;
+
+  return (
+    <Flex sx={headerStyles(isShowBg)}>
+      <Flex className="logo">
+        <Link href="/">
+          <Image
+            width={185}
+            height={27}
+            src={getImgPath('logo-white.png')}
+            alt="logo"
+          />
+        </Link>
+      </Flex>
+      <Flex className="search">
+        <SmallSearch />
+      </Flex>
+      <Flex>
+        <List sx={menuStyles}>
+          {navLinks.map((nav, i) => (
+            <ListItem key={i} className="menu-item">
+              <a href={nav.link}>{nav.title}</a>
+            </ListItem>
+          ))}
+        </List>
+      </Flex>
+      <Flex>
+        <WalletButtonConnect className="wallet-button" />
+        <ThemeToggle />
+      </Flex>
     </Flex>
-    <Flex className="search">
-      <SmallSearch />
-    </Flex>
-    <Flex>
-      <List sx={menuStyles}>
-        {navLinks.map((nav, i) => (
-          <ListItem key={i} className="menu-item">
-            <a href={nav.link}>{nav.title}</a>
-          </ListItem>
-        ))}
-      </List>
-    </Flex>
-    <Flex>
-      <WalletButtonConnect className='wallet-button' />
-      <ThemeToggle />
-    </Flex>
-  </Flex>
-);
+  );
+};
