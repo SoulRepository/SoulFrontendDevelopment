@@ -1,12 +1,31 @@
 import { SystemStyleObject } from '@chakra-ui/react';
-import { mainPx } from '@app/pages/styleVars';
+import { mainPx } from '@app/styles/styleVars';
 import { lightColor } from '@app/styles/colorScheme';
 
 export const footerStyles: SystemStyleObject = {
-  minH: '444px',
-  px: mainPx,
+  flexDirection: 'column',
+  '.copyright': {
+    mx: mainPx,
+    borderTop: '1px solid #E7E7E7',
+    py: '23px',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#747B82',
+    fontWeight: 400,
+    fontSize: '14px',
+    lineHeight: '17px',
+    '.accent': {
+      color: '#0057FF',
+      fontWeight: 600,
+      pl: '5px'
+    }
+  },
+};
+
+export const footerMenuStyles: SystemStyleObject = {
   justifyContent: 'space-between',
-  pt: '93px',
+  px: mainPx,
+  py: '93px',
   '.h3-footer': {
     fontWeight: 600,
     fontSize: '18px',
