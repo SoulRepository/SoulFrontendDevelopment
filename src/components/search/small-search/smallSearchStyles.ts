@@ -3,8 +3,6 @@ import {lightColor} from "@app/styles/colorScheme";
 
 export const smallSearchStyles: SystemStyleObject = {
   w: '280px',
-
-
   '.search-input': {
     borderRadius: '22px',
     bgColor: '#717171',

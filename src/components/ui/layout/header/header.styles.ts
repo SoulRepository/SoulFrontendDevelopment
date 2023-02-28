@@ -1,10 +1,11 @@
 import { SystemStyleObject } from '@chakra-ui/react';
 import { lightColor } from '@app/styles/colorScheme';
+import { mainPx } from '@app/pages/styleVars';
 
 export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
   h: '85px',
   w: '100%',
-  px: '17.03%',
+  px: mainPx,
   alignItems: 'center',
   justifyContent: 'center',
   bgColor: isShowBg ? lightColor.headerBgColor : 'transparent',
