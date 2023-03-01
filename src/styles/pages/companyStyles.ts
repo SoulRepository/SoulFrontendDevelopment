@@ -60,6 +60,7 @@ export const companyStyles: SystemStyleObject = {
         flexDirection: 'column',
         '.address-section': {
           flexDirection: 'column',
+          mb: '21px',
           '.copy-icon': {
             cursor: 'pointer',
             ml: '10px',
@@ -80,6 +81,71 @@ export const companyStyles: SystemStyleObject = {
             px: '22px',
             py: '14px',
             ...roundedWhiteSection,
+          },
+        },
+        '.soulId-section': {
+          mb: '17px',
+          flexDirection: 'column',
+          h2: {
+            fontWeight: 600,
+            fontSize: '36px',
+            lineHeight: '43px',
+          },
+          p: {
+            color: '#8F3DFF',
+            fontWeight: 500,
+            fontSize: '16px',
+            lineHeight: '20px',
+          },
+        },
+        '.desc-section': {
+          flexDirection: 'column',
+          mb: '40px',
+          '.title': {
+            fontWeight: 600,
+            fontSize: '14px',
+            lineHeight: '17px',
+            py: '14px',
+            mb: '14px',
+            borderTop: '1px solid rgba(4, 18, 38, 0.1)',
+            borderBottom: '1px solid rgba(4, 18, 38, 0.1)',
+          },
+          '.text': {
+            maxW: '279px',
+            fontWeight: 400,
+            fontSize: '14px',
+            lineHeight: '17px',
+          },
+        },
+        '.sm-section': {
+          flexDirection: 'column',
+          mb: '20px',
+          '.social-box': {
+            mb: '10px',
+            p: {
+              ...roundedWhiteSection,
+              display: 'flex',
+              alignItems: 'center',
+              px: '15px',
+              py: '12px',
+            },
+          },
+        },
+        '.join-date-section': {
+          justifyContent: 'space-between',
+          py: '14px',
+          mb: '20px',
+          borderTop: '1px solid rgba(4, 18, 38, 0.1)',
+          borderBottom: '1px solid rgba(4, 18, 38, 0.1)',
+          '.title': {
+            fontWeight: 600,
+            fontSize: '14px',
+            lineHeight: '17px',
+          },
+          '.date': {
+            fontWeight: 400,
+            fontSize: '14px',
+            lineHeight: '17px',
           },
         },
       },
