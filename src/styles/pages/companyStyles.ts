@@ -52,9 +52,10 @@ export const companyStyles: SystemStyleObject = {
       },
     },
     '.content-section': {
-      justifyContent: 'space-between',
       '.side-bar': {
         flexDirection: 'column',
+        mr: '80px',
+        maxW: '274px',
         '.address-section': {
           flexDirection: 'column',
           mb: '21px',
@@ -134,6 +135,63 @@ export const companyStyles: SystemStyleObject = {
           },
         },
       },
+      '.content': {
+        flexDirection: 'column',
+        '.menu': {
+          maxH: '40px',
+          mb: '50px',
+        },
+        '.partner-cards-section': {
+          flexWrap: 'wrap',
+          '.partner-card': {
+            flexDirection: 'column',
+            mb: '20px',
+            '.card': {
+              h: '250px',
+              w: '270px',
+              borderRadius: '20px',
+              mb: '20px',
+              mr: '26px',
+              bgColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer',
+              '.img': {
+                position: 'relative',
+                w: '100%',
+                h: '100%',
+                maxH: '65px',
+                maxW: '220px',
+              },
+            },
+            h3: {
+              fontWeight: 600,
+              fontSize: '18px',
+              lineHeight: '15px',
+            },
+            p: {
+              display: 'flex',
+              alignItems: 'center',
+              fontWeight: 400,
+              fontSize: '14px',
+              lineHeight: '10px',
+              color: '#49535B',
+              mb: '13px',
+            },
+          },
+        },
+      },
     },
   },
 };
+
+export const menuItemStyles = (isActive: boolean): SystemStyleObject => ({
+  color: isActive ? '#0057FF' : '#041226',
+  borderRadius: '6px',
+  fontWeight: 600,
+  fontSize: '14px',
+  lineHeight: '17px',
+  mr: '24px',
+  cursor: 'pointer',
+  ...(() => !isActive && { boxShadow: 'none', bgColor: 'transparent' })(),
+});

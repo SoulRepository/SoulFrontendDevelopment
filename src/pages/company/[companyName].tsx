@@ -1,9 +1,8 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
 import Image from 'next/image';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
-import { companyStyles } from '@app/styles/pages/companyStyles';
+import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
-import { getImgPath } from '@app/utils';
 import {
   CopyIcon,
   DiscordStaticIcon,
@@ -13,7 +12,11 @@ import {
   TwitterStaticIcon,
   VerifyIcon,
 } from '@app/components/ui/icons';
-import { Bullet } from '@app/components/ui/bullet/Bullet';
+import { Bullet } from '@app/components/ui';
+
+import { getImgPath } from '@app/utils';
+import { useState } from 'react';
+import Link from 'next/link';
 
 const digiProofsIcon = [
   getImgPath('coinbase.png'),
@@ -53,7 +56,99 @@ const socialMediaLinks = [
   },
 ];
 
+const digiProofsTypes = [
+  {
+    id: '1',
+    name: 'Partnerships',
+    description:
+      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
+  },
+  {
+    id: '2',
+    name: 'Collaborations',
+    description:
+      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
+  },
+  {
+    id: '3',
+    name: 'Investors',
+    description:
+      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
+  },
+  {
+    id: '4',
+    name: 'Team Members',
+    description:
+      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
+  },
+];
+// [{
+//   featuredImage: <string>
+//     name: <string>
+//     sbtId: <string>
+//     verification: <bool>,
+//     }]
+
+const relationshipsCompany = {
+  Partnerships: [
+    {
+      featuredImage: 'coinbase_feature_image.jpg',
+      name: 'Coinbase',
+      sbtId: 'coinbase.soul',
+      verification: true,
+    },
+    {
+      featuredImage: 'ledger_feature_image.jpg',
+      name: 'Ledger',
+      sbtId: 'ledger.soul',
+      verification: false,
+    },
+    {
+      featuredImage: 'rarible_feature_image.jpg',
+      name: 'Rarible',
+      sbtId: 'rarible.soul',
+      verification: true,
+    },
+    {
+      featuredImage: 'rarible_feature_image.jpg',
+      name: 'Rarible',
+      sbtId: 'rarible.soul',
+      verification: true,
+    },
+  ],
+  Collaborations: [
+    {
+      featuredImage: 'rarible_feature_image.jpg',
+      name: 'Rarible',
+      sbtId: 'rarible.soul',
+      verification: true,
+    },
+    {
+      featuredImage: 'ledger_feature_image.jpg',
+      name: 'Ledger',
+      sbtId: 'ledger.soul',
+      verification: false,
+    },
+  ],
+  Investors: [
+    {
+      featuredImage: 'coinbase_feature_image.jpg',
+      name: 'Coinbase',
+      sbtId: 'coinbase.soul',
+      verification: true,
+    },
+  ],
+  'Team Members': [],
+};
+
 const CompanyPage = () => {
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const digiProofsTypesData = digiProofsTypes[activeTabIndex];
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const relationships = relationshipsCompany[digiProofsTypesData.name];
+
   const address = '0xCC3C…EC00';
 
   const companyName = 'Women Rise';
@@ -102,7 +197,7 @@ const CompanyPage = () => {
                   </Flex>
                 ))}
               </Flex>
-              <Bullet>
+              <Bullet w='270px'>
                 {address} <CopyIcon className="copy-icon" onClick={onCopy} />
               </Bullet>
             </Flex>
@@ -134,7 +229,45 @@ const CompanyPage = () => {
               <Text className="date">February 2023</Text>
             </Flex>
           </Flex>
-          <Flex className="content">content</Flex>
+          <Flex className="content">
+            <Flex className="menu">
+              {digiProofsTypes.map(({ name }, i) => (
+                <Bullet
+                  key={i}
+                  sx={menuItemStyles(i === activeTabIndex)}
+                  onClick={() => setActiveTabIndex(i)}
+                >
+                  {name}
+                </Bullet>
+              ))}
+            </Flex>
+            <Flex className="partner-cards-section">
+              {relationships.map(
+                (
+                  { featuredImage, name, sbtId, verification }: any,
+                  i: number,
+                ) => (
+                  <Flex key={i} className="partner-card">
+                    <Link href="#">
+                      <Flex className="card">
+                        <Flex className="img">
+                          <Image
+                            fill
+                            src={getImgPath(featuredImage)}
+                            alt="feature_image"
+                          />
+                        </Flex>
+                      </Flex>
+                    </Link>
+                    <Text>
+                      {sbtId} {verification && <VerifyIcon ml="7px" />}
+                    </Text>
+                    <Text as="h3">{name}</Text>
+                  </Flex>
+                ),
+              )}
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
