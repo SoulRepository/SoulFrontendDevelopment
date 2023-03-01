@@ -6,3 +6,4 @@ export * from './GithubIcon';
 export * from './InstagramIcon';
 export * from './TwitterIcon';
 export * from './EllipsisIcon';
+export * from './CopyIcon';

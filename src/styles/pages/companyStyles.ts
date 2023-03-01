@@ -14,6 +14,7 @@ export const companyStyles: SystemStyleObject = {
   '.company-section': {
     px: mainPx,
     w: '100%',
+    flexDirection: 'column',
     '.company-info': {
       w: '100%',
       alignItems: 'center',
@@ -36,19 +37,50 @@ export const companyStyles: SystemStyleObject = {
           p: {
             mr: '17px',
             fontWeight: 500,
-            fontSize: '15px'
+            fontSize: '15px',
           },
           '.digi-icon': {
             border: '3px solid white',
             position: 'relative',
             borderRadius: 'full',
             ml: '-10px',
-            boxSize: '28px'
+            boxSize: '28px',
           },
         },
         '.profile-menu': {
           boxSize: '50px',
           ...roundedWhiteSection,
+        },
+      },
+    },
+    '.content-section': {
+      // w: '100%',
+      justifyContent: 'space-between',
+      '.side-bar': {
+        flexDirection: 'column',
+        '.address-section': {
+          flexDirection: 'column',
+          '.copy-icon': {
+            cursor: 'pointer',
+            ml: '10px',
+          },
+          '.tag': {
+            h: '36px',
+            px: '30px',
+            py: '12px',
+            bgColor: '#041226',
+            color: 'white',
+            borderRadius: 'full',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1px solid #f4f7fa',
+            mr: '-20px',
+          },
+          '.address': {
+            px: '22px',
+            py: '14px',
+            ...roundedWhiteSection,
+          },
         },
       },
     },
