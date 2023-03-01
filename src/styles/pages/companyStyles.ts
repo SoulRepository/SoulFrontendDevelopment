@@ -30,10 +30,8 @@ export const companyStyles: SystemStyleObject = {
       },
       '.menu-section': {
         '.digi-proofs': {
-          w: '260px',
-          h: '50px',
+          px: '31px',
           mr: '10px',
-          ...roundedWhiteSection,
           p: {
             mr: '17px',
             fontWeight: 500,
@@ -54,7 +52,6 @@ export const companyStyles: SystemStyleObject = {
       },
     },
     '.content-section': {
-      // w: '100%',
       justifyContent: 'space-between',
       '.side-bar': {
         flexDirection: 'column',
@@ -76,11 +73,6 @@ export const companyStyles: SystemStyleObject = {
             justifyContent: 'center',
             border: '1px solid #f4f7fa',
             mr: '-20px',
-          },
-          '.address': {
-            px: '22px',
-            py: '14px',
-            ...roundedWhiteSection,
           },
         },
         '.soulId-section': {
@@ -122,13 +114,6 @@ export const companyStyles: SystemStyleObject = {
           mb: '20px',
           '.social-box': {
             mb: '10px',
-            p: {
-              ...roundedWhiteSection,
-              display: 'flex',
-              alignItems: 'center',
-              px: '15px',
-              py: '12px',
-            },
           },
         },
         '.join-date-section': {

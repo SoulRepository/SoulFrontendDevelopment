@@ -13,6 +13,7 @@ import {
   TwitterStaticIcon,
   VerifyIcon,
 } from '@app/components/ui/icons';
+import { Bullet } from '@app/components/ui/bullet/Bullet';
 
 const digiProofsIcon = [
   getImgPath('coinbase.png'),
@@ -78,14 +79,14 @@ const CompanyPage = () => {
             </Box>
           </Flex>
           <Flex className="menu-section">
-            <Flex className="digi-proofs">
+            <Bullet className="digi-proofs">
               <Text>Digi-Proofs with</Text>
               {digiProofsIcon.map((src, i) => (
                 <Flex key={i} className="digi-icon">
-                  <Image fill src={src} alt={'icon'} />
+                  <Image fill src={src} alt="icon" />
                 </Flex>
               ))}
-            </Flex>
+            </Bullet>
             <Flex className="profile-menu">
               <EllipsisIcon />
             </Flex>
@@ -101,9 +102,9 @@ const CompanyPage = () => {
                   </Flex>
                 ))}
               </Flex>
-              <Flex className="address">
+              <Bullet>
                 {address} <CopyIcon className="copy-icon" onClick={onCopy} />
-              </Flex>
+              </Bullet>
             </Flex>
             <Flex className="soulId-section">
               <Text as="h2">{companyName}</Text>
@@ -114,26 +115,26 @@ const CompanyPage = () => {
               <Text className="text">{descText}</Text>
             </Flex>
             <Flex className="sm-section">
-              {socialMediaLinks.map(({ label, icon: Icon, link, isVerify }, i) => (
-                <Flex key={i} className="social-box">
-                  <a href={link}>
-                    <Text>
-                      <Icon boxSize="20px" mr="10px" />
-                      {label}
-                      {isVerify && <VerifyIcon boxSize="15px" ml="5px" />}
-                    </Text>
-                  </a>
-                </Flex>
-              ))}
+              {socialMediaLinks.map(
+                ({ label, icon: Icon, link, isVerify }, i) => (
+                  <Flex key={i} className="social-box">
+                    <Bullet>
+                      <Text>
+                        <Icon boxSize="20px" mr="10px" />
+                        <a href={link}>{label}</a>
+                        {isVerify && <VerifyIcon boxSize="15px" ml="5px" />}
+                      </Text>
+                    </Bullet>
+                  </Flex>
+                ),
+              )}
             </Flex>
             <Flex className="join-date-section">
-              <Text className='title'>Joined</Text>
-              <Text className='date'>February 2023</Text>
+              <Text className="title">Joined</Text>
+              <Text className="date">February 2023</Text>
             </Flex>
           </Flex>
-          <Flex className="content">
-           content
-          </Flex>
+          <Flex className="content">content</Flex>
         </Flex>
       </Flex>
     </Flex>
