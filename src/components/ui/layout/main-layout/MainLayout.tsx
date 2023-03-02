@@ -15,12 +15,13 @@ type Props = ILayoutProps &
 
 export const MainLayout: FC<Props> = ({ children, ...props }) => {
   const router = useRouter();
-  const isNotCompanyPage = !router.pathname.includes('company');
+
+  const isCompanyPage = router.pathname === '/company/[companyName]';
 
   return (
     <Flex flexDir="column" minH="100%" position="relative" {...props}>
-      <Header isShowBg={isNotCompanyPage} />
-      {isNotCompanyPage && <Blur />}
+      <Header isShowBg={!isCompanyPage} />
+      {isCompanyPage && <Blur />}
       <Flex as="main" bgColor="#F4F7FA">
         {children}
       </Flex>

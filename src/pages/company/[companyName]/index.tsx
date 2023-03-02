@@ -17,6 +17,7 @@ import { Bullet } from '@app/components/ui';
 import { getImgPath } from '@app/utils';
 import { useState } from 'react';
 import Link from 'next/link';
+import {useRouter} from "next/router";
 
 const digiProofsIcon = [
   getImgPath('coinbase.png'),
@@ -82,12 +83,6 @@ const digiProofsTypes = [
       'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
   },
 ];
-// [{
-//   featuredImage: <string>
-//     name: <string>
-//     sbtId: <string>
-//     verification: <bool>,
-//     }]
 
 const relationshipsCompany = {
   Partnerships: [
@@ -144,6 +139,8 @@ const relationshipsCompany = {
 const CompanyPage = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const digiProofsTypesData = digiProofsTypes[activeTabIndex];
+
+  const router = useRouter()
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -248,7 +245,7 @@ const CompanyPage = () => {
                   i: number,
                 ) => (
                   <Flex key={i} className="partner-card">
-                    <Link href="#">
+                    <Link href={router.asPath + `/${name.toLowerCase()}`}>
                       <Flex className="card">
                         <Flex className="img">
                           <Image

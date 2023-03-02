@@ -143,6 +143,8 @@ export const companyStyles: SystemStyleObject = {
         },
         '.partner-cards-section': {
           flexWrap: 'wrap',
+
+          transition: 'all .3s',
           '.partner-card': {
             flexDirection: 'column',
             mb: '20px',
