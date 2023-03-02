@@ -18,6 +18,7 @@ import {
   socialMediaLinks,
   tags,
 } from '@app/mockData';
+import { LikeButton } from '@app/components/ui/like-button/LikeButton';
 
 const CompanyPage = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -142,7 +143,10 @@ const CompanyPage = () => {
                     <Text>
                       {sbtId} {verification && <VerifyIcon ml="7px" />}
                     </Text>
-                    <Text as="h3">{name}</Text>
+                    <Flex className="footer">
+                      <Text as="h3">{name}</Text>
+                      <LikeButton withOutBg />
+                    </Flex>
                   </Flex>
                 ),
               )}

@@ -149,12 +149,13 @@ export const companyStyles: SystemStyleObject = {
           '.partner-card': {
             flexDirection: 'column',
             mb: '20px',
+            mr: '26px',
             '.card': {
               h: '250px',
               w: '270px',
               borderRadius: '20px',
               mb: '20px',
-              mr: '26px',
+
               bgColor: 'white',
               justifyContent: 'center',
               alignItems: 'center',
@@ -181,6 +182,10 @@ export const companyStyles: SystemStyleObject = {
               color: '#49535B',
               mb: '13px',
             },
+            '.footer': {
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }
           },
         },
       },

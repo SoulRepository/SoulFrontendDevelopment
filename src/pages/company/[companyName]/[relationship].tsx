@@ -1,13 +1,11 @@
 import { Flex, Text } from '@chakra-ui/react';
-import {
-  likeStyle,
-  relationshipStyles,
-} from '@app/styles/pages/relationshipStyles';
+import { relationshipStyles } from '@app/styles/pages/relationshipStyles';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { relationships } from '@app/mockData';
+import { LikeButton } from '@app/components/ui/like-button/LikeButton';
 import { Bullet } from '@app/components/ui';
-import { LikeIcon } from '@app/components/ui/icons';
+import { VerifyIcon } from '@app/components/ui/icons';
 
 const Relationship = () => {
   const router = useRouter();
@@ -51,11 +49,28 @@ const Relationship = () => {
               {relation.relationshipType}
             </Text>
             <Flex className="digi-proof">Digi-Proof</Flex>
-            <Flex sx={likeStyle}>
-              <Bullet className=''>
-                <LikeIcon />
-                &nbsp;3
-              </Bullet>
+            <LikeButton />
+          </Flex>
+          <Flex className="companies-section">
+            <Text as="h3">Companies</Text>
+            <Flex className="companies">
+              {relation.relationshipsCompany.map((company, i) => (
+                <Bullet key={i} mr="10px" isSquare>
+                  <Flex className="image-block">
+                    <Flex className="featured-Image">
+                      {company.featureImg && (
+                        <Image
+                          fill
+                          src={company.featureImg}
+                          alt="featured-Image"
+                        />
+                      )}
+                    </Flex>
+                    {company.isVerify && <VerifyIcon className="verify-icon" />}
+                  </Flex>
+                  <Text>{company.name}</Text>
+                </Bullet>
+              ))}
             </Flex>
           </Flex>
         </Flex>

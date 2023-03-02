@@ -45,6 +45,7 @@ export const relationshipStyles: SystemStyleObject = {
       },
       flexDirection: 'column',
       '.sidebar-header': {
+        mb: '55px',
         justifyContent: 'space-between',
         alignItems: 'center',
         '.relationship-type': {
@@ -67,9 +68,39 @@ export const relationshipStyles: SystemStyleObject = {
           maxH: '30px',
         },
       },
+      '.companies-section': {
+        flexDirection: 'column',
+        h3: {
+          fontWeight: 600,
+          fontSize: '13px',
+          lineHeight: '20px',
+          color: '#49535B',
+          mb: '10px',
+        },
+        '.companies': {
+          '.image-block': {
+            position: 'relative',
+            mr: '10px',
+            '.verify-icon': {
+              position: 'absolute',
+              bottom: '-2px',
+              right: '-2px',
+            },
+            '.featured-Image': {
+              position: 'relative',
+              overflow: 'hidden',
+              w: '100%',
+              h: '100%',
+              boxSize: '32px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              bgColor: '#C4C4C4',
+              borderRadius: 'full',
+            },
+          },
+        },
+      },
     },
   },
 };
 
-
-export const likeStyle:SystemStyleObject = {}

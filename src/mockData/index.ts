@@ -139,6 +139,11 @@ export const relationships = [
         isVerify: true,
       },
       {
+        featureImg: '',
+        name: 'women rise',
+        isVerify: true,
+      },
+      {
         featureImg: getImgPath('rarible_feature_image.jpg'),
         name: 'rarible',
         isVerify: true,
