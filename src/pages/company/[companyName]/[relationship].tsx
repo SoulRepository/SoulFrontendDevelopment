@@ -1,5 +1,8 @@
-import { Flex, Text } from '@chakra-ui/react';
-import { relationshipStyles } from '@app/styles/pages/relationshipStyles';
+import { Button, Flex, Text } from '@chakra-ui/react';
+import {
+  buttonStyles,
+  relationshipStyles,
+} from '@app/styles/pages/relationshipStyles';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { relationships } from '@app/mockData';
@@ -72,6 +75,20 @@ const Relationship = () => {
                 </Bullet>
               ))}
             </Flex>
+          </Flex>
+          <Flex className="properties-section">
+            <Text>Properties</Text>
+            <Flex className="description">
+              Rarible partnered with artist Maliha Abidi back in November
+              because they loved her vision of highlighting female scientists,
+              activists, artists, coders and more.
+            </Flex>
+          </Flex>
+          <Flex className='date'>Created: 8/03/2022</Flex>
+          <Flex className="button-section">
+            <Button sx={buttonStyles} isDisabled>
+              Withdraw
+            </Button>
           </Flex>
         </Flex>
       </Flex>

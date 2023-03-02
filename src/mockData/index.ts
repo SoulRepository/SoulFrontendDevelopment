@@ -152,7 +152,7 @@ export const relationships = [
   },
   {
     companyName: 'Coinbase',
-    relationshipType: 'coinbase',
+    relationshipType: 'collaborations',
     featuredImage: getImgPath('coinbase_feature_image.jpg'),
     created: '8/03/2022',
 

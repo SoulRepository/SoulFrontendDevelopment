@@ -70,6 +70,7 @@ export const relationshipStyles: SystemStyleObject = {
       },
       '.companies-section': {
         flexDirection: 'column',
+        mb: '20px',
         h3: {
           fontWeight: 600,
           fontSize: '13px',
@@ -100,7 +101,51 @@ export const relationshipStyles: SystemStyleObject = {
           },
         },
       },
+      '.properties-section': {
+        flexDirection: 'column',
+        mb: '10px',
+        p: {
+          fontWeight: 600,
+          fontSize: '13px',
+          lineHeight: '20px',
+          color: '#49535B',
+          mb: '4px',
+        },
+        '.description': {
+          bgColor: 'white',
+          px: '18px',
+          py: '20px',
+          minH: '176px',
+          borderRadius: '6px',
+          fontWeight: 400,
+          fontSize: '13px',
+          lineHeight: '20px',
+          color: '#49535B',
+        },
+      },
+      '.date': {
+        fontWeight: 600,
+        fontSize: '13px',
+        lineHeight: '20px',
+        color: '#49535B',
+        mb: '66px'
+      }
     },
   },
 };
 
+export const buttonStyles: SystemStyleObject = {
+  w: '250px',
+  h: '50px',
+  bg: 'linear-gradient(180deg, #6297FF -6.76%, #0057FF 106.76%)',
+  color: 'white',
+  boxShadow: '0px 3px 6px rgba(10, 72, 192, 0.3)',
+  borderRadius: '6px',
+  _hover: {
+    bg: 'linear-gradient(180deg, #033086 -6.76%, #0057FF 106.76%)',
+  },
+  _disabled: {
+    bg: '#C4C4C4',
+    cursor: 'no-drop',
+  }
+};
