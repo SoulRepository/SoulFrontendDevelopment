@@ -1,5 +1,5 @@
 import { SystemStyleObject } from '@chakra-ui/react';
-import { mainPx, roundedWhiteSection } from '@app/styles/styleVars';
+import { mainPx } from '@app/styles/styleVars';
 
 export const companyStyles: SystemStyleObject = {
   flexDirection: 'column',
@@ -45,10 +45,6 @@ export const companyStyles: SystemStyleObject = {
             ml: '-10px',
             boxSize: '28px',
           },
-        },
-        '.profile-menu': {
-          boxSize: '50px',
-          ...roundedWhiteSection,
         },
       },
     },

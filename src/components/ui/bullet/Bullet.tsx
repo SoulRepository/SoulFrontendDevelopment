@@ -15,7 +15,7 @@ export const Bullet: FC<BulletProps> = ({
   isSquare,
   ...props
 }) => {
-  const styles = useMemo(() => ({ ...bulletStyles(isSquare), ...sx }), [sx]);
+  const styles = useMemo(() => ({ ...bulletStyles(isSquare), ...sx }), [isSquare, sx]);
 
   return (
     <Flex {...props} sx={styles}>

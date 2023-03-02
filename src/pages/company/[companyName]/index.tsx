@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { useState } from 'react';
 import Link from 'next/link';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
-import { CopyIcon, EllipsisIcon, VerifyIcon } from '@app/components/ui/icons';
+import { CopyIcon, VerifyIcon } from '@app/components/ui/icons';
 import { Bullet } from '@app/components/ui';
 
 import { getImgPath } from '@app/utils';
@@ -19,12 +19,24 @@ import {
   tags,
 } from '@app/mockData';
 import { LikeButton } from '@app/components/ui/like-button/LikeButton';
+import { DropdownMenu } from '@app/components/ui/dropdown-menu/DropdownMenu';
+
+import type { IMenuItem } from '@app/types';
 
 const CompanyPage = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const digiProofsTypesData = digiProofsTypes[activeTabIndex];
 
   const router = useRouter();
+  const dropdownMenuItem: IMenuItem[] = useMemo(
+    () => [
+      {
+        label: 'edit',
+        link: `${router.asPath}/edit`,
+      },
+    ],
+    [router.asPath],
+  );
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -63,9 +75,7 @@ const CompanyPage = () => {
                 </Flex>
               ))}
             </Bullet>
-            <Flex className="profile-menu">
-              <EllipsisIcon />
-            </Flex>
+            <DropdownMenu menuItems={dropdownMenuItem} />
           </Flex>
         </Flex>
         <Flex className="content-section">
@@ -91,19 +101,17 @@ const CompanyPage = () => {
               <Text className="text">{descText}</Text>
             </Flex>
             <Flex className="sm-section">
-              {socialMediaLinks.map(
-                ({ label, icon: Icon, link, isVerify }, i) => (
-                  <Flex key={i} className="social-box">
-                    <Bullet>
-                      <Text>
-                        <Icon boxSize="20px" mr="10px" />
-                        <a href={link}>{label}</a>
-                        {isVerify && <VerifyIcon boxSize="15px" ml="5px" />}
-                      </Text>
-                    </Bullet>
-                  </Flex>
-                ),
-              )}
+              {socialMediaLinks.map(({ label, icon: Icon, link, isVerify }, i) => (
+                <Flex key={i} className="social-box">
+                  <Bullet>
+                    <Text>
+                      <Icon boxSize="20px" mr="10px" />
+                      <a href={link}>{label}</a>
+                      {isVerify && <VerifyIcon boxSize="15px" ml="5px" />}
+                    </Text>
+                  </Bullet>
+                </Flex>
+              ))}
             </Flex>
             <Flex className="join-date-section">
               <Text className="title">Joined</Text>
@@ -123,33 +131,24 @@ const CompanyPage = () => {
               ))}
             </Flex>
             <Flex className="partner-cards-section">
-              {relationships.map(
-                (
-                  { featuredImage, name, sbtId, verification }: any,
-                  i: number,
-                ) => (
-                  <Flex key={i} className="partner-card">
-                    <Link href={router.asPath + `/${name.toLowerCase()}`}>
-                      <Flex className="card">
-                        <Flex className="img">
-                          <Image
-                            fill
-                            src={getImgPath(featuredImage)}
-                            alt="feature_image"
-                          />
-                        </Flex>
+              {relationships.map(({ featuredImage, name, sbtId, verification }: any, i: number) => (
+                <Flex key={i} className="partner-card">
+                  <Link href={router.asPath + `/${name.toLowerCase()}`}>
+                    <Flex className="card">
+                      <Flex className="img">
+                        <Image fill src={getImgPath(featuredImage)} alt="feature_image" />
                       </Flex>
-                    </Link>
-                    <Text>
-                      {sbtId} {verification && <VerifyIcon ml="7px" />}
-                    </Text>
-                    <Flex className="footer">
-                      <Text as="h3">{name}</Text>
-                      <LikeButton withOutBg />
                     </Flex>
+                  </Link>
+                  <Text>
+                    {sbtId} {verification && <VerifyIcon ml="7px" />}
+                  </Text>
+                  <Flex className="footer">
+                    <Text as="h3">{name}</Text>
+                    <LikeButton withOutBg />
                   </Flex>
-                ),
-              )}
+                </Flex>
+              ))}
             </Flex>
           </Flex>
         </Flex>
