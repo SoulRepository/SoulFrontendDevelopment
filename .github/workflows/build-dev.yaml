@@ -3,10 +3,10 @@ name: DEV
 
 on:
   push:
-    branches: [DEV]
+    branches: [development]
   pull_request:
     types: [closed]
-    branches: [DEV]
+    branches: [development]
   workflow_dispatch:
   
 concurrency:
@@ -31,12 +31,12 @@ jobs:
           echo "${{secrets.SSH_PRIV}}" > ${key}
           sudo chmod 600 ${key}
           
-          echo "name=${name}" >> dev.txt
-          echo "key1=${key}" >> dev.txt
+          echo "name=${name}" >> development.txt
+          echo "key1=${key}" >> development.txt
           echo "timestamp=${timestamp}" >> dev.txt
-          echo "name=${name}" >> dev.txt
-          echo "key2=${key}" >> dev.txt
-          echo "HOST=${host}" >> dev.txt
+          echo "name=${name}" >> development.txt
+          echo "key2=${key}" >> development.txt
+          echo "HOST=${host}" >> development.txt
           scp -i ${key} -o "StrictHostKeyChecking no" main.txt ${host}:/home/ubuntu/dev.txt
           
           scp -i ${key} -o "StrictHostKeyChecking no" ${name}-${timestamp}.tar ${host}:${name}-${timestamp}.tar
