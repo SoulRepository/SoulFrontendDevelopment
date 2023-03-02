@@ -10,7 +10,8 @@ import {
 import { getImgPath } from '@app/utils';
 import { SmallSearch } from '@app/components/search/small-search/SmallSearch';
 import { WalletButtonConnect } from '@app/components/wallet-button-connect/WalletButtonConnect';
-import { ThemeToggle } from '@app/components/ui/theme-toggle/ThemeToggle'
+import { ThemeToggle } from '@app/components/ui/theme-toggle/ThemeToggle';
+import { FC } from 'react';
 
 const navLinks = [
   {
@@ -27,11 +28,12 @@ const navLinks = [
   },
 ];
 
-export const Header = () => {
-  const isShowBg = true;
+interface IHeaderProps {
+  isShowBg: boolean;
+}
 
-  return (
-    <Flex as='header' sx={headerStyles(isShowBg)}>
+export const Header: FC<IHeaderProps> = ({ isShowBg }) => (
+    <Flex as="header" sx={headerStyles(isShowBg)}>
       <Flex className="logo">
         <Link href="/">
           <Image
@@ -43,7 +45,7 @@ export const Header = () => {
         </Link>
       </Flex>
       <Flex className="search">
-        <SmallSearch />
+        <SmallSearch rgbaBg={!isShowBg} />
       </Flex>
       <Flex>
         <List sx={menuStyles}>
@@ -60,4 +62,3 @@ export const Header = () => {
       </Flex>
     </Flex>
   );
-};
