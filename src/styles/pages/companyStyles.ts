@@ -13,6 +13,7 @@ export const companyStyles: SystemStyleObject = {
   },
   '.company-section': {
     px: mainPx,
+    mb: '100px',
     w: '100%',
     flexDirection: 'column',
     '.company-info': {

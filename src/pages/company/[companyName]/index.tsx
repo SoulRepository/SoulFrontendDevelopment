@@ -1,150 +1,33 @@
 import Image from 'next/image';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
-import {
-  CopyIcon,
-  DiscordStaticIcon,
-  EllipsisIcon,
-  InstaStaticIcon,
-  SiteIcon,
-  TwitterStaticIcon,
-  VerifyIcon,
-} from '@app/components/ui/icons';
+import { CopyIcon, EllipsisIcon, VerifyIcon } from '@app/components/ui/icons';
 import { Bullet } from '@app/components/ui';
 
 import { getImgPath } from '@app/utils';
-import { useState } from 'react';
-import Link from 'next/link';
-import {useRouter} from "next/router";
 
-const digiProofsIcon = [
-  getImgPath('coinbase.png'),
-  getImgPath('gost.png'),
-  getImgPath('led.png'),
-];
-
-const tags = ['ERC20', 'NFT', 'Contract'];
-
-const socialMediaLinks = [
-  {
-    label: '@WomenriseNFT',
-    type: 'twitter',
-    icon: TwitterStaticIcon,
-    link: '#',
-    isVerify: true,
-  },
-  {
-    label: '@womenrisenft',
-    type: 'instagram',
-    icon: InstaStaticIcon,
-    link: '#',
-    isVerify: false,
-  },
-  {
-    label: 'womenrise.art',
-    type: 'site',
-    icon: SiteIcon,
-    link: '#',
-  },
-  {
-    label: 'discord.com',
-    type: 'discord',
-    icon: DiscordStaticIcon,
-    link: '#',
-    isVerify: true,
-  },
-];
-
-const digiProofsTypes = [
-  {
-    id: '1',
-    name: 'Partnerships',
-    description:
-      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
-  },
-  {
-    id: '2',
-    name: 'Collaborations',
-    description:
-      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
-  },
-  {
-    id: '3',
-    name: 'Investors',
-    description:
-      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
-  },
-  {
-    id: '4',
-    name: 'Team Members',
-    description:
-      'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating',
-  },
-];
-
-const relationshipsCompany = {
-  Partnerships: [
-    {
-      featuredImage: 'coinbase_feature_image.jpg',
-      name: 'Coinbase',
-      sbtId: 'coinbase.soul',
-      verification: true,
-    },
-    {
-      featuredImage: 'ledger_feature_image.jpg',
-      name: 'Ledger',
-      sbtId: 'ledger.soul',
-      verification: false,
-    },
-    {
-      featuredImage: 'rarible_feature_image.jpg',
-      name: 'Rarible',
-      sbtId: 'rarible.soul',
-      verification: true,
-    },
-    {
-      featuredImage: 'rarible_feature_image.jpg',
-      name: 'Rarible',
-      sbtId: 'rarible.soul',
-      verification: true,
-    },
-  ],
-  Collaborations: [
-    {
-      featuredImage: 'rarible_feature_image.jpg',
-      name: 'Rarible',
-      sbtId: 'rarible.soul',
-      verification: true,
-    },
-    {
-      featuredImage: 'ledger_feature_image.jpg',
-      name: 'Ledger',
-      sbtId: 'ledger.soul',
-      verification: false,
-    },
-  ],
-  Investors: [
-    {
-      featuredImage: 'coinbase_feature_image.jpg',
-      name: 'Coinbase',
-      sbtId: 'coinbase.soul',
-      verification: true,
-    },
-  ],
-  'Team Members': [],
-};
+import {
+  digiProofsIcon,
+  digiProofsTypes,
+  relationshipsCompany,
+  socialMediaLinks,
+  tags,
+} from '@app/mockData';
 
 const CompanyPage = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const digiProofsTypesData = digiProofsTypes[activeTabIndex];
 
-  const router = useRouter()
+  const router = useRouter();
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const relationships = relationshipsCompany[digiProofsTypesData.name];
+  const relationships = relationshipsCompany[digiProofsTypesData.name.toLowerCase()];
 
   const address = '0xCC3C…EC00';
 
@@ -194,7 +77,7 @@ const CompanyPage = () => {
                   </Flex>
                 ))}
               </Flex>
-              <Bullet w='270px'>
+              <Bullet w="270px">
                 {address} <CopyIcon className="copy-icon" onClick={onCopy} />
               </Bullet>
             </Flex>

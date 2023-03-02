@@ -12,3 +12,4 @@ export * from './TwitterStaticIcon';
 export * from './InstaStaticIcon';
 export * from './DiscordStaticIcon';
 export * from './VerifyIcon';
+export * from './LikeIcon';

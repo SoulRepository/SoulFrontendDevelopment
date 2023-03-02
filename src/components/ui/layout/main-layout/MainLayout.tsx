@@ -21,7 +21,7 @@ export const MainLayout: FC<Props> = ({ children, ...props }) => {
   return (
     <Flex flexDir="column" minH="100%" position="relative" {...props}>
       <Header isShowBg={!isCompanyPage} />
-      {isCompanyPage && <Blur />}
+      {!isCompanyPage && <Blur />}
       <Flex as="main" bgColor="#F4F7FA">
         {children}
       </Flex>
