@@ -31,7 +31,7 @@ const CompanyPage = () => {
   const dropdownMenuItem: IMenuItem[] = useMemo(
     () => [
       {
-        label: 'edit',
+        label: 'Edit',
         link: `${router.asPath}/edit`,
       },
     ],
@@ -131,24 +131,30 @@ const CompanyPage = () => {
               ))}
             </Flex>
             <Flex className="partner-cards-section">
-              {relationships.map(({ featuredImage, name, sbtId, verification }: any, i: number) => (
-                <Flex key={i} className="partner-card">
-                  <Link href={router.asPath + `/${name.toLowerCase()}`}>
-                    <Flex className="card">
-                      <Flex className="img">
-                        <Image fill src={getImgPath(featuredImage)} alt="feature_image" />
+              {relationships.length ? (
+                relationships.map(
+                  ({ featuredImage, name, sbtId, verification }: any, i: number) => (
+                    <Flex key={i} className="partner-card">
+                      <Link href={router.asPath + `/${name.toLowerCase()}`}>
+                        <Flex className="card">
+                          <Flex className="img">
+                            <Image fill src={getImgPath(featuredImage)} alt="feature_image" />
+                          </Flex>
+                        </Flex>
+                      </Link>
+                      <Text>
+                        {sbtId} {verification && <VerifyIcon ml="7px" />}
+                      </Text>
+                      <Flex className="footer">
+                        <Text as="h3">{name}</Text>
+                        <LikeButton withOutBg />
                       </Flex>
                     </Flex>
-                  </Link>
-                  <Text>
-                    {sbtId} {verification && <VerifyIcon ml="7px" />}
-                  </Text>
-                  <Flex className="footer">
-                    <Text as="h3">{name}</Text>
-                    <LikeButton withOutBg />
-                  </Flex>
-                </Flex>
-              ))}
+                  ),
+                )
+              ) : (
+                <Text fontSize='20px' color='#697280'>No Gigi-proof relationships yet</Text>
+              )}
             </Flex>
           </Flex>
         </Flex>
