@@ -1,8 +1,7 @@
 import { SystemStyleObject } from '@chakra-ui/react';
-import { mainPx } from '@app/styles/styleVars';
 
 export const editStyles: SystemStyleObject = {
-  px: mainPx,
+  // px: mainPx,
   py: '50px',
   w: '100%',
   alignItems: 'center',
@@ -14,7 +13,6 @@ export const editStyles: SystemStyleObject = {
     _placeholder: {
       color: '#697280',
     },
-
   },
   p: {
     mb: '5px',
@@ -30,7 +28,6 @@ export const editStyles: SystemStyleObject = {
   '.description': {
     flexDirection: 'column',
 
-
     textarea: {
       bgColor: 'white',
       borderRadius: '6px',
@@ -39,5 +36,11 @@ export const editStyles: SystemStyleObject = {
 
   '.inputGroup': {
     '.icon': { boxSize: '20px', color: '#697280', mt: '7px' },
+  },
+  '.file-input-section': {
+    flexDirection: 'column',
+    '.advice': {
+      fontSize: '14px',
+    },
   },
 };
