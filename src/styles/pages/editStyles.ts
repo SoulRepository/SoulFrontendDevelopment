@@ -1,4 +1,5 @@
 import { SystemStyleObject } from '@chakra-ui/react';
+import { ChakraStylesConfig } from 'chakra-react-select';
 
 export const editStyles: SystemStyleObject = {
   // px: mainPx,
@@ -43,4 +44,37 @@ export const editStyles: SystemStyleObject = {
       fontSize: '14px',
     },
   },
+};
+
+export const selectStyles: ChakraStylesConfig = {
+  valueContainer: provided => ({
+    ...provided,
+    bgColor: 'white',
+    color: '#697280'
+  }),
+  placeholder: provided => ({
+    ...provided,
+    color: '#697280',
+    ml: '5px'
+  }),
+  dropdownIndicator: provided => ({
+    ...provided,
+    bgColor: 'white',
+    cursor: 'pointer'
+  }),
+  menuList: provided => ({
+    ...provided,
+    bgColor: 'white'
+  }),
+  option: provided => ({
+    ...provided,
+    bgColor: 'white',
+    _hover: {
+      bgColor: '#697280'
+    }
+  }),
+  multiValue: provided => ({
+    ...provided,
+    bgColor: '#697280'
+  })
 };

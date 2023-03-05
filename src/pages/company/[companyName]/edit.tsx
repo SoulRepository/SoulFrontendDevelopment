@@ -8,18 +8,29 @@ import {
   Textarea,
   VStack,
 } from '@chakra-ui/react';
-import { editStyles } from '@app/styles/pages/editStyles';
+import { editStyles, selectStyles } from '@app/styles/pages/editStyles';
 import { DiscordIcon, InstagramIcon, SiteIcon, TwitterIcon } from '@app/components/ui/icons';
 import { FileInput } from '@app/components/ui';
 import { useRouter } from 'next/router';
+import { Select } from 'chakra-react-select';
+import { useMemo } from 'react';
 
 const EditPage = () => {
   const router = useRouter();
 
+  const colourOptions = useMemo(
+    () => [
+      { value: 'chocolate', label: 'Chocolate' },
+      { value: 'strawberry', label: 'Strawberry' },
+      { value: 'vanilla', label: 'Vanilla' },
+    ],
+    [],
+  );
+
   return (
     <Flex sx={editStyles}>
       <VStack align="stretch" spacing={8} w="50%">
-        <Text fontWeight="600" w='10%' cursor='pointer' onClick={() => router.back()}>
+        <Text fontWeight="600" w="10%" cursor="pointer" onClick={() => router.back()}>
           Go back
         </Text>
         <VStack align="stretch" spacing={5}>
@@ -55,9 +66,20 @@ const EditPage = () => {
             <Text>Company name</Text>
             <Input type="text" value="Company name" isDisabled />
           </Flex>
+
           <Flex w="100%" flexDirection="column" mb="2px">
             <Text>Category</Text>
-            <Input type="text" value="Category, Category, Category" isDisabled />
+            <Select
+              chakraStyles={selectStyles}
+              isMulti
+              name="colors"
+              options={colourOptions}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              components={{
+                ClearIndicator: () => null,
+              }}
+            />
           </Flex>
         </VStack>
         <Flex className="description">
