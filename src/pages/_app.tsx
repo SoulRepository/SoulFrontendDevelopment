@@ -1,8 +1,6 @@
 import { useRef } from 'react';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
-import { Web3ReactProvider } from '@web3-react/core';
 import { Inter } from 'next/font/google';
-
 
 import { ThemeProvider } from '@app/providers/ThemeProvider';
 import { mainTheme } from '@app/styles/theme';
@@ -10,9 +8,10 @@ import { mainTheme } from '@app/styles/theme';
 import { MainLayout } from '@app/components/ui/layout';
 
 import '@app/styles/globals.css';
-import { connectors } from '@app/api/web3/connectors';
 
 import type { AppProps } from 'next/app';
+import { ConnectWalletModalProvider } from '@app/providers/ConnectWalletModalProvider';
+import { Web3Wrapper } from '@app/api/web3/providers/web3Wrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,15 +26,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <QueryClientProvider client={queryClientRef.current}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <Web3ReactProvider connectors={connectors}>
-            <MainLayout className={inter.className}>
-              <Component {...pageProps} />
-            </MainLayout>
-          </Web3ReactProvider>
-        </Hydrate>
-      </QueryClientProvider>
+      <Web3Wrapper>
+        <QueryClientProvider client={queryClientRef.current}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <ConnectWalletModalProvider>
+              <MainLayout className={inter.className}>
+                <Component {...pageProps} />
+              </MainLayout>
+            </ConnectWalletModalProvider>
+          </Hydrate>
+        </QueryClientProvider>
+      </Web3Wrapper>
     </ThemeProvider>
   );
 }

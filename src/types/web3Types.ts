@@ -1,7 +1,15 @@
-import { MetaMask } from '@web3-react/metamask';
-import { WalletConnect } from '@web3-react/walletconnect';
-import {connectorsName} from "@app/api/web3/connectors";
-import {Web3Provider} from "@ethersproject/providers";
+import type { MetaMask } from '@web3-react/metamask';
+import type { WalletConnect } from '@web3-react/walletconnect';
+import type { connectorsName } from '@app/api/web3/connectors';
+import type { Web3Provider } from '@ethersproject/providers';
+
+export type txType = 'tx' | 'address';
+
+export interface IWalletConnect {
+  onToggle: () => void;
+  onClose: () => void;
+  onOpen: () => void;
+}
 
 export type Connectors = MetaMask | WalletConnect;
 

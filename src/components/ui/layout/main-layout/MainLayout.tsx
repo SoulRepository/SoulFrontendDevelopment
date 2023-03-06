@@ -10,8 +10,7 @@ interface ILayoutProps {
   className?: string;
 }
 
-type Props = ILayoutProps &
-  DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+type Props = ILayoutProps & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export const MainLayout: FC<Props> = ({ children, ...props }) => {
   const router = useRouter();
