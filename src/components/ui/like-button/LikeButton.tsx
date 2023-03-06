@@ -5,17 +5,18 @@ import { Bullet } from '@app/components/ui';
 import { LikeIcon } from '@app/components/ui/icons';
 import { bulletStyles } from '@app/components/ui/like-button/likeButtonStyles';
 
-import { getRandomNumber } from '@app/utils';
+
 
 type LikeButtonProps = {
   withOutBg?: boolean;
+  count?: number
 } & FlexProps;
 
-export const LikeButton: FC<LikeButtonProps> = ({ withOutBg, ...props }) => (
+export const LikeButton: FC<LikeButtonProps> = ({ withOutBg, count = 10, ...props }) => (
   <Flex {...props}>
     <Bullet className="like" sx={bulletStyles(withOutBg)}>
       <LikeIcon />
-      &nbsp; {getRandomNumber()}
+      &nbsp; {count}
     </Bullet>
   </Flex>
 );

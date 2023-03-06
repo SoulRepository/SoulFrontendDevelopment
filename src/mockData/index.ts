@@ -165,7 +165,7 @@ export const relationships = [
         isVerify: false,
       },
       {
-        featureImg: getImgPath('coinbase_feature_image.jpg'),
+        featureImg: getImgPath('default-avatar.jpg'),
         name: 'women rise',
         isVerify: true,
       },
