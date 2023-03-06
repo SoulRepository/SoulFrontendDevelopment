@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { Select } from 'chakra-react-select';
 import {
   Button,
   Flex,
@@ -6,31 +9,41 @@ import {
   InputLeftElement,
   Text,
   Textarea,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
+
 import { editStyles, selectStyles } from '@app/styles/pages/editStyles';
+
 import { DiscordIcon, InstagramIcon, SiteIcon, TwitterIcon } from '@app/components/ui/icons';
 import { FileInput } from '@app/components/ui';
-import { useRouter } from 'next/router';
-import { Select } from 'chakra-react-select';
-import { useMemo } from 'react';
+
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
 
 const EditPage = () => {
   const router = useRouter();
 
+  const toast = useToast();
+
   const { signer } = useWallet();
 
   const onSave = async () => {
     const message = 'Do you confirm the change?';
-    let signature;
     try {
-      signature = await signer?.signMessage(message);
-    } catch (e) {
-      console.error(e);
-    }
+      const signature = await signer?.signMessage(message);
 
-    console.log(signature);
+      console.log(signature);
+    } catch (e) {
+      toast({
+        title: 'Wallet',
+        description: 'User rejected signing',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-left',
+        colorScheme: 'whatsapp',
+      });
+    }
   };
 
   const colourOptions = useMemo(
@@ -85,7 +98,7 @@ const EditPage = () => {
           <Flex w="100%" flexDirection="column" mb="2px">
             <Text>Category</Text>
             <Select
-              instanceId='edit_select'
+              instanceId="edit_select"
               chakraStyles={selectStyles}
               isMulti
               name="colors"
