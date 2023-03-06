@@ -5,11 +5,17 @@ import { bulletStyles } from '@app/components/ui/bullet/bulletStyles';
 
 type BulletProps = {
   sx?: SystemStyleObject;
+  isSquare?: boolean;
 } & PropsWithChildren &
   FlexProps;
 
-export const Bullet: FC<BulletProps> = ({ children, sx, ...props }) => {
-  const styles = useMemo(() => ({ ...bulletStyles, ...sx }), [sx]);
+export const Bullet: FC<BulletProps> = ({
+  children,
+  sx,
+  isSquare,
+  ...props
+}) => {
+  const styles = useMemo(() => ({ ...bulletStyles(isSquare), ...sx }), [sx]);
 
   return (
     <Flex {...props} sx={styles}>
