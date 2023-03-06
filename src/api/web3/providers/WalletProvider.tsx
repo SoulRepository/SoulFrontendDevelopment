@@ -32,6 +32,8 @@ export const useWallet = () => useContext(WalletContext);
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const { connector, isActive: isActiveWallet, account, provider, chainId } = useWeb3React();
 
+  const signer = useMemo(() => provider?.getSigner(), [provider]);
+
   const [error, setError] = useState<Error | undefined>(undefined);
   const [isUnsupportedChinId, setIsUnsupportedChinId] = useState<boolean | undefined>(undefined);
 
@@ -78,6 +80,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     } else {
       void connector.resetState();
     }
+    window.location.reload();
   }, [connector, removeSessionProvider]);
 
   const handleChangeNetwork = useCallback(
@@ -139,6 +142,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         provider,
         chainId,
         isUnsupportedChinId,
+        signer,
       }}
     >
       {children}

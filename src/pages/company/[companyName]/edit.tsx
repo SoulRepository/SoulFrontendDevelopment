@@ -14,9 +14,24 @@ import { FileInput } from '@app/components/ui';
 import { useRouter } from 'next/router';
 import { Select } from 'chakra-react-select';
 import { useMemo } from 'react';
+import { useWallet } from '@app/api/web3/providers/WalletProvider';
 
 const EditPage = () => {
   const router = useRouter();
+
+  const { signer } = useWallet();
+
+  const onSave = async () => {
+    const message = 'Do you confirm the change?';
+    let signature;
+    try {
+      signature = await signer?.signMessage(message);
+    } catch (e) {
+      console.error(e);
+    }
+
+    console.log(signature);
+  };
 
   const colourOptions = useMemo(
     () => [
@@ -70,6 +85,7 @@ const EditPage = () => {
           <Flex w="100%" flexDirection="column" mb="2px">
             <Text>Category</Text>
             <Select
+              instanceId='edit_select'
               chakraStyles={selectStyles}
               isMulti
               name="colors"
@@ -112,7 +128,7 @@ const EditPage = () => {
             <Input type="text" placeholder="Your site" />
           </InputGroup>
         </VStack>
-        <Button w="20%" h="60px">
+        <Button w="20%" h="60px" onClick={onSave}>
           Update
         </Button>
       </VStack>
