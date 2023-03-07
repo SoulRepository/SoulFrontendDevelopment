@@ -8,7 +8,7 @@ export const HomeStyles: SystemStyleObject = {
   justifyContent: 'center',
   flexDirection: 'column',
   position: 'relative',
-  py: '279px',
+  py: '200px',
   px: `calc(146px + ${mainPx})`,
   h1: {
     fontSize: '100px',
