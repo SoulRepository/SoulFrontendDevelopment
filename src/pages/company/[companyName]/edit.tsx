@@ -48,9 +48,28 @@ const EditPage = () => {
 
   const colourOptions = useMemo(
     () => [
-      { value: 'chocolate', label: 'Chocolate' },
-      { value: 'strawberry', label: 'Strawberry' },
-      { value: 'vanilla', label: 'Vanilla' },
+      { value: 'Blockchain technology', label: 'Blockchain technology' },
+      { value: 'Cryptocurrency', label: 'Cryptocurrency' },
+      { value: 'DeFi', label: 'DeFi' },
+      { value: 'NFTs', label: 'NFTs' },
+      { value: 'AI', label: 'AI' },
+      { value: 'Machine learning', label: 'Machine learning' },
+      { value: 'IoT', label: 'IoT' },
+      { value: 'Cybersecurity', label: 'Cybersecurity' },
+      { value: 'AR', label: 'AR' },
+      { value: 'VR', label: 'VR' },
+      { value: 'Gaming', label: 'Gaming' },
+      { value: 'Web3', label: 'Web3' },
+      { value: 'Web3 Gaming', label: 'Web3 Gaming' },
+      { value: 'Finance', label: 'Finance' },
+      { value: 'Social media', label: 'Social media' },
+      { value: 'E-commerce', label: 'E-commerce' },
+      { value: 'Healthcare technology', label: 'Healthcare technology' },
+      { value: 'Education technology', label: 'Education technology' },
+      { value: 'Renewable energy', label: 'Renewable energy' },
+      { value: 'Transportation technology', label: 'Transportation technology' },
+      { value: 'Real estate technology', label: 'Real estate technology' },
+      { value: 'Media and entertainment', label: 'Media and entertainment' },
     ],
     [],
   );
@@ -75,7 +94,7 @@ const EditPage = () => {
             <Text>Featured image</Text>
             <Text className="advice">
               This image will be used for featuring your collection on the homepage, category pages,
-              or other promotional areas of SoulSearch. 600 x 400 recommended
+              or other promotional areas of SoulSearch. 650 x 650 recommended
             </Text>
             <FileInput />
           </Flex>
