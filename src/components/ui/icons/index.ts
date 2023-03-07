@@ -14,3 +14,4 @@ export * from './DiscordStaticIcon';
 export * from './VerifyIcon';
 export * from './LikeIcon';
 export * from './PictureIcon';
+export * from './ExitIcon';

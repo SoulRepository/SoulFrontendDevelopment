@@ -14,9 +14,23 @@ export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
   '.search': {
     mr: '95px',
   },
-  '.wallet-button': { mr: '11px' },
   '.logo': {
     mr: '39px',
+  },
+  '.account-section': {
+    alignItems: 'center',
+    justifyContent: 'center',
+    minW: '170px',
+    '.account': {
+      textTransform: 'uppercase',
+      cursor: 'pointer',
+      _hover: { color: lightColor.highlighting },
+    },
+    '.exit': {
+      cursor: 'pointer',
+      ml: '10px',
+      _hover: { color: lightColor.highlighting },
+    },
   },
 });
 
