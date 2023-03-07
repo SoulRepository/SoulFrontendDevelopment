@@ -101,7 +101,7 @@ export const companyStyles: SystemStyleObject = {
             borderBottom: '1px solid rgba(4, 18, 38, 0.1)',
           },
           '.text': {
-            maxW: '279px',
+            minW: '279px',
             fontWeight: 400,
             fontSize: '14px',
             lineHeight: '17px',
