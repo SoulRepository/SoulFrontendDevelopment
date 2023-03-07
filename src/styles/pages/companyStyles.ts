@@ -62,7 +62,7 @@ export const companyStyles: SystemStyleObject = {
           },
           '.tag': {
             h: '36px',
-            px: '30px',
+            px: '20px',
             py: '12px',
             bgColor: '#041226',
             color: 'white',
@@ -70,7 +70,7 @@ export const companyStyles: SystemStyleObject = {
             alignItems: 'center',
             justifyContent: 'center',
             border: '1px solid #f4f7fa',
-            mr: '-20px',
+            mr: '-15px',
           },
         },
         '.soulId-section': {

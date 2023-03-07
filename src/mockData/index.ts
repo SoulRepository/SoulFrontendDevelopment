@@ -12,7 +12,24 @@ export const digiProofsIcon = [
   getImgPath('led.png'),
 ];
 
-export const tags = ['ERC20', 'NFT', 'Contract'];
+export const tags = [
+  {
+    title: 'BT',
+    desc: 'Blockchain technology',
+  },
+  {
+    title: 'CPT',
+    desc: 'Cryptocurrency',
+  },
+  {
+    title: 'DeFi',
+    desc: 'Decentralized finance ',
+  },
+  {
+    title: 'Web3 G',
+    desc: 'Web3 Gaming',
+  },
+];
 
 export const socialMediaLinks = [
   {

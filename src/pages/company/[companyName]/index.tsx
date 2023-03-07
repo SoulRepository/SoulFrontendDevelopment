@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text, Tooltip } from '@chakra-ui/react';
 
 import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
@@ -82,10 +82,12 @@ const CompanyPage = () => {
           <Flex className="side-bar">
             <Flex className="address-section">
               <Flex mb="10px">
-                {tags.map((tag, i) => (
-                  <Flex key={i} className="tag">
-                    {tag}
-                  </Flex>
+                {tags.map(({ title, desc }, i) => (
+                  <Tooltip key={i} label={desc} placement="top">
+                    <Flex  className="tag">
+                      {title}
+                    </Flex>
+                  </Tooltip>
                 ))}
               </Flex>
               <Bullet w="270px">
@@ -153,7 +155,9 @@ const CompanyPage = () => {
                   ),
                 )
               ) : (
-                <Text fontSize='20px' color='#697280'>No Gigi-proof relationships yet</Text>
+                <Text fontSize="20px" color="#697280">
+                  No Gigi-proof relationships yet
+                </Text>
               )}
             </Flex>
           </Flex>
