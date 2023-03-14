@@ -1,5 +1,6 @@
 import { SystemStyleObject } from '@chakra-ui/react';
 import { mainPx } from '@app/styles/styleVars';
+import {lightColor} from "@app/styles/colorScheme";
 
 export const companyStyles: SystemStyleObject = {
   flexDirection: 'column',
@@ -59,6 +60,9 @@ export const companyStyles: SystemStyleObject = {
           '.copy-icon': {
             cursor: 'pointer',
             ml: '10px',
+            _hover: {
+              color: lightColor.highlighting
+            }
           },
           '.tag': {
             h: '36px',

@@ -1,5 +1,7 @@
 type Metadata = object
 
+export type socialMediaTypes = 'twitter' | 'instagram' | 'discord' | 'site'
+
 export interface BackgroundImage {
   id: number;
   key: string;
@@ -50,9 +52,9 @@ export interface Company {
 
 export interface Link {
   id: number;
-  type: string;
+  type: socialMediaTypes
   url: string;
-  company: Company;
+  company?: Company;
   createdAt: Date;
   updatedAt: Date;
 }

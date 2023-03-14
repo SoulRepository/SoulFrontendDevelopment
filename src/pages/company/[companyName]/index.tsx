@@ -1,33 +1,41 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Flex, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Text, Tooltip, useToast } from '@chakra-ui/react';
 
 import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
 import { CopyIcon, VerifyIcon } from '@app/components/ui/icons';
 import { Bullet } from '@app/components/ui';
 
-import { getImgPath } from '@app/utils';
+import { getImgPath, getShortAddress, transformLinkToName } from '@app/utils';
 
 import {
   digiProofsIcon,
   digiProofsTypes,
   relationshipsCompany,
-  socialMediaLinks,
-  tags,
+  socialMediaMetaData,
 } from '@app/mockData';
 import { LikeButton } from '@app/components/ui/like-button/LikeButton';
 import { DropdownMenu } from '@app/components/ui/dropdown-menu/DropdownMenu';
 
 import type { IMenuItem } from '@app/types';
+import { useCompany } from '@app/api/http/query/useCompany';
+import { Loader } from '@app/components/ui/loader/Loader';
+import useCopyToClipboard from '@app/hooks/useCopyToClipBoard';
+import { useNetworkConfig } from '@app/api/web3/hooks/useNetworkConfig';
 
 const CompanyPage = () => {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const digiProofsTypesData = digiProofsTypes[activeTabIndex];
-
   const router = useRouter();
+  const toast = useToast();
+  const { scanTransaction } = useNetworkConfig();
+  const [, onCopy] = useCopyToClipboard();
+
+  const { companyResp, isSuccess } = useCompany(router.query?.companyName?.toString() ?? '');
+
   const dropdownMenuItem: IMenuItem[] = useMemo(
     () => [
       {
@@ -42,28 +50,57 @@ const CompanyPage = () => {
   // @ts-ignore
   const relationships = relationshipsCompany[digiProofsTypesData.name.toLowerCase()];
 
-  const address = '0xCC3C…EC00';
+  useEffect(() => {
+    if (!companyResp && isSuccess) {
+      router.push('/');
+    }
+  }, [companyResp, isSuccess]);
 
-  const companyName = 'Women Rise';
-  const companySoulId = 'womenrise.soul';
+  if (!companyResp) {
+    return (
+      <Flex h="700px" w="100%" alignItems="center" justifyContent="center">
+        <Loader />
+      </Flex>
+    );
+  }
+  const {
+    soulId,
+    name,
+    address,
+    backgroundImageUrl,
+    logoImageUrl,
+    description,
+    categories,
+    links,
+  } = companyResp;
 
-  const descText =
-    'Women Rise is an art project. It is a collection of 10,000 unique art NFT’s that are representing and celebrating women activists, artists, scientists, coders and many others rising on the blockchain!';
+  const bgImageUrl = backgroundImageUrl ?? getImgPath('default-bg.jpg');
+  const avatarUrl = logoImageUrl ?? getImgPath('default-avatar.jpg');
+  const nftAddress = getShortAddress(address);
 
-  const onCopy = () => {
-    console.log('copy');
+  const onCopyHandler = () => {
+    onCopy(address);
+    toast({
+      title: 'Copy',
+      description: `You copy address ${address}`,
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+      position: 'top-left',
+      colorScheme: 'whatsapp',
+    });
   };
 
   return (
     <Flex as="section" sx={companyStyles}>
       <Flex className="header">
-        <Image fill src={getImgPath('default-bg.jpg')} alt="bg" />
+        <Image fill src={bgImageUrl} alt="bg" />
       </Flex>
       <Flex className="company-section">
         <Flex className="company-info">
           <Flex>
             <Box className="avatar">
-              <Image fill src={getImgPath('default-avatar.jpg')} alt="avatar" />
+              <Image fill src={avatarUrl} alt="avatar" />
             </Box>
           </Flex>
           <Flex className="menu-section">
@@ -82,38 +119,45 @@ const CompanyPage = () => {
           <Flex className="side-bar">
             <Flex className="address-section">
               <Flex mb="10px">
-                {tags.map(({ title, desc }, i) => (
-                  <Tooltip key={i} label={desc} placement="top">
-                    <Flex  className="tag">
-                      {title}
-                    </Flex>
+                {categories.map(({ name }, i) => (
+                  <Tooltip key={i} label={name} placement="top">
+                    <Flex className="tag">{getShortAddress(name, 3, 3)}</Flex>
                   </Tooltip>
                 ))}
               </Flex>
               <Bullet w="270px">
-                {address} <CopyIcon className="copy-icon" onClick={onCopy} />
+                <Text className="copy-icon" onClick={() => scanTransaction(address, 'address')}>
+                  {nftAddress}
+                </Text>{' '}
+                <CopyIcon className="copy-icon" onClick={onCopyHandler} />
               </Bullet>
             </Flex>
             <Flex className="soulId-section">
-              <Text as="h2">{companyName}</Text>
-              <Text>{companySoulId}</Text>
+              <Text as="h2">{name}</Text>
+              <Text>{soulId}</Text>
             </Flex>
             <Flex className="desc-section">
               <Text className="title">Description</Text>
-              <Text className="text">{descText}</Text>
+              <Text className="text">{description}</Text>
             </Flex>
             <Flex className="sm-section">
-              {socialMediaLinks.map(({ label, icon: Icon, link, isVerify }, i) => (
-                <Flex key={i} className="social-box">
-                  <Bullet>
-                    <Text>
-                      <Icon boxSize="20px" mr="10px" />
-                      <a href={link}>{label}</a>
-                      {isVerify && <VerifyIcon boxSize="15px" ml="5px" />}
-                    </Text>
-                  </Bullet>
-                </Flex>
-              ))}
+              {links.map(({ type, url }, i) => {
+                const Icon = socialMediaMetaData[type].icon;
+
+                return (
+                  <Flex key={i} className="social-box">
+                    <Bullet>
+                      <Text>
+                        <Icon boxSize="20px" mr="10px" />
+                        <a href={url} target="_blank">
+                          @{transformLinkToName(url, type)}
+                        </a>
+                        {false && <VerifyIcon boxSize="15px" ml="5px" />}
+                      </Text>
+                    </Bullet>
+                  </Flex>
+                );
+              })}
             </Flex>
             <Flex className="join-date-section">
               <Text className="title">Joined</Text>
@@ -156,7 +200,7 @@ const CompanyPage = () => {
                 )
               ) : (
                 <Text fontSize="20px" color="#697280">
-                  No Gigi-proof relationships yet
+                  No Digi-proof relationships yet
                 </Text>
               )}
             </Flex>

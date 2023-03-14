@@ -9,11 +9,12 @@ export const useCompany = (addressOrSoulId: string) => {
 
   const { data: companyResp, ...companyQuery } = useQuery(
     [QueryKeys.useCompany, account, chainId, addressOrSoulId],
-    () => SoulSearchApi.getCompany(addressOrSoulId),
+    () => SoulSearchApi.getCompany(addressOrSoulId.toLowerCase()),
     {
       retry: 2,
       enabled: !!addressOrSoulId,
-      select: (data) => data.length > 0 ? data[0] : null
+      select: data => (data.length > 0 ? data[0] : null),
+      staleTime: 5000,
     },
   );
 
