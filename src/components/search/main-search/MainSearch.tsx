@@ -1,13 +1,14 @@
 import { useRef } from 'react';
-import { useRouter } from 'next/router';
 
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { SearchIcon } from '@app/components/ui/icons';
 import { MainSearchStyles } from '@app/components/search/main-search/mainSearchStyles';
+import { useSearch } from '@app/components/search/useSearch';
 
 export const MainSearch = () => {
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { getQuery } = useSearch();
 
   return (
     <InputGroup sx={MainSearchStyles} size="sm">
@@ -15,8 +16,8 @@ export const MainSearch = () => {
         ref={inputRef}
         pl="20px"
         onKeyDown={e => {
-          if (e.key === 'Enter') {
-            router.push('company/' + inputRef.current?.value);
+          if (e.key === 'Enter' && inputRef.current?.value) {
+            getQuery(inputRef.current.value);
           }
         }}
       />
