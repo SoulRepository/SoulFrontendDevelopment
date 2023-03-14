@@ -77,4 +77,23 @@ export interface ICompanyResponse {
   updatedAt: Date;
 }
 
+export interface IDigiProofResponse {
+  name: string;
+}
+
+export interface ISbtCompany {
+  name: string;
+  featuredImage?: FeaturedImage;
+  logo?: string;
+  soulId: string;
+  address: string;
+}
+
+export interface ISbtCompanyResponse {
+  sbtId: string;
+  digiProofType: string;
+  description: string;
+  uri: string;
+  companies: ISbtCompany[];
+}
 

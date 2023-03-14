@@ -1,3 +1,5 @@
 export enum QueryKeys {
-  useCompany = 'useCompany'
+  useCompany = 'useCompany',
+  useDigiProofs = 'useDigiProofs',
+  useSbtList = 'useSbtList',
 }

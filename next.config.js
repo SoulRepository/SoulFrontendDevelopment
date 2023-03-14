@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['images.soulsearch.blaize.technology'],
+    domains: ['images.soulsearch.blaize.technology', 'gateway.pinata.cloud'],
   }
 }
 
