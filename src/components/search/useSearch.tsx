@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useCompany } from '@app/api/http/query/useCompany';
 import { useToast } from '@chakra-ui/react';
+
+import { useSearchCompany } from '@app/api/http/query/useSearchCompany';
 
 export const useSearch = () => {
   const [query, setQuery] = useState('');
 
   const router = useRouter();
-  const company = useCompany(query);
+  const company = useSearchCompany(query);
   const toast = useToast();
 
   useEffect(() => {

@@ -14,6 +14,11 @@ const SoulSearchApi = {
 
     return data;
   },
+  getCompanyBySoulId: async (soulId: string) => {
+    const { data } = await $soulHttpClient.get<ICompanyResponse>(`/api/companies/${soulId}`);
+
+    return data;
+  },
   getDigiProofs: async () => {
     const { data } = await $soulHttpClient.get<IDigiProofResponse[]>(
       '/api/digi-proofs/digi-proofs',
@@ -21,10 +26,16 @@ const SoulSearchApi = {
 
     return data;
   },
-
   getSbtList: async ({ digiProof, souldId }: { digiProof: string; souldId: string }) => {
     const { data } = await $soulHttpClient.get<ISbtCompanyResponse[]>('api/sbt', {
       params: { digiProof, souldId },
+    });
+
+    return data;
+  },
+  getSbtCompany: async ({ soulId, sbtId }: { soulId: string; sbtId: string }) => {
+    const { data } = await $soulHttpClient.get<ISbtCompanyResponse>(`api/sbt/${sbtId}`, {
+      params: { souldId: soulId },
     });
 
     return data;

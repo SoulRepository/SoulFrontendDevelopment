@@ -68,9 +68,9 @@ export interface ICompanyResponse {
   description: string;
   soulId: string;
   links: Link[];
-  backgroundImage: BackgroundImage;
-  logoImage: LogoImage;
-  featuredImage: FeaturedImage;
+  backgroundImage: string;
+  logoImage: string;
+  featuredImage: string;
   categories: Category[];
   address: string;
   createdAt: Date;

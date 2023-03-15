@@ -4,11 +4,11 @@ import { QueryKeys } from '@app/api/http/queryKeys';
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
 import SoulSearchApi from '@app/api/http/apiServices';
 
-export const useCompany = (addressOrSoulId: string) => {
+export const useSearchCompany = (addressOrSoulId: string) => {
   const { account, chainId } = useWallet();
 
   const { data: companyResp, ...companyQuery } = useQuery(
-    [QueryKeys.useCompany, account, chainId, addressOrSoulId],
+    [QueryKeys.useSearchCompany, account, chainId, addressOrSoulId],
     () => SoulSearchApi.getCompany(addressOrSoulId.toLowerCase()),
     {
       retry: 2,

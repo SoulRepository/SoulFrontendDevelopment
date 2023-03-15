@@ -13,16 +13,18 @@ import { CopyIcon, VerifyIcon } from '@app/components/ui/icons';
 import { Bullet } from '@app/components/ui';
 import { DropdownMenu } from '@app/components/ui/dropdown-menu/DropdownMenu';
 import { Loader } from '@app/components/ui/loader/Loader';
+import { SbtList } from '@app/components/ui/sbt-list/SbtList';
 
 import useCopyToClipboard from '@app/hooks/useCopyToClipBoard';
 import { useNetworkConfig } from '@app/api/web3/hooks/useNetworkConfig';
-import { useCompany } from '@app/api/http/query/useCompany';
+import { useSearchCompany } from '@app/api/http/query/useSearchCompany';
 import { useDigiProofs } from '@app/api/http/query/useDigiProofs';
 
 import type { IMenuItem } from '@app/types';
-import { SbtList } from '@app/components/ui/sbt-list/SbtList';
+import { useWallet } from '@app/api/web3/providers/WalletProvider';
 
 const CompanyPage = () => {
+  const { checkIsOwner } = useWallet();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const router = useRouter();
@@ -30,7 +32,9 @@ const CompanyPage = () => {
   const { scanTransaction } = useNetworkConfig();
   const [, onCopy] = useCopyToClipboard();
 
-  const { companyResp, isSuccess } = useCompany(router.query?.companyName?.toString() ?? '');
+  const { companyResp, isSuccess } = useSearchCompany(
+    router.query?.companySoulId?.toString() ?? '',
+  );
 
   const { data: digiProofsTypes } = useDigiProofs();
 
@@ -46,6 +50,15 @@ const CompanyPage = () => {
 
   useEffect(() => {
     if (!companyResp && isSuccess) {
+      toast({
+        title: 'Error',
+        description: `something went wrong`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-left',
+        colorScheme: 'whatsapp',
+      });
       router.push('/');
     }
   }, [companyResp, isSuccess]);
@@ -67,6 +80,8 @@ const CompanyPage = () => {
     categories,
     links,
   } = companyResp;
+
+  const isOwner = checkIsOwner(address)
 
   const bgImageUrl = backgroundImageUrl ?? getImgPath('default-bg.png');
   const avatarUrl = logoImageUrl ?? getImgPath('default-avatar.png');
@@ -107,7 +122,7 @@ const CompanyPage = () => {
                 </Flex>
               ))}
             </Bullet>
-            <DropdownMenu menuItems={dropdownMenuItem} />
+            {isOwner && <DropdownMenu menuItems={dropdownMenuItem} />}
           </Flex>
         </Flex>
         <Flex className="content-section">
@@ -121,7 +136,11 @@ const CompanyPage = () => {
                 ))}
               </Flex>
               <Bullet w="270px">
-                <Text className="copy-icon" textTransform='uppercase' onClick={() => scanTransaction(address, 'address')}>
+                <Text
+                  className="copy-icon"
+                  textTransform="uppercase"
+                  onClick={() => scanTransaction(address, 'address')}
+                >
                   {nftAddress}
                 </Text>{' '}
                 <CopyIcon className="copy-icon" onClick={onCopyHandler} />
