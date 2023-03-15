@@ -68,8 +68,8 @@ const CompanyPage = () => {
     links,
   } = companyResp;
 
-  const bgImageUrl = backgroundImageUrl ?? getImgPath('default-bg.jpg');
-  const avatarUrl = logoImageUrl ?? getImgPath('default-avatar.jpg');
+  const bgImageUrl = backgroundImageUrl ?? getImgPath('default-bg.png');
+  const avatarUrl = logoImageUrl ?? getImgPath('default-avatar.png');
   const nftAddress = getShortAddress(address);
   const digiProof = digiProofsTypes[activeTabIndex].name;
 

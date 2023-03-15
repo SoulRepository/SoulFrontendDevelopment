@@ -83,7 +83,7 @@ export interface IDigiProofResponse {
 
 export interface ISbtCompany {
   name: string;
-  featuredImage?: FeaturedImage;
+  featuredImage?: string;
   logo?: string;
   soulId: string;
   address: string;

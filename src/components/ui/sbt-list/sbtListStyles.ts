@@ -18,8 +18,8 @@ export const sbtListStyles: SystemStyleObject = {
       position: 'relative',
       w: '100%',
       h: '100%',
-      maxH: '65px',
-      maxW: '220px',
+      // maxH: '65px',
+      // maxW: '220px',
     },
   },
   h3: {

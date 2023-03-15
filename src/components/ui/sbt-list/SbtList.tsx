@@ -36,9 +36,10 @@ export const SbtList: FC<ISbtListProps> = ({ souldId, digiProof }) => {
 
   return (
     <>
-      {data.map(({ sbtId, uri, companies  }, i) => {
-        const featureImageUri = uri ?? getImgPath('ledger_feature_image')
-        const { name, soulId } = companies[0];
+      {data.map(({ sbtId, companies  }, i) => {
+        const { name, soulId, featuredImage } = companies[0];
+        const featureImageUri = featuredImage ?? getImgPath('default-feature.png')
+
 
         return <Flex key={i} sx={sbtListStyles}>
           <Link href={router.asPath + `/${sbtId.toLowerCase()}`}>

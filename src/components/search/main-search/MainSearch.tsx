@@ -22,7 +22,16 @@ export const MainSearch = () => {
         }}
       />
       <InputRightElement pr="20px" mt="10px">
-        <SearchIcon color="#515151" boxSize="20px" />
+        <SearchIcon
+          color="#515151"
+          boxSize="20px"
+          cursor="pointer"
+          onClick={() => {
+            if (inputRef.current?.value) {
+              getQuery(inputRef.current.value);
+            }
+          }}
+        />
       </InputRightElement>
     </InputGroup>
   );
