@@ -2,7 +2,7 @@ import type { MetaMask } from '@web3-react/metamask';
 import type { WalletConnect } from '@web3-react/walletconnect';
 import type { connectorsName } from '@app/api/web3/connectors';
 import type { Web3Provider } from '@ethersproject/providers';
-import { JsonRpcSigner } from '@ethersproject/providers';
+import type { JsonRpcSigner } from '@ethersproject/providers';
 
 export type txType = 'tx' | 'address';
 
@@ -23,6 +23,8 @@ export interface IWalletContext {
   ): Promise<void>;
 
   deactivate(): void;
+
+  checkIsOwner: (address: string) => boolean
 
   onChangeNetwork: (chain: number, onSuccess: () => void) => Promise<void>;
 

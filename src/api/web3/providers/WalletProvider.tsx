@@ -23,6 +23,7 @@ const defaultValues: IWalletContext = {
   deactivate: () => void 0,
   isActive: false,
   onChangeNetwork: () => Promise.resolve(),
+  checkIsOwner: () => false,
 };
 
 const WalletContext = createContext(defaultValues);
@@ -113,6 +114,11 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     [provider],
   );
 
+  const checkIsOwner = useCallback(
+    (address?: string) => address?.toLowerCase() === account?.toLowerCase(),
+    [account],
+  );
+
   useEffect(() => {
     if (!chainId) {
       return void 0;
@@ -143,6 +149,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
         chainId,
         isUnsupportedChinId,
         signer,
+        checkIsOwner,
       }}
     >
       {children}

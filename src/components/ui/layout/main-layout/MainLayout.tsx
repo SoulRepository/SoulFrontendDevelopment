@@ -15,7 +15,7 @@ type Props = ILayoutProps & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HT
 export const MainLayout: FC<Props> = ({ children, ...props }) => {
   const router = useRouter();
 
-  const isCompanyPage = router.pathname === '/company/[companyName]';
+  const isCompanyPage = router.pathname === '/company/[companySoulId]';
 
   return (
     <Flex flexDir="column" minH="100%" position="relative" {...props}>

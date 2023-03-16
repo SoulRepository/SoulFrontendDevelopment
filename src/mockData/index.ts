@@ -6,6 +6,9 @@ import {
   TwitterStaticIcon,
 } from '@app/components/ui/icons';
 
+import {ComponentWithAs, IconProps} from '@chakra-ui/react';
+import {socialMediaTypes} from "@app/types/httpTypes";
+
 export const digiProofsIcon = [
   getImgPath('coinbase.png'),
   getImgPath('gost.png'),
@@ -30,6 +33,21 @@ export const tags = [
     desc: 'Web3 Gaming',
   },
 ];
+
+export const socialMediaMetaData: Record<socialMediaTypes, { icon: ComponentWithAs<'svg', IconProps> }> = {
+  twitter: {
+    icon: TwitterStaticIcon,
+  },
+  discord: {
+    icon: TwitterStaticIcon,
+  },
+  instagram: {
+    icon: InstaStaticIcon,
+  },
+  site: {
+    icon: SiteIcon,
+  },
+};
 
 export const socialMediaLinks = [
   {
