@@ -155,7 +155,7 @@ const CompanyPage = () => {
               <Text className="text">{description}</Text>
             </Flex>
             <Flex className="sm-section">
-              {links.map(({ type, url }, i) => {
+              {links.map(({ type, url, verified }, i) => {
                 const Icon = socialMediaMetaData[type].icon;
 
                 return (
@@ -166,7 +166,7 @@ const CompanyPage = () => {
                         <a href={url} target="_blank">
                           @{transformLinkToName(url, type)}
                         </a>
-                        {false && <VerifyIcon boxSize="15px" ml="5px" />}
+                        {verified && <VerifyIcon boxSize="15px" ml="5px" />}
                       </Text>
                     </Bullet>
                   </Flex>

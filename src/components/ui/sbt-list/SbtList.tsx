@@ -37,7 +37,7 @@ export const SbtList: FC<ISbtListProps> = ({ souldId, digiProof }) => {
   return (
     <>
       {data.map(({ sbtId, companies  }, i) => {
-        const { name, soulId, featuredImage } = companies[0];
+        const { name, soulId, featuredImage, verified } = companies[0];
         const featureImageUri = featuredImage ?? getImgPath('default-feature.png')
 
 
@@ -50,7 +50,7 @@ export const SbtList: FC<ISbtListProps> = ({ souldId, digiProof }) => {
             </Flex>
           </Link>
           <Text>
-            {soulId} {false && <VerifyIcon ml="7px" />}
+            {soulId} {verified && <VerifyIcon ml="7px" />}
           </Text>
           <Flex className="footer">
             <Text as="h3">{name}</Text>

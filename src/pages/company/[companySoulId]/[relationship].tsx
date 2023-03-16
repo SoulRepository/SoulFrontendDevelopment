@@ -67,7 +67,7 @@ const Relationship = () => {
       <Flex className="content-section">
         <Flex className="content">
           <Flex className="image-block">
-            <Image width={450} height={128} src={featuredImageUrl} alt="featuredImage" />
+            <Image fill src={featuredImageUrl} alt="featuredImage" />
           </Flex>
         </Flex>
         <Flex className="sidebar">
@@ -80,7 +80,7 @@ const Relationship = () => {
           <Flex className="companies-section">
             <Text as="h3">Companies</Text>
             <Flex className="companies">
-              {companies.map(({ logo, soulId, name }, i) => {
+              {companies.map(({ logo, soulId, name, verified }, i) => {
                 const logoUrl = logo ?? getImgPath('default-avatar.png');
 
                 return (
@@ -90,7 +90,7 @@ const Relationship = () => {
                         <Flex className="featured-Image">
                           <Image fill src={logoUrl} alt="featured-Image" />
                         </Flex>
-                        {false && <VerifyIcon className="verify-icon" />}
+                        {verified && <VerifyIcon className="verify-icon" />}
                       </Flex>
                       <Text textTransform="capitalize">{name}</Text>
                     </Bullet>

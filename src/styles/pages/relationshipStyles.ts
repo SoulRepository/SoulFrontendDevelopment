@@ -31,6 +31,7 @@ export const relationshipStyles: SystemStyleObject = {
         borderRadius: '20px',
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden'
       },
     },
     '.sidebar': {

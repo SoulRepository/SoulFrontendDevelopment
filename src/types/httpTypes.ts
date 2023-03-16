@@ -54,6 +54,7 @@ export interface Link {
   id: number;
   type: socialMediaTypes
   url: string;
+  verified: boolean
   company?: Company;
   createdAt: Date;
   updatedAt: Date;
@@ -87,6 +88,7 @@ export interface ISbtCompany {
   logo?: string;
   soulId: string;
   address: string;
+  verified: boolean
 }
 
 export interface ISbtCompanyResponse {

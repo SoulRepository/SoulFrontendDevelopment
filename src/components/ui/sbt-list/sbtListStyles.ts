@@ -14,12 +14,11 @@ export const sbtListStyles: SystemStyleObject = {
     justifyContent: 'center',
     alignItems: 'center',
     cursor: 'pointer',
+    overflow: 'hidden',
     '.img': {
       position: 'relative',
       w: '100%',
       h: '100%',
-      // maxH: '65px',
-      // maxW: '220px',
     },
   },
   h3: {
