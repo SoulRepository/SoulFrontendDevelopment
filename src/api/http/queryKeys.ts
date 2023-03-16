@@ -4,4 +4,5 @@ export enum QueryKeys {
   useSbtList = 'useSbtList',
   useSbtCompany = 'useSbtCompany',
   useSearchCompany = 'useSearchCompany',
+  useCategories = 'useCategories',
 }

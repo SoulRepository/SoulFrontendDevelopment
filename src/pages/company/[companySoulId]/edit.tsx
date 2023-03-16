@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { Select } from 'chakra-react-select';
 import {
@@ -19,13 +19,26 @@ import { DiscordIcon, InstagramIcon, SiteIcon, TwitterIcon } from '@app/componen
 import { FileInput } from '@app/components/ui';
 
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
+import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
+import { Loader } from '@app/components/ui/loader/Loader';
+import { useCategories } from '@app/api/http/query/useCategories';
 
 const EditPage = () => {
-  const router = useRouter();
-
+  const { checkIsOwner, signer } = useWallet();
   const toast = useToast();
+  const router = useRouter();
+  const { companySoulId } = router.query;
 
-  const { signer } = useWallet();
+  const { data, isLoading, isSuccess, isError, getActiveCategory } = useCompanyBySoulId({
+    soulId: companySoulId?.toString(),
+  });
+
+  const { getOptions } = useCategories();
+
+  const categoryOptions = useMemo(() => getOptions(), [getOptions]);
+  const activeCategoryOptions = useMemo(() => getActiveCategory(), [getActiveCategory]);
+
+  const isOwner = checkIsOwner(data?.address);
 
   const onSave = async () => {
     const message = 'Do you confirm the change?';
@@ -46,33 +59,30 @@ const EditPage = () => {
     }
   };
 
-  const colourOptions = useMemo(
-    () => [
-      { value: 'Blockchain technology', label: 'Blockchain technology' },
-      { value: 'Cryptocurrency', label: 'Cryptocurrency' },
-      { value: 'DeFi', label: 'DeFi' },
-      { value: 'NFTs', label: 'NFTs' },
-      { value: 'AI', label: 'AI' },
-      { value: 'Machine learning', label: 'Machine learning' },
-      { value: 'IoT', label: 'IoT' },
-      { value: 'Cybersecurity', label: 'Cybersecurity' },
-      { value: 'AR', label: 'AR' },
-      { value: 'VR', label: 'VR' },
-      { value: 'Gaming', label: 'Gaming' },
-      { value: 'Web3', label: 'Web3' },
-      { value: 'Web3 Gaming', label: 'Web3 Gaming' },
-      { value: 'Finance', label: 'Finance' },
-      { value: 'Social media', label: 'Social media' },
-      { value: 'E-commerce', label: 'E-commerce' },
-      { value: 'Healthcare technology', label: 'Healthcare technology' },
-      { value: 'Education technology', label: 'Education technology' },
-      { value: 'Renewable energy', label: 'Renewable energy' },
-      { value: 'Transportation technology', label: 'Transportation technology' },
-      { value: 'Real estate technology', label: 'Real estate technology' },
-      { value: 'Media and entertainment', label: 'Media and entertainment' },
-    ],
-    [],
-  );
+  useEffect(() => {
+    if ((isSuccess && !isOwner) || isError) {
+      toast({
+        title: 'Error',
+        description: `something went wrong`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-left',
+        colorScheme: 'whatsapp',
+      });
+      router.push('/');
+    }
+  }, [isOwner, isSuccess, isError]);
+
+  if (isLoading || !isSuccess || !isOwner) {
+    return (
+      <Flex h="700px" w="100%" alignItems="center" justifyContent="center">
+        <Loader />
+      </Flex>
+    );
+  }
+
+  const { name, backgroundImageUrl, logoImageUrl, featuredImageUrl, description } = data!;
 
   return (
     <Flex sx={editStyles}>
@@ -87,7 +97,7 @@ const EditPage = () => {
               The image will also be used for company avatar. 150*150 recommended
             </Text>
             <Flex boxSize="150px" borderRadius="full">
-              <FileInput isRounded />
+              <FileInput isRounded activeImgUrl={logoImageUrl} />
             </Flex>
           </Flex>
           <Flex className="file-input-section" h="400px" w="600px" borderRadius="full">
@@ -96,7 +106,7 @@ const EditPage = () => {
               This image will be used for featuring your collection on the homepage, category pages,
               or other promotional areas of SoulSearch. 650 x 650 recommended
             </Text>
-            <FileInput />
+            <FileInput activeImgUrl={featuredImageUrl} />
           </Flex>
           <Flex className="file-input-section" h="280px" borderRadius="full">
             <Text>Banner image</Text>
@@ -105,13 +115,13 @@ const EditPage = () => {
               this banner image, as the dimensions change on different devices. 1400 x 280
               recommended
             </Text>
-            <FileInput />
+            <FileInput activeImgUrl={backgroundImageUrl} />
           </Flex>
         </VStack>
         <VStack>
           <Flex w="100%" flexDirection="column" mb="2px">
             <Text>Company name</Text>
-            <Input type="text" value="Company name" isDisabled />
+            <Input type="text" defaultValue={name} isDisabled />
           </Flex>
 
           <Flex w="100%" flexDirection="column" mb="2px">
@@ -121,7 +131,8 @@ const EditPage = () => {
               chakraStyles={selectStyles}
               isMulti
               name="colors"
-              options={colourOptions}
+              options={categoryOptions}
+              defaultValue={activeCategoryOptions}
               className="basic-multi-select"
               classNamePrefix="select"
               components={{
@@ -132,7 +143,12 @@ const EditPage = () => {
         </VStack>
         <Flex className="description">
           <Text>Description</Text>
-          <Textarea placeholder="Here is a sample placeholder" size="sm" resize="vertical" />
+          <Textarea
+            placeholder="Here is a sample placeholder"
+            size="sm"
+            resize="vertical"
+            defaultValue={description}
+          />
         </Flex>
         <VStack>
           <InputGroup className="inputGroup">

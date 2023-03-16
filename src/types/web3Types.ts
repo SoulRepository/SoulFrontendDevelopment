@@ -24,7 +24,7 @@ export interface IWalletContext {
 
   deactivate(): void;
 
-  checkIsOwner: (address: string) => boolean
+  checkIsOwner: (address?: string) => boolean
 
   onChangeNetwork: (chain: number, onSuccess: () => void) => Promise<void>;
 

@@ -11,9 +11,6 @@ export const debuger = (cb: () => void) => {
 export const getShortAddress = (address: string, start = 6, endCount = 4) =>
   `${address?.slice(0, start)}...${address?.slice(address?.length - (endCount ?? start + 1))}`;
 
-export const getRandomNumber = (min = 1, max = 100) =>
-  Math.round(Math.random() * (max - min) + min);
-
 export const transformLinkToName = (link: string, type: socialMediaTypes) => {
   switch (type) {
     case 'twitter': {

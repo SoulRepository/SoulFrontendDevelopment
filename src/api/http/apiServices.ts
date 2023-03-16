@@ -5,6 +5,7 @@ import type {
   IDigiProofResponse,
   ISbtCompanyResponse,
 } from '@app/types/httpTypes';
+import { ICategoryResponse } from '@app/types/httpTypes';
 
 const SoulSearchApi = {
   getCompany: async (addressOrSoulId: string) => {
@@ -37,6 +38,11 @@ const SoulSearchApi = {
     const { data } = await $soulHttpClient.get<ISbtCompanyResponse>(`api/sbt/${sbtId}`, {
       params: { souldId: soulId },
     });
+
+    return data;
+  },
+  getCategories: async () => {
+    const { data } = await $soulHttpClient.get<ICategoryResponse[]>('api/categories');
 
     return data;
   },

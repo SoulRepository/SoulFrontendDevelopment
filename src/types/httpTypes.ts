@@ -97,3 +97,10 @@ export interface ISbtCompanyResponse {
   companies: ISbtCompany[];
 }
 
+export interface ICategoryResponse {
+  createdAt: string,
+  updatedAt: string,
+  id: number,
+  name: string,
+  description?: string,
+}

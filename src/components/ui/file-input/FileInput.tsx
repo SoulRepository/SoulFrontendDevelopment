@@ -5,9 +5,11 @@ import { ChangeEventHandler, FC, useState } from 'react';
 
 interface IFileInputProps {
   isRounded?: boolean;
+  activeImgUrl?: string;
 }
 
-export const FileInput: FC<IFileInputProps> = ({ isRounded }) => {
+export const FileInput: FC<IFileInputProps> = ({ isRounded, activeImgUrl }) => {
+
   const [selectedImage, setSelectedImage] = useState<File | Blob | null>(null);
 
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = e => {
@@ -17,10 +19,12 @@ export const FileInput: FC<IFileInputProps> = ({ isRounded }) => {
     setSelectedImage(e.target.files[0]);
   };
 
+  const previewImgUrl = selectedImage ? URL.createObjectURL(selectedImage) : activeImgUrl
+
   return (
     <Flex sx={fileInputStyles(isRounded)}>
-      {selectedImage ? (
-        <Image className="preview" alt="preview" src={URL.createObjectURL(selectedImage)} />
+      {previewImgUrl ? (
+        <Image className="preview" alt="preview" src={previewImgUrl} />
       ) : (
         <PictureIcon className="icon" />
       )}
