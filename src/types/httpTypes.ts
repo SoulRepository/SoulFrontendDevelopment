@@ -31,6 +31,7 @@ export interface Category {
   id: number;
   name: string;
   description: string;
+  shortName: string;
   createdAt: Date;
   updatedAt: Date;
 }

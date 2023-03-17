@@ -17,11 +17,11 @@ import { SbtList } from '@app/components/ui/sbt-list/SbtList';
 
 import useCopyToClipboard from '@app/hooks/useCopyToClipBoard';
 import { useNetworkConfig } from '@app/api/web3/hooks/useNetworkConfig';
-import { useSearchCompany } from '@app/api/http/query/useSearchCompany';
 import { useDigiProofs } from '@app/api/http/query/useDigiProofs';
 
 import type { IMenuItem } from '@app/types';
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
+import {useCompanyBySoulId} from "@app/api/http/query/useCompanyBySoulId";
 
 const CompanyPage = () => {
   const { checkIsOwner } = useWallet();
@@ -32,8 +32,8 @@ const CompanyPage = () => {
   const { scanTransaction } = useNetworkConfig();
   const [, onCopy] = useCopyToClipboard();
 
-  const { companyResp, isSuccess } = useSearchCompany(
-    router.query?.companySoulId?.toString() ?? '',
+  const { data: companyResp, isSuccess } = useCompanyBySoulId(
+    {soulId: router.query?.companySoulId?.toString() ?? ''}
   );
 
   const { data: digiProofsTypes } = useDigiProofs();
@@ -129,9 +129,9 @@ const CompanyPage = () => {
           <Flex className="side-bar">
             <Flex className="address-section">
               <Flex mb="10px">
-                {categories.map(({ name }, i) => (
+                {categories.filter((_,index) =>  index < 4).map(({ name, shortName }, i) => (
                   <Tooltip key={i} label={name} placement="top">
-                    <Flex className="tag">{getShortAddress(name, 3, 3)}</Flex>
+                    <Flex className="tag">{shortName}</Flex>
                   </Tooltip>
                 ))}
               </Flex>
