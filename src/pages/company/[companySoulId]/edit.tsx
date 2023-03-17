@@ -96,26 +96,26 @@ const EditPage = () => {
             <Text className="advice">
               The image will also be used for company avatar. 150*150 recommended
             </Text>
-            <Flex boxSize="150px" borderRadius="full">
-              <FileInput isRounded activeImgUrl={logoImageUrl} />
+            <Flex borderRadius="full">
+              <FileInput h='150px' w='150px' isRounded activeImgUrl={logoImageUrl} />
             </Flex>
           </Flex>
-          <Flex className="file-input-section" h="400px" w="600px" borderRadius="full">
+          <Flex w='600px' className="file-input-section" borderRadius="full">
             <Text>Featured image</Text>
             <Text className="advice">
               This image will be used for featuring your collection on the homepage, category pages,
               or other promotional areas of SoulSearch. 650 x 650 recommended
             </Text>
-            <FileInput activeImgUrl={featuredImageUrl} />
+            <FileInput h='600px' w='600px' activeImgUrl={featuredImageUrl} />
           </Flex>
-          <Flex className="file-input-section" h="280px" borderRadius="full">
+          <Flex className="file-input-section" borderRadius="full">
             <Text>Banner image</Text>
-            <Text className="advice">
+            <Text w='600px' className="advice">
               This image will appear at the top of your main page. Avoid including too much text in
               this banner image, as the dimensions change on different devices. 1400 x 280
               recommended
             </Text>
-            <FileInput activeImgUrl={backgroundImageUrl} />
+            <FileInput h='280px' activeImgUrl={backgroundImageUrl} />
           </Flex>
         </VStack>
         <VStack>

@@ -2,7 +2,6 @@ import { SystemStyleObject } from '@chakra-ui/react';
 
 export const fileInputStyles = (isRounded = false): SystemStyleObject => ({
   position: 'relative',
-  boxSize: '100%',
   bgColor: '#fff',
   borderRadius: isRounded ? 'full' : 'transparent',
   border: '3px dashed rgb(204, 204, 204)',
@@ -30,6 +29,7 @@ export const fileInputStyles = (isRounded = false): SystemStyleObject => ({
   '.preview': {
     position: 'absolute',
     boxSize:'100%',
-    borderRadius: isRounded ? 'full' : 'none'
+    borderRadius: isRounded ? 'full' : 'none',
+    objectFit: 'cover'
   }
 });
