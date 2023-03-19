@@ -19,7 +19,7 @@ export const useCompanyBySoulId = ({ soulId }: { soulId?: string }) => {
   );
 
   const getActiveCategory = useCallback(
-    () => (data ? data.categories.map<IOption>(({ name }) => ({ value: name, label: name })) : []),
+    () => (data ? data.categories.map<IOption>(({ name, shortName }) => ({ label: `${name} (${shortName})`, value: name })) : []),
     [data],
   );
 

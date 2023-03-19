@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
+import { v4 as uuidv4 } from 'uuid';
+
 import { Select } from 'chakra-react-select';
 import {
   Button,
@@ -22,12 +24,15 @@ import { useWallet } from '@app/api/web3/providers/WalletProvider';
 import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
 import { Loader } from '@app/components/ui/loader/Loader';
 import { useCategories } from '@app/api/http/query/useCategories';
+import { usePatchCompanyBySoulId } from '@app/api/http/mutations/usePatchCompanyBySoulId';
 
 const EditPage = () => {
-  const { checkIsOwner, signer } = useWallet();
+  const { checkIsOwner, signer, account } = useWallet();
   const toast = useToast();
   const router = useRouter();
   const { companySoulId } = router.query;
+
+  const { mutate } = usePatchCompanyBySoulId();
 
   const { data, isLoading, isSuccess, isError, getActiveCategory } = useCompanyBySoulId({
     soulId: companySoulId?.toString(),
@@ -41,11 +46,17 @@ const EditPage = () => {
   const isOwner = checkIsOwner(data?.address);
 
   const onSave = async () => {
-    const message = 'Do you confirm the change?';
+    const message = 'Do you confirm the change?'.padEnd(50) + uuidv4();
     try {
       const signature = await signer?.signMessage(message);
 
-      console.log(signature);
+      if (typeof companySoulId === 'string' && signature && account) {
+        mutate({
+          soulId: companySoulId,
+          accessData: { message, address: account, sign: signature },
+          companyInfo: { description: 'asdsad' },
+        });
+      }
     } catch (e) {
       toast({
         title: 'Wallet',
@@ -97,31 +108,31 @@ const EditPage = () => {
               The image will also be used for company avatar. 150*150 recommended
             </Text>
             <Flex borderRadius="full">
-              <FileInput h='150px' w='150px' isRounded activeImgUrl={logoImageUrl} />
+              <FileInput h="150px" w="150px" isRounded activeImgUrl={logoImageUrl} />
             </Flex>
           </Flex>
-          <Flex w='600px' className="file-input-section" borderRadius="full">
+          <Flex w="600px" className="file-input-section" borderRadius="full">
             <Text>Featured image</Text>
             <Text className="advice">
               This image will be used for featuring your collection on the homepage, category pages,
               or other promotional areas of SoulSearch. 650 x 650 recommended
             </Text>
-            <FileInput h='600px' w='600px' activeImgUrl={featuredImageUrl} />
+            <FileInput h="600px" w="600px" activeImgUrl={featuredImageUrl} />
           </Flex>
           <Flex className="file-input-section" borderRadius="full">
             <Text>Banner image</Text>
-            <Text w='600px' className="advice">
+            <Text w="600px" className="advice">
               This image will appear at the top of your main page. Avoid including too much text in
               this banner image, as the dimensions change on different devices. 1400 x 280
               recommended
             </Text>
-            <FileInput h='280px' activeImgUrl={backgroundImageUrl} />
+            <FileInput h="280px" activeImgUrl={backgroundImageUrl} />
           </Flex>
         </VStack>
         <VStack>
           <Flex w="100%" flexDirection="column" mb="2px">
             <Text>Company name</Text>
-            <Input type="text" defaultValue={name} isDisabled />
+            <Input type="text" value={name} isDisabled />
           </Flex>
 
           <Flex w="100%" flexDirection="column" mb="2px">
@@ -132,7 +143,7 @@ const EditPage = () => {
               isMulti
               name="colors"
               options={categoryOptions}
-              defaultValue={activeCategoryOptions}
+              value={activeCategoryOptions}
               className="basic-multi-select"
               classNamePrefix="select"
               components={{
@@ -147,7 +158,7 @@ const EditPage = () => {
             placeholder="Here is a sample placeholder"
             size="sm"
             resize="vertical"
-            defaultValue={description}
+            value={description}
           />
         </Flex>
         <VStack>
@@ -157,18 +168,21 @@ const EditPage = () => {
             </InputLeftElement>
             <Input type="text" placeholder="Discord" />
           </InputGroup>
+
           <InputGroup className="inputGroup">
             <InputLeftElement pointerEvents="none">
               <TwitterIcon className="icon" />
             </InputLeftElement>
             <Input type="text" placeholder="Twitter" />
           </InputGroup>
+
           <InputGroup className="inputGroup">
             <InputLeftElement pointerEvents="none">
               <InstagramIcon className="icon" />
             </InputLeftElement>
             <Input type="text" placeholder="Instagram" />
           </InputGroup>
+
           <InputGroup className="inputGroup">
             <InputLeftElement pointerEvents="none">
               <SiteIcon className="icon" />

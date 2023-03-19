@@ -13,7 +13,7 @@ import { Loader } from '@app/components/ui/loader/Loader';
 
 import { useSbtCompanyInfo } from '@app/api/http/query/complex/useSbtCompanyInfo';
 
-import { getImgPath } from '@app/utils';
+import { formatDateV2, getImgPath } from '@app/utils';
 
 const Relationship = () => {
   const router = useRouter();
@@ -49,7 +49,7 @@ const Relationship = () => {
     );
   }
 
-  const { sbtName, description, featuredImage, companies, digiProofType, companyName } = data;
+  const { sbtName, description, featuredImage, companies, digiProofType, companyName, } = data;
 
   const featuredImageUrl = featuredImage ?? getImgPath('default-feature.png');
 
@@ -103,7 +103,7 @@ const Relationship = () => {
             <Text>Properties</Text>
             <Flex className="description">{description}</Flex>
           </Flex>
-          <Flex className="date">Created: 8/03/2022</Flex>
+          <Flex className="date">Created: {formatDateV2('2023-03-10T16:25:13.683Z')}</Flex>
           <Flex className="button-section">
             <Button sx={buttonStyles} isDisabled>
               Withdraw

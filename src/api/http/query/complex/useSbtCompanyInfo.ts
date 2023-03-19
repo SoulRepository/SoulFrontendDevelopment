@@ -15,6 +15,7 @@ export const useSbtCompanyInfo = ({ soulId, sbtId }: { soulId?: string; sbtId?: 
       soulId: companyAdditionalInfo.data?.soulId ?? '',
       name: companyAdditionalInfo.data?.name ?? '',
       address: '',
+      verified: false
     }),
     [
       companyAdditionalInfo.data?.logoImageUrl,

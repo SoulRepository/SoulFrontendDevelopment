@@ -27,7 +27,7 @@ export interface FeaturedImage {
   updatedAt: Date;
 }
 
-export interface Category {
+export interface ICategoryResponse {
   id: number;
   name: string;
   description: string;
@@ -45,7 +45,7 @@ export interface Company {
   backgroundImage: BackgroundImage;
   logoImage: LogoImage;
   featuredImage: FeaturedImage;
-  categories: Category[];
+  categories: ICategoryResponse[];
   address: string;
   createdAt: Date;
   updatedAt: Date;
@@ -73,7 +73,7 @@ export interface ICompanyResponse {
   backgroundImage: string;
   logoImage: string;
   featuredImage: string;
-  categories: Category[];
+  categories: ICategoryResponse[];
   address: string;
   createdAt: Date;
   updatedAt: Date;
@@ -89,7 +89,7 @@ export interface ISbtCompany {
   logo?: string;
   soulId: string;
   address: string;
-  verified: boolean
+  verified: boolean;
 }
 
 export interface ISbtCompanyResponse {
@@ -100,10 +100,45 @@ export interface ISbtCompanyResponse {
   companies: ISbtCompany[];
 }
 
-export interface ICategoryResponse {
-  createdAt: string,
-  updatedAt: string,
-  id: number,
-  name: string,
-  description?: string,
+// {
+//   "description": "string",
+//   "soulId": "string",
+//   "backgroundImageKey": "string",
+//   "logoImageKey": "string",
+//   "featuredImageKey": "string",
+//   "categoriesIds": [
+//   0
+// ],
+//   "address": "string",
+//   "links": [
+//   {
+//     "type": "twitter",
+//     "url": "string"
+//   }
+// ]
+// }
+export interface IPatchCompany {
+  description?: string;
+  soulId?: string;
+  backgroundImageKey?: string;
+  logoImageKey?: string;
+  featuredImageKey?: string;
+  address?: string;
+  links?: {
+    type: socialMediaTypes;
+    url: string;
+  }[];
+  categoriesIds?: number[];
+}
+
+export interface IAccessData {
+  'sign': string
+  'message': string
+  'address': string
+}
+
+export interface IPatchCompanyRequest {
+  soulId: string;
+  accessData: IAccessData;
+  companyInfo?: IPatchCompany;
 }

@@ -18,7 +18,7 @@ export const useCategories = () => {
   );
 
   const getOptions = useCallback(
-    () => (data ? data.map<IOption>(({ name }) => ({ label: name, value: name })) : []),
+    () => (data ? data.map<IOption>(({ name, shortName }) => ({ label: `${name} (${shortName})`, value: name })) : []),
     [data],
   );
 

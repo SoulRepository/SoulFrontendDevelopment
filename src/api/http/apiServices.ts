@@ -5,7 +5,7 @@ import type {
   IDigiProofResponse,
   ISbtCompanyResponse,
 } from '@app/types/httpTypes';
-import { ICategoryResponse } from '@app/types/httpTypes';
+import { ICategoryResponse, IPatchCompanyRequest } from '@app/types/httpTypes';
 
 const SoulSearchApi = {
   getCompany: async (addressOrSoulId: string) => {
@@ -20,6 +20,19 @@ const SoulSearchApi = {
 
     return data;
   },
+  patchCompanyBySoulId: async ({
+    soulId,
+    companyInfo,
+    accessData: { message, address, sign },
+  }: IPatchCompanyRequest) => {
+    const { data } = await $soulHttpClient.patch<ICompanyResponse>(
+      `/api/companies/${soulId}`,
+      companyInfo,
+      { headers: { 'x-web3-sign': sign, 'x-web3-message': message, 'x-web3-address': address } },
+    );
+
+    return data;
+  },
   getDigiProofs: async () => {
     const { data } = await $soulHttpClient.get<IDigiProofResponse[]>(
       '/api/digi-proofs/digi-proofs',
@@ -27,9 +40,17 @@ const SoulSearchApi = {
 
     return data;
   },
-  getSbtList: async ({ digiProof, souldId }: { digiProof: string; souldId: string }) => {
+  getSbtList: async ({
+    digiProof,
+    souldId,
+    limit,
+  }: {
+    digiProof: string;
+    souldId: string;
+    limit?: number;
+  }) => {
     const { data } = await $soulHttpClient.get<ISbtCompanyResponse[]>('api/sbt', {
-      params: { digiProof, souldId },
+      params: { digiProof, souldId, limit },
     });
 
     return data;

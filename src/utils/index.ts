@@ -25,7 +25,34 @@ export const transformLinkToName = (link: string, type: socialMediaTypes) => {
 
       return res ? res[1] : link;
     }
+
+    case 'discord': {
+      const regex = /(?:https?:\/\/)?(?:www\.)?discordapp\.com\/users\/(\w+)/i;
+      const res = link.match(regex);
+
+      return res ? res[1] : link;
+    }
     default:
       return link;
   }
 };
+
+
+export const formatDate = (data: string | Date) => {
+  const date = new Date(data);
+  const month = date.toLocaleString('en', { month: 'long' });
+  const year = date.getFullYear();
+
+  return `${month} ${year}`
+}
+
+export const formatDateV2 = (data: string | Date) => {
+  const date = new Date(data);
+  const day = date.getUTCDate();
+  const month = date.getUTCMonth() + 1;
+  const year = date.getUTCFullYear();
+
+
+
+  return `${day}/${month}/${year}`
+}

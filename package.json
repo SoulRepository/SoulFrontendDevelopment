@@ -36,13 +36,15 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
-    "react-use-storage": "^0.5.1"
+    "react-use-storage": "^0.5.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@ethersproject/constants": "^5.7.0",
     "@types/node": "18.14.1",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "eslint": "8.34.0",
