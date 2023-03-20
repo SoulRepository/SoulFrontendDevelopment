@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { Box, Flex, Text, Tooltip, useToast } from '@chakra-ui/react';
+import { Box, Flex, Text, Tooltip } from '@chakra-ui/react';
 
 import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
-import {formatDate, getImgPath, getShortAddress, transformLinkToName} from '@app/utils';
+import { formatDate, getImgPath, getShortAddress, transformLinkToName } from '@app/utils';
 
-import {  socialMediaMetaData } from '@app/mockData';
+import { socialMediaMetaData } from '@app/mockData';
 
 import { CopyIcon, VerifyIcon } from '@app/components/ui/icons';
 import { Bullet } from '@app/components/ui';
@@ -23,6 +23,7 @@ import type { IMenuItem } from '@app/types';
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
 import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
 import { useSbtList } from '@app/api/http/query/useSbtList';
+import { useCustomToast } from '@app/hooks/useCustomToast';
 
 const CompanyPage = () => {
   const { checkIsOwner } = useWallet();
@@ -30,11 +31,15 @@ const CompanyPage = () => {
 
   const router = useRouter();
   const souldId = router.query?.companySoulId?.toString() ?? '';
-  const toast = useToast();
+  const { errorToast, infoToast } = useCustomToast();
   const { scanTransaction } = useNetworkConfig();
   const [, onCopy] = useCopyToClipboard();
 
-  const { data: companyResp, isSuccess, isError } = useCompanyBySoulId({
+  const {
+    data: companyResp,
+    isSuccess,
+    isError,
+  } = useCompanyBySoulId({
     soulId: souldId,
   });
 
@@ -57,16 +62,8 @@ const CompanyPage = () => {
   );
 
   useEffect(() => {
-    if (!companyResp && isSuccess || isError) {
-      toast({
-        title: 'Error',
-        description: `something went wrong`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-left',
-        colorScheme: 'whatsapp',
-      });
+    if ((!companyResp && isSuccess) || isError) {
+      errorToast();
       router.push('/');
     }
   }, [companyResp, isSuccess, isError]);
@@ -98,15 +95,7 @@ const CompanyPage = () => {
 
   const onCopyHandler = () => {
     onCopy(address);
-    toast({
-      title: 'Copy',
-      description: `You copy address ${address}`,
-      status: 'info',
-      duration: 5000,
-      isClosable: true,
-      position: 'top-left',
-      colorScheme: 'whatsapp',
-    });
+    infoToast({ description: `You copy address ${address}` });
   };
 
   return (

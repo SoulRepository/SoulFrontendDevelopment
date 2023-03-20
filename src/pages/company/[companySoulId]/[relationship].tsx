@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Flex, Text, useToast } from '@chakra-ui/react';
+import { Button, Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,6 +14,7 @@ import { Loader } from '@app/components/ui/loader/Loader';
 import { useSbtCompanyInfo } from '@app/api/http/query/complex/useSbtCompanyInfo';
 
 import { formatDateV2, getImgPath } from '@app/utils';
+import { useCustomToast } from '@app/hooks/useCustomToast';
 
 const Relationship = () => {
   const router = useRouter();
@@ -24,19 +25,11 @@ const Relationship = () => {
     soulId: companySoulId?.toString(),
   });
 
-  const toast = useToast();
+  const { errorToast } = useCustomToast();
 
   useEffect(() => {
     if (isError) {
-      toast({
-        title: 'Error',
-        description: `something went wrong`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-left',
-        colorScheme: 'whatsapp',
-      });
+      errorToast();
       router.push('/');
     }
   }, [isError]);
@@ -49,7 +42,7 @@ const Relationship = () => {
     );
   }
 
-  const { sbtName, description, featuredImage, companies, digiProofType, companyName, } = data;
+  const { sbtName, description, featuredImage, companies, digiProofType, companyName } = data;
 
   const featuredImageUrl = featuredImage ?? getImgPath('default-feature.png');
 
