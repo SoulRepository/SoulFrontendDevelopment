@@ -25,6 +25,11 @@ export const editStyles: SystemStyleObject = {
     _hover: {
       background: 'linear-gradient(0deg, #6297FF -6.76%, #0057FF 106.76%)',
     },
+    _disabled: {
+      _hover: {
+        background: 'linear-gradient(180deg, #6297FF -6.76%, #0057FF 106.76%)',
+      }
+    }
   },
   '.description': {
     flexDirection: 'column',
