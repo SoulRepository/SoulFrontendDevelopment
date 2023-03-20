@@ -7,7 +7,8 @@ import {
 } from '@app/components/ui/icons';
 
 import {ComponentWithAs, IconProps} from '@chakra-ui/react';
-import {socialMediaTypes} from "@app/types/httpTypes";
+import {socialMediaTypes} from "@app/types";
+
 
 export const digiProofsIcon = [
   getImgPath('coinbase.png'),

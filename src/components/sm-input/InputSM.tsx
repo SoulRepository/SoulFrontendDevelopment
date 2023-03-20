@@ -18,18 +18,24 @@ interface IInputSMProps {
 }
 
 export const InputSM: FC<IInputSMProps> = ({ type, onChange, value, isVerified, getSignature }) => {
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState(value);
+  const [isVerif, setIsVerif] = useState(isVerified);
+
   const Icon = socialMediaMetaData[type].icon;
 
-  const [metaData] = useLocalStorageState(
-    QueryKeys.metaData,
-  );
+  const [metaData] = useLocalStorageState(QueryKeys.metaData);
 
   const { data } = useSocialLinks(type);
 
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
     setInputText(value);
     onChange(value, type);
+  };
+
+  const onUnlinkHandler = () => {
+    onChange('', type);
+    setInputText('');
+    setIsVerif(false);
   };
 
   const onAuthorizationHandler = () => {
@@ -44,7 +50,7 @@ export const InputSM: FC<IInputSMProps> = ({ type, onChange, value, isVerified, 
   };
 
   useEffect(() => {
-    value && setInputText(value);
+    setInputText(value);
   }, [value]);
 
   return (
@@ -53,17 +59,19 @@ export const InputSM: FC<IInputSMProps> = ({ type, onChange, value, isVerified, 
         <Icon className="icon" />
       </InputLeftElement>
       <Input
-        disabled={isVerified}
+        disabled={isVerif}
         value={inputText}
         onChange={onChangeHandler}
         type="text"
         placeholder={type}
       />
       {type !== 'site' &&
-        (value && isVerified ? (
-          <Button>Unlink</Button>
+        (value && isVerif ? (
+          <Button onClick={onUnlinkHandler}>Unlink</Button>
         ) : (
-          <Button isDisabled={!data?.link} onClick={onAuthorizationHandler}>Authorization</Button>
+          <Button isDisabled={isVerif || !data?.link} onClick={onAuthorizationHandler}>
+            Authorization
+          </Button>
         ))}
     </InputGroup>
   );

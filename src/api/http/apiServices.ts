@@ -2,15 +2,13 @@ import { $soulHttpClient } from '@app/api/http/client';
 import axios from 'axios';
 
 import type {
-  ICompanyResponse,
-  IDigiProofResponse,
-  ISbtCompanyResponse,
-} from '@app/types/httpTypes';
-import type {
   IAccessData,
   ICategoryResponse,
+  ICompanyResponse,
+  IDigiProofResponse,
   IImageCredentialResponse,
   IPatchCompanyRequest,
+  ISbtCompanyResponse,
 } from '@app/types/httpTypes';
 import type { socialMediaTypes } from '@app/types';
 
@@ -46,18 +44,17 @@ const SoulSearchApi = {
 
     return data;
   },
-  getImageCredentials: async (
-    {
-      soulId,
-      imageType,
-      accessData: { message, address, sign },
-    }: {
-      soulId: string;
-      accessData: IAccessData;
-      imageType: Partial<Record<'forBackground' | 'forFeatured' | 'forLogo', boolean>>;
-    },
-    isProxy?: boolean,
-  ) => {
+  getImageCredentials: async ({
+    soulId,
+    imageType,
+    accessData: { message, address, sign },
+    isProxy,
+  }: {
+    soulId: string;
+    accessData: IAccessData;
+    imageType: Partial<Record<'forBackground' | 'forFeatured' | 'forLogo', boolean>>;
+    isProxy?: boolean;
+  }) => {
     if (isProxy) {
       try {
         const { data } = await axios.post<IImageCredentialResponse>('/api/get-credentials', {
@@ -92,6 +89,31 @@ const SoulSearchApi = {
     );
 
     return data;
+  },
+  postVerificationSocialLink: async ({
+    soulId,
+    code,
+    accessData: { message, address, sign },
+    type,
+  }: {
+    type: socialMediaTypes;
+    soulId: string;
+    code: string;
+    accessData: IAccessData;
+  }) => {
+    try {
+      const { data } = await $soulHttpClient.post(
+        `/api/social-links`,
+        { code, soulId, type },
+        {
+          headers: { 'x-web3-sign': sign, 'x-web3-message': message, 'x-web3-address': address },
+        },
+      );
+
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   },
   getSocialLink: async (type: socialMediaTypes) => {
     const { data } = await $soulHttpClient.get<{ link?: string }>(`/api/social-links/${type}`);

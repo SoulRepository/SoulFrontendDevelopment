@@ -1,6 +1,6 @@
-import type {socialMediaTypes} from "@app/types/index";
+import type { socialMediaTypes } from '@app/types/index';
 
-type Metadata = object
+type Metadata = object;
 
 export interface BackgroundImage {
   id: number;
@@ -51,11 +51,11 @@ export interface Company {
   updatedAt: Date;
 }
 
-export interface Link {
+export interface ISocialLink {
   id: number;
-  type: socialMediaTypes
+  type: socialMediaTypes;
   url: string;
-  verified: boolean
+  verified: boolean;
   company?: Company;
   createdAt: Date;
   updatedAt: Date;
@@ -69,7 +69,7 @@ export interface ICompanyResponse {
   name: string;
   description: string;
   soulId: string;
-  links: Link[];
+  links: ISocialLink[];
   backgroundImage: string;
   logoImage: string;
   featuredImage: string;
@@ -124,10 +124,12 @@ export interface IPatchCompany {
   logoImageKey?: string;
   featuredImageKey?: string;
   address?: string;
-  links?: {
-    type: socialMediaTypes;
-    url: string;
-  }[];
+  links?:
+    | {
+        type: string;
+        url: string;
+      }[]
+    | string[];
   categoriesIds?: number[];
 }
 

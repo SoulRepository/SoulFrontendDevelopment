@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { QueryKeys } from '@app/api/http/queryKeys';
 import SoulSearchApi from '@app/api/http/apiServices';
 import { useCallback } from 'react';
-import { IOption } from '@app/types';
+import { IOption, socialMediaTypes } from '@app/types';
 
 export const useCompanyBySoulId = ({ soulId }: { soulId?: string }) => {
   const { account, chainId } = useWallet();
@@ -19,9 +19,21 @@ export const useCompanyBySoulId = ({ soulId }: { soulId?: string }) => {
   );
 
   const getActiveCategory = useCallback(
-    () => (data ? data.categories.map<IOption>(({ name, shortName, id }) => ({ label: `${name} (${shortName})`, value: id })) : []),
+    () =>
+      data
+        ? data.categories.map<IOption>(({ name, shortName, id }) => ({
+            label: `${name} (${shortName})`,
+            value: id,
+          }))
+        : [],
     [data],
   );
 
-  return { data, getActiveCategory, ...rest };
+  const getSocialLink = useCallback(
+    (type: socialMediaTypes) =>
+      data?.links.find(item => item.type === type) ?? { url: '', type: '', verified: false },
+    [data],
+  );
+
+  return { data, getSocialLink, getActiveCategory, ...rest };
 };
