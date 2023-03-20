@@ -2,6 +2,12 @@ import type { socialMediaTypes } from '@app/types/index';
 
 type Metadata = object;
 
+export interface IErrorResponse {
+  error: string;
+  message: string[];
+  statusCode: number;
+}
+
 export interface BackgroundImage {
   id: number;
   key: string;

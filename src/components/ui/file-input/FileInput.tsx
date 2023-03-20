@@ -31,7 +31,7 @@ export const FileInput: FC<IFileInputProps> = ({ isRounded, activeImgUrl, h = '1
       ) : (
         <PictureIcon className="icon" />
       )}
-      <Input type="file" aria-hidden={true} accept="image/*" onChange={onChangeHandler} />
+      <Input type="file" aria-hidden={true} accept=".jpg, .jpeg, .png" onChange={onChangeHandler} />
     </Flex>
   );
 };

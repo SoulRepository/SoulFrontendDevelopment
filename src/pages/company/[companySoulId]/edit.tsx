@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import useLocalStorageState from 'use-local-storage-state';
 
 import { Select } from 'chakra-react-select';
-import { Button, Flex, Input, Text, Textarea, useToast, VStack } from '@chakra-ui/react';
+import { Button, Flex, Input, Text, Textarea, VStack } from '@chakra-ui/react';
 
 import { editStyles, selectStyles } from '@app/styles/pages/editStyles';
 import { FileInput } from '@app/components/ui';
@@ -19,20 +19,25 @@ import apiServices from '@app/api/http/apiServices';
 import { InputSM } from '@app/components/sm-input/InputSM';
 import { QueryKeys } from '@app/api/http/queryKeys';
 import { sendImageToAWS } from '@app/utils';
+import { useCustomToast } from '@app/hooks/useCustomToast';
 
 const Edit = () => {
   const { checkIsOwner, signer, account } = useWallet();
-  const toast = useToast();
+  const { errorToast, walletToast } = useCustomToast();
   const router = useRouter();
   const { companySoulId } = router.query;
 
-  const { data, isLoading, isSuccess, isError, getActiveCategory, getSocialLink } =
+
+  const { data, isSuccess, isLoading, isError, getActiveCategory, getSocialLink } =
     useCompanyBySoulId({
       soulId: companySoulId?.toString(),
     });
   const { getOptions } = useCategories();
 
-  const { mutate } = usePatchCompanyBySoulId();
+  const {
+    mutate,
+    isLoading: isLoadingMutate,
+  } = usePatchCompanyBySoulId();
 
   const [metaData, setMetaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
 
@@ -41,6 +46,7 @@ const Edit = () => {
   const [discord, setDiscord] = useState<string>('');
   const [instagram, setInstagram] = useState<string>('');
   const [site, setSite] = useState<string>('');
+  const [isLoadingCrend, setIsLoadingCrend] = useState(false)
 
   const [logoImageFile, setLogoImageFile] = useState<File>();
   const [featuredImageFile, setFeaturedImageFile] = useState<File>();
@@ -56,15 +62,17 @@ const Edit = () => {
       const message = 'For editing you need to sign this message.'.padEnd(50) + uuidv4();
       const signature = await signer?.signMessage(message);
       if (!message || !signature || !account) {
-        throw new Error();
+        walletToast();
+
+        return;
       }
       setMetaData({ message, signature, soulId: companySoulId!.toString(), account: account });
     } catch (e) {
-      console.log('no');
+      walletToast();
     }
 
     return;
-  }, [setMetaData, signer, account]);
+  }, [setMetaData, signer, account, walletToast]);
 
   const onSave = async () => {
     if (!metaData) {
@@ -76,26 +84,29 @@ const Edit = () => {
     const { message, signature } = metaData;
     try {
       if (typeof companySoulId === 'string' && signature && account) {
-        const imagesCredentials = await apiServices.getImageCredentials({
-          soulId: companySoulId,
-          imageType: {
-            forLogo: !!logoImageFile,
-            forFeatured: !!featuredImageFile,
-            forBackground: !!backgroundImageFile,
-          },
-          accessData: { message, address: account, sign: signature },
-          isProxy: true,
-        });
+        let logoImageKey;
+        let featuredImageKey;
+        let backgroundImageKey;
 
-        const logoImageKey = await sendImageToAWS(imagesCredentials?.logo, logoImageFile);
-        const featuredImageKey = await sendImageToAWS(
-          imagesCredentials?.featured,
-          featuredImageFile,
-        );
-        const backgroundImageKey = await sendImageToAWS(
-          imagesCredentials?.background,
-          backgroundImageFile,
-        );
+        if (logoImageFile || featuredImageFile || backgroundImageFile) {
+          setIsLoadingCrend(true)
+          const imagesCredentials = await apiServices.getImageCredentials({
+            soulId: companySoulId,
+            imageType: {
+              forLogo: !!logoImageFile,
+              forFeatured: !!featuredImageFile,
+              forBackground: !!backgroundImageFile,
+            },
+            accessData: { message, address: account, sign: signature },
+          });
+
+          logoImageKey = await sendImageToAWS(imagesCredentials?.logo, logoImageFile);
+          featuredImageKey = await sendImageToAWS(imagesCredentials?.featured, featuredImageFile);
+          backgroundImageKey = await sendImageToAWS(
+            imagesCredentials?.background,
+            backgroundImageFile,
+          );
+        }
 
         const links = [
           { url: twitter, type: 'twitter' },
@@ -118,29 +129,15 @@ const Edit = () => {
         });
       }
     } catch (e) {
-      toast({
-        title: 'Wallet',
-        description: 'User rejected signing',
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-left',
-        colorScheme: 'whatsapp',
-      });
+      walletToast();
+      setIsLoadingCrend(false)
     }
+    setIsLoadingCrend(false)
   };
 
   useEffect(() => {
     if ((isSuccess && !isOwner) || isError) {
-      toast({
-        title: 'Error',
-        description: `something went wrong`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'top-left',
-        colorScheme: 'whatsapp',
-      });
+      errorToast();
       router.push('/');
     }
   }, [isOwner, isSuccess, isError]);
@@ -275,7 +272,7 @@ const Edit = () => {
           />
           <InputSM type="site" onChange={setSite} value={site} getSignature={getSignature} />
         </VStack>
-        <Button w="20%" h="60px" onClick={onSave}>
+        <Button isLoading={isLoadingMutate || isLoadingCrend} w="20%" h="60px" onClick={onSave}>
           Update
         </Button>
       </VStack>

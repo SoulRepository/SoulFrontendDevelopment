@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import { Flex } from '@chakra-ui/react';
 import useLocalStorageState from 'use-local-storage-state';
 import { QueryKeys } from '@app/api/http/queryKeys';
-import apiServices from '@app/api/http/apiServices';
 import { IMetaData, socialMediaTypes } from '@app/types';
+import { useVerificationSocialLink } from '@app/api/http/mutations/useVerificationSocialLink';
 
 const Auth = () => {
   const { query } = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [metaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
+
+  const { mutate } = useVerificationSocialLink();
 
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -18,7 +19,7 @@ const Auth = () => {
     if (query.code && query.state && metaData) {
       setIsSuccess(true);
       const { signature, message, soulId, account } = metaData;
-      apiServices.postVerificationSocialLink({
+      mutate({
         soulId,
         type: String(query.state).substring(1) as socialMediaTypes,
         code: String(query.code),
