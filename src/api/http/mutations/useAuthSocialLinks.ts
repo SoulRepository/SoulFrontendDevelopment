@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { IPatchCompanyRequest } from '@app/types/httpTypes';
 import axios from 'axios';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import apiServices from "@app/api/http/apiServices";
 
-export const usePatchCompanyBySoulId = () => {
+import type { IPatchCompanyRequest } from '@app/types/httpTypes';
+
+export const useAuthSocialLinks = () => {
   const queryClient = useQueryClient();
 
   // return useMutation(apiServices.patchCompanyBySoulId, {
@@ -14,7 +13,7 @@ export const usePatchCompanyBySoulId = () => {
   // });
 
   return useMutation<unknown, unknown, IPatchCompanyRequest>(
-    body => axios.post('/api/edit-company', body),
+    body => axios.post('/api/social-links', body),
     {
       onSuccess: () => {
         queryClient.invalidateQueries();

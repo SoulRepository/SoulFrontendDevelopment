@@ -1,6 +1,6 @@
-type Metadata = object
+import type {socialMediaTypes} from "@app/types/index";
 
-export type socialMediaTypes = 'twitter' | 'instagram' | 'discord' | 'site'
+type Metadata = object
 
 export interface BackgroundImage {
   id: number;
@@ -132,13 +132,35 @@ export interface IPatchCompany {
 }
 
 export interface IAccessData {
-  'sign': string
-  'message': string
-  'address': string
+  sign: string;
+  message: string;
+  address: string;
 }
 
 export interface IPatchCompanyRequest {
   soulId: string;
   accessData: IAccessData;
   companyInfo?: IPatchCompany;
+}
+
+export interface IFields {
+  bucket: string;
+  'X-Amz-Algorithm': string;
+  'X-Amz-Credential': string;
+  'X-Amz-Date': string;
+  'X-Amz-Security-Token': string;
+  key: string;
+  Policy: string;
+  'X-Amz-Signature': string;
+}
+
+export interface IImageCredentialData {
+  url: string;
+  fields: IFields;
+}
+
+export interface IImageCredentialResponse {
+  background?: IImageCredentialData;
+  featured?: IImageCredentialData;
+  logo?: IImageCredentialData;
 }

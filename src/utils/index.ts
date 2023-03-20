@@ -1,4 +1,4 @@
-import { socialMediaTypes } from '@app/types/httpTypes';
+import type { socialMediaTypes } from '@app/types';
 
 export const getImgPath = (imgName: string) => `/images/${imgName}`;
 
@@ -56,3 +56,50 @@ export const formatDateV2 = (data: string | Date) => {
 
   return `${day}/${month}/${year}`
 }
+
+export const windowOpen = (url?: string | URL, target?: string) => {
+  const width = 450;
+  const height = 730;
+  const left = window.screen.width / 2 - width / 2;
+  const top = window.screen.height / 2 - height / 2;
+
+  window.open(
+    url,
+    target,
+    'menubar=no,location=no,resizable=no,scrollbars=no,status=no, width=' +
+    width +
+    ', height=' +
+    height +
+    ', top=' +
+    top +
+    ', left=' +
+    left,
+  );
+};
+export const oauthUrlFactory = (
+  url: string,
+  {
+    state,
+    clientId = '',
+    scope,
+    redirectUri = window.location.origin + '/auth',
+    response_type = 'code',
+  }: {
+    clientId?: string;
+    scope: string;
+    state: string;
+    redirectUri?: string;
+    response_type?: string;
+  },
+) => {
+  const oauthUrl = new URL(url);
+
+  oauthUrl.searchParams.set('client_id', clientId);
+  oauthUrl.searchParams.set('scope', scope);
+  oauthUrl.searchParams.set('redirect_uri', redirectUri);
+  oauthUrl.searchParams.set('response_type', response_type);
+  oauthUrl.searchParams.set('state', state);
+
+  return oauthUrl;
+};
+

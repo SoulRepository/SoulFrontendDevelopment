@@ -8,9 +8,10 @@ interface IFileInputProps {
   activeImgUrl?: string;
   h?: string;
   w?: string;
+  onChange?: (file: File) => void
 }
 
-export const FileInput: FC<IFileInputProps> = ({ isRounded, activeImgUrl, h = '100%', w= '100%' }) => {
+export const FileInput: FC<IFileInputProps> = ({ isRounded, activeImgUrl, h = '100%', w= '100%', onChange }) => {
   const [selectedImage, setSelectedImage] = useState<File | Blob | null>(null);
 
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = e => {
@@ -18,6 +19,7 @@ export const FileInput: FC<IFileInputProps> = ({ isRounded, activeImgUrl, h = '1
       return;
     }
     setSelectedImage(e.target.files[0]);
+    onChange?.(e.target.files[0])
   };
 
   const previewImgUrl = selectedImage ? URL.createObjectURL(selectedImage) : activeImgUrl;

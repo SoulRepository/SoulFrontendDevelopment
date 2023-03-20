@@ -1,11 +1,18 @@
 import { $soulHttpClient } from '@app/api/http/client';
+import axios from 'axios';
 
 import type {
   ICompanyResponse,
   IDigiProofResponse,
   ISbtCompanyResponse,
 } from '@app/types/httpTypes';
-import { ICategoryResponse, IPatchCompanyRequest } from '@app/types/httpTypes';
+import type {
+  IAccessData,
+  ICategoryResponse,
+  IImageCredentialResponse,
+  IPatchCompanyRequest,
+} from '@app/types/httpTypes';
+import type { socialMediaTypes } from '@app/types';
 
 const SoulSearchApi = {
   getCompany: async (addressOrSoulId: string) => {
@@ -28,15 +35,66 @@ const SoulSearchApi = {
     const { data } = await $soulHttpClient.patch<ICompanyResponse>(
       `/api/companies/${soulId}`,
       companyInfo,
-      { headers: { 'x-web3-sign': sign, 'x-web3-message': message, 'x-web3-address': address } },
+      {
+        headers: {
+          'x-web3-sign': sign,
+          'x-web3-message': message,
+          'x-web3-address': address,
+        },
+      },
     );
 
     return data;
+  },
+  getImageCredentials: async (
+    {
+      soulId,
+      imageType,
+      accessData: { message, address, sign },
+    }: {
+      soulId: string;
+      accessData: IAccessData;
+      imageType: Partial<Record<'forBackground' | 'forFeatured' | 'forLogo', boolean>>;
+    },
+    isProxy?: boolean,
+  ) => {
+    if (isProxy) {
+      try {
+        const { data } = await axios.post<IImageCredentialResponse>('/api/get-credentials', {
+          soulId,
+          imageType,
+          accessData: { message, address, sign },
+        });
+
+        return data;
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    try {
+      const { data } = await $soulHttpClient.post<IImageCredentialResponse>(
+        `/api/companies/${soulId}/image-credentials`,
+        imageType,
+        {
+          headers: { 'x-web3-sign': sign, 'x-web3-message': message, 'x-web3-address': address },
+        },
+      );
+
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   },
   getDigiProofs: async () => {
     const { data } = await $soulHttpClient.get<IDigiProofResponse[]>(
       '/api/digi-proofs/digi-proofs',
     );
+
+    return data;
+  },
+  getSocialLink: async (type: socialMediaTypes) => {
+    const { data } = await $soulHttpClient.get<{ link?: string }>(`/api/social-links/${type}`);
 
     return data;
   },

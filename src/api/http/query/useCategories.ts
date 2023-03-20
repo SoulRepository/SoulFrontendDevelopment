@@ -9,7 +9,7 @@ export const useCategories = () => {
   const { account, chainId } = useWallet();
 
   const { data } = useQuery(
-    [QueryKeys.useSbtList, account, chainId],
+    [QueryKeys.useCategories, account, chainId],
     () => SoulSearchApi.getCategories(),
     {
       retry: 2,
@@ -18,7 +18,13 @@ export const useCategories = () => {
   );
 
   const getOptions = useCallback(
-    () => (data ? data.map<IOption>(({ name, shortName }) => ({ label: `${name} (${shortName})`, value: name })) : []),
+    () =>
+      data
+        ? data.map<IOption>(({ name, shortName, id }) => ({
+            label: `${name} (${shortName})`,
+            value: id,
+          }))
+        : [],
     [data],
   );
 

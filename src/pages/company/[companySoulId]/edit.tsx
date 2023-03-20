@@ -1,23 +1,12 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { v4 as uuidv4 } from 'uuid';
+import useLocalStorageState from 'use-local-storage-state';
 
 import { Select } from 'chakra-react-select';
-import {
-  Button,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Text,
-  Textarea,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Flex, Input, Text, Textarea, useToast, VStack } from '@chakra-ui/react';
 
 import { editStyles, selectStyles } from '@app/styles/pages/editStyles';
-
-import { DiscordIcon, InstagramIcon, SiteIcon, TwitterIcon } from '@app/components/ui/icons';
 import { FileInput } from '@app/components/ui';
 
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
@@ -25,8 +14,13 @@ import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
 import { Loader } from '@app/components/ui/loader/Loader';
 import { useCategories } from '@app/api/http/query/useCategories';
 import { usePatchCompanyBySoulId } from '@app/api/http/mutations/usePatchCompanyBySoulId';
+import { IOption } from '@app/types';
+import apiServices from '@app/api/http/apiServices';
+import axios from 'axios';
+import { InputSM } from '@app/components/sm-input/InputSM';
+import { QueryKeys } from '@app/api/http/queryKeys';
 
-const EditPage = () => {
+const Edit = () => {
   const { checkIsOwner, signer, account } = useWallet();
   const toast = useToast();
   const router = useRouter();
@@ -38,23 +32,92 @@ const EditPage = () => {
     soulId: companySoulId?.toString(),
   });
 
+  const isOwner = checkIsOwner(data?.address);
+
+  const [metaData, setMetaData] = useLocalStorageState<{ message: string; signature: string }>(
+    QueryKeys.metaData,
+  );
+
+  const [desk, setDesk] = useState('' ?? data?.description);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [twitter, setTwitter] = useState<string | undefined>('');
+  const [discord, setDiscord] = useState<string | undefined>('');
+  const [instagram, setInstagram] = useState<string | undefined>('');
+  const [site, setSite] = useState<string | undefined>('');
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [logoImageFile, setLogoImageFile] = useState<File>();
+  const [featuredImageFile, setFeaturedImageFile] = useState<File>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [backgroundImageFile, setBackgroundImageFile] = useState<File>();
+  const [categories, setCategories] = useState<undefined | IOption[]>(undefined);
+
   const { getOptions } = useCategories();
 
   const categoryOptions = useMemo(() => getOptions(), [getOptions]);
-  const activeCategoryOptions = useMemo(() => getActiveCategory(), [getActiveCategory]);
 
-  const isOwner = checkIsOwner(data?.address);
+  const getSignature = useCallback(async () => {
+    try {
+      const message = 'For editing you need to sign this message.'.padEnd(50) + uuidv4();
+      const signature = await signer?.signMessage(message);
+      if (!message || !signature) {
+        throw new Error();
+      }
+      setMetaData({ message, signature });
+    } catch (e) {
+      console.log('no');
+    }
+
+    return;
+  }, [setMetaData, signer]);
 
   const onSave = async () => {
-    const message = 'Do you confirm the change?'.padEnd(50) + uuidv4();
-    try {
-      const signature = await signer?.signMessage(message);
+    if (!metaData) {
+      getSignature();
 
+      return;
+    }
+
+    const { message, signature } = metaData;
+    try {
       if (typeof companySoulId === 'string' && signature && account) {
+        const imagesCredentials = await apiServices.getImageCredentials(
+          {
+            soulId: companySoulId,
+            imageType: {
+              forLogo: true,
+            },
+            accessData: { message, address: account, sign: signature },
+          },
+          true,
+        );
+        if (imagesCredentials?.logo && featuredImageFile) {
+          const formData = new FormData();
+          Object.entries(imagesCredentials?.logo.fields).forEach(([key, value]) => {
+            formData.set(key, value);
+          });
+          formData.set('Content-Type', 'image/png');
+          formData.set('file', featuredImageFile, `featuredImageFile-${companySoulId}`);
+
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const data = await axios.post(imagesCredentials?.logo.url, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+
         mutate({
           soulId: companySoulId,
           accessData: { message, address: account, sign: signature },
-          companyInfo: { description: 'asdsad' },
+          companyInfo: {
+            description: desk,
+            categoriesIds: categories?.map(item => Number(item.value)),
+          },
         });
       }
     } catch (e) {
@@ -85,6 +148,24 @@ const EditPage = () => {
     }
   }, [isOwner, isSuccess, isError]);
 
+  useEffect(() => {
+    if (isSuccess && !isError && data) {
+      const twitter = data.links.find(item => item.type === 'twitter');
+      const discord = data.links.find(item => item.type === 'discord');
+      const instagram = data.links.find(item => item.type === 'instagram');
+      const site = data.links.find(item => item.type === 'site');
+
+      setTwitter(twitter?.url);
+      setDiscord(discord?.url);
+      setInstagram(instagram?.url);
+      setSite(site?.url);
+
+      setDesk(data.description);
+
+      setCategories(getActiveCategory());
+    }
+  }, [data, isError, isSuccess]);
+
   if (isLoading || !isSuccess || !isOwner) {
     return (
       <Flex h="700px" w="100%" alignItems="center" justifyContent="center">
@@ -93,7 +174,7 @@ const EditPage = () => {
     );
   }
 
-  const { name, backgroundImageUrl, logoImageUrl, featuredImageUrl, description } = data!;
+  const { name, backgroundImageUrl, logoImageUrl, featuredImageUrl } = data!;
 
   return (
     <Flex sx={editStyles}>
@@ -108,7 +189,13 @@ const EditPage = () => {
               The image will also be used for company avatar. 150*150 recommended
             </Text>
             <Flex borderRadius="full">
-              <FileInput h="150px" w="150px" isRounded activeImgUrl={logoImageUrl} />
+              <FileInput
+                h="150px"
+                w="150px"
+                isRounded
+                activeImgUrl={logoImageUrl}
+                onChange={setLogoImageFile}
+              />
             </Flex>
           </Flex>
           <Flex w="600px" className="file-input-section" borderRadius="full">
@@ -117,7 +204,12 @@ const EditPage = () => {
               This image will be used for featuring your collection on the homepage, category pages,
               or other promotional areas of SoulSearch. 650 x 650 recommended
             </Text>
-            <FileInput h="600px" w="600px" activeImgUrl={featuredImageUrl} />
+            <FileInput
+              h="600px"
+              w="600px"
+              activeImgUrl={featuredImageUrl}
+              onChange={setFeaturedImageFile}
+            />
           </Flex>
           <Flex className="file-input-section" borderRadius="full">
             <Text>Banner image</Text>
@@ -126,7 +218,11 @@ const EditPage = () => {
               this banner image, as the dimensions change on different devices. 1400 x 280
               recommended
             </Text>
-            <FileInput h="280px" activeImgUrl={backgroundImageUrl} />
+            <FileInput
+              h="280px"
+              activeImgUrl={backgroundImageUrl}
+              onChange={setBackgroundImageFile}
+            />
           </Flex>
         </VStack>
         <VStack>
@@ -143,7 +239,8 @@ const EditPage = () => {
               isMulti
               name="colors"
               options={categoryOptions}
-              value={activeCategoryOptions}
+              value={categories}
+              onChange={e => setCategories(e as IOption[])}
               className="basic-multi-select"
               classNamePrefix="select"
               components={{
@@ -158,37 +255,26 @@ const EditPage = () => {
             placeholder="Here is a sample placeholder"
             size="sm"
             resize="vertical"
-            value={description}
+            value={desk}
+            onChange={e => setDesk(e.target.value)}
           />
         </Flex>
         <VStack>
-          <InputGroup className="inputGroup">
-            <InputLeftElement pointerEvents="none">
-              <DiscordIcon className="icon" />
-            </InputLeftElement>
-            <Input type="text" placeholder="Discord" />
-          </InputGroup>
-
-          <InputGroup className="inputGroup">
-            <InputLeftElement pointerEvents="none">
-              <TwitterIcon className="icon" />
-            </InputLeftElement>
-            <Input type="text" placeholder="Twitter" />
-          </InputGroup>
-
-          <InputGroup className="inputGroup">
-            <InputLeftElement pointerEvents="none">
-              <InstagramIcon className="icon" />
-            </InputLeftElement>
-            <Input type="text" placeholder="Instagram" />
-          </InputGroup>
-
-          <InputGroup className="inputGroup">
-            <InputLeftElement pointerEvents="none">
-              <SiteIcon className="icon" />
-            </InputLeftElement>
-            <Input type="text" placeholder="Your site" />
-          </InputGroup>
+          <InputSM
+            type="discord"
+            onChange={setDiscord}
+            value={discord}
+            getSignature={getSignature}
+            isVerified={true}
+          />
+          <InputSM type="twitter" onChange={setTwitter} value={''} getSignature={getSignature} />
+          <InputSM
+            type="instagram"
+            onChange={setInstagram}
+            value={instagram}
+            getSignature={getSignature}
+          />
+          <InputSM type="site" onChange={setSite} value={site} getSignature={getSignature} />
         </VStack>
         <Button w="20%" h="60px" onClick={onSave}>
           Update
@@ -198,4 +284,4 @@ const EditPage = () => {
   );
 };
 
-export default EditPage;
+export default Edit;

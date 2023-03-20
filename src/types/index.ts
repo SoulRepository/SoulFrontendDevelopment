@@ -4,6 +4,8 @@ export interface IMenuItem {
 }
 
 export interface IOption {
-  value: string,
-  label: string
+  label: string,
+  value: string | number,
 }
+
+export type socialMediaTypes = 'twitter' | 'instagram' | 'discord' | 'site'

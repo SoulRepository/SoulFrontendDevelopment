@@ -39,6 +39,7 @@ specifiers:
   react-query: ^3.39.3
   react-use-storage: ^0.5.1
   typescript: 4.9.3
+  use-local-storage-state: ^18.2.1
   uuid: ^9.0.0
 
 dependencies:
@@ -65,6 +66,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-query: 3.39.3_biqbaboplfbrettd7655fr4n2y
   react-use-storage: 0.5.1_biqbaboplfbrettd7655fr4n2y
+  use-local-storage-state: 18.2.1_biqbaboplfbrettd7655fr4n2y
   uuid: 9.0.0
 
 devDependencies:
@@ -5422,6 +5424,17 @@ packages:
     dependencies:
       '@types/react': 18.0.28
       react: 18.2.0
+    dev: false
+
+  /use-local-storage-state/18.2.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-JgFWmMIIsN3uIQ2hSDhYGiYdfykMFVPNX/vz5JX/9V1igJSUjEe30CgswH076YqBx4Njea1NJ6B4farIlnSLuA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /use-sidecar/1.1.2_pmekkgnqduwlme35zpnqhenc34:
