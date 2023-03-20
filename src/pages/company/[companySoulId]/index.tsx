@@ -5,9 +5,9 @@ import { Box, Flex, Text, Tooltip, useToast } from '@chakra-ui/react';
 
 import { companyStyles, menuItemStyles } from '@app/styles/pages/companyStyles';
 
-import { getImgPath, getShortAddress, transformLinkToName } from '@app/utils';
+import {formatDate, getImgPath, getShortAddress, transformLinkToName} from '@app/utils';
 
-import { digiProofsIcon, socialMediaMetaData } from '@app/mockData';
+import {  socialMediaMetaData } from '@app/mockData';
 
 import { CopyIcon, VerifyIcon } from '@app/components/ui/icons';
 import { Bullet } from '@app/components/ui';
@@ -17,26 +17,34 @@ import { SbtList } from '@app/components/ui/sbt-list/SbtList';
 
 import useCopyToClipboard from '@app/hooks/useCopyToClipBoard';
 import { useNetworkConfig } from '@app/api/web3/hooks/useNetworkConfig';
-import { useSearchCompany } from '@app/api/http/query/useSearchCompany';
 import { useDigiProofs } from '@app/api/http/query/useDigiProofs';
 
 import type { IMenuItem } from '@app/types';
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
+import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
+import { useSbtList } from '@app/api/http/query/useSbtList';
 
 const CompanyPage = () => {
   const { checkIsOwner } = useWallet();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const router = useRouter();
+  const souldId = router.query?.companySoulId?.toString() ?? '';
   const toast = useToast();
   const { scanTransaction } = useNetworkConfig();
   const [, onCopy] = useCopyToClipboard();
 
-  const { companyResp, isSuccess } = useSearchCompany(
-    router.query?.companySoulId?.toString() ?? '',
-  );
+  const { data: companyResp, isSuccess, isError } = useCompanyBySoulId({
+    soulId: souldId,
+  });
 
   const { data: digiProofsTypes } = useDigiProofs();
+
+  const { getDigiProofWith } = useSbtList({
+    souldId,
+    digiProof: 'Collaboration',
+    limit: 3,
+  });
 
   const dropdownMenuItem: IMenuItem[] = useMemo(
     () => [
@@ -49,7 +57,7 @@ const CompanyPage = () => {
   );
 
   useEffect(() => {
-    if (!companyResp && isSuccess) {
+    if (!companyResp && isSuccess || isError) {
       toast({
         title: 'Error',
         description: `something went wrong`,
@@ -61,7 +69,7 @@ const CompanyPage = () => {
       });
       router.push('/');
     }
-  }, [companyResp, isSuccess]);
+  }, [companyResp, isSuccess, isError]);
 
   if (!companyResp || !digiProofsTypes) {
     return (
@@ -81,7 +89,7 @@ const CompanyPage = () => {
     links,
   } = companyResp;
 
-  const isOwner = checkIsOwner(address)
+  const isOwner = checkIsOwner(address);
 
   const bgImageUrl = backgroundImageUrl ?? getImgPath('default-bg.png');
   const avatarUrl = logoImageUrl ?? getImgPath('default-avatar.png');
@@ -116,9 +124,9 @@ const CompanyPage = () => {
           <Flex className="menu-section">
             <Bullet className="digi-proofs">
               <Text>Digi-Proofs with</Text>
-              {digiProofsIcon.map((src, i) => (
+              {getDigiProofWith().map((src, i) => (
                 <Flex key={i} className="digi-icon">
-                  <Image fill src={src} alt="icon" />
+                  {src && <Image fill src={src} alt="icon" />}
                 </Flex>
               ))}
             </Bullet>
@@ -129,11 +137,13 @@ const CompanyPage = () => {
           <Flex className="side-bar">
             <Flex className="address-section">
               <Flex mb="10px">
-                {categories.map(({ name }, i) => (
-                  <Tooltip key={i} label={name} placement="top">
-                    <Flex className="tag">{getShortAddress(name, 3, 3)}</Flex>
-                  </Tooltip>
-                ))}
+                {categories
+                  .filter((_, index) => index < 4)
+                  .map(({ name, shortName }, i) => (
+                    <Tooltip key={i} label={name} placement="top">
+                      <Flex className="tag">{shortName}</Flex>
+                    </Tooltip>
+                  ))}
               </Flex>
               <Bullet w="270px">
                 <Text
@@ -155,7 +165,7 @@ const CompanyPage = () => {
               <Text className="text">{description}</Text>
             </Flex>
             <Flex className="sm-section">
-              {links.map(({ type, url }, i) => {
+              {links.map(({ type, url, verified }, i) => {
                 const Icon = socialMediaMetaData[type].icon;
 
                 return (
@@ -166,7 +176,7 @@ const CompanyPage = () => {
                         <a href={url} target="_blank">
                           @{transformLinkToName(url, type)}
                         </a>
-                        {false && <VerifyIcon boxSize="15px" ml="5px" />}
+                        {verified && <VerifyIcon boxSize="15px" ml="5px" />}
                       </Text>
                     </Bullet>
                   </Flex>
@@ -175,7 +185,7 @@ const CompanyPage = () => {
             </Flex>
             <Flex className="join-date-section">
               <Text className="title">Joined</Text>
-              <Text className="date">February 2023</Text>
+              <Text className="date">{formatDate(companyResp.createdAt)}</Text>
             </Flex>
           </Flex>
           <Flex className="content">

@@ -15,6 +15,8 @@ import { SUPPORTS_CHAIN_ID } from '@app/api/web3/chains';
 import { debuger } from '@app/utils';
 
 import type { Connectors, IWalletContext } from '@app/types/web3Types';
+import useLocalStorageState from 'use-local-storage-state';
+import { QueryKeys } from '@app/api/http/queryKeys';
 
 export const SESSION_STORAGE_KEY = 'WalletProvider';
 
@@ -32,6 +34,12 @@ export const useWallet = () => useContext(WalletContext);
 
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const { connector, isActive: isActiveWallet, account, provider, chainId } = useWeb3React();
+  const [, , { removeItem }] = useLocalStorageState(
+    QueryKeys.metaData,
+  );
+
+
+
 
   const signer = useMemo(() => provider?.getSigner(), [provider]);
 
@@ -74,7 +82,7 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   );
   const handleDeactivate = useCallback(() => {
     debuger(() => console.log('handleDeactivate'));
-
+    removeItem()
     removeSessionProvider();
     if (connector?.deactivate) {
       void connector.deactivate();
@@ -83,6 +91,8 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
     }
     window.location.reload();
   }, [connector, removeSessionProvider]);
+
+  useEffect(() => {}, [])
 
   const handleChangeNetwork = useCallback(
     async (newChain: number, onSuccess: () => void) => {

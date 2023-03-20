@@ -39,7 +39,7 @@ export const socialMediaMetaData: Record<socialMediaTypes, { icon: ComponentWith
     icon: TwitterStaticIcon,
   },
   discord: {
-    icon: TwitterStaticIcon,
+    icon: DiscordStaticIcon,
   },
   instagram: {
     icon: InstaStaticIcon,

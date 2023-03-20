@@ -75,6 +75,7 @@ export const selectStyles: ChakraStylesConfig = {
   }),
   multiValue: provided => ({
     ...provided,
-    bgColor: '#697280'
+    bgColor: '#697280',
+    color: 'white'
   })
 };

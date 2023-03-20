@@ -11,6 +11,9 @@ export const companyStyles: SystemStyleObject = {
     position: 'relative',
     h: '280px',
     w: '100%',
+    img: {
+      objectFit: 'cover'
+    }
   },
   '.company-section': {
     px: mainPx,
@@ -29,6 +32,9 @@ export const companyStyles: SystemStyleObject = {
         boxSize: '142px',
         borderRadius: 'full',
         border: '9px solid #F4F7FA',
+        img: {
+          objectFit: 'cover'
+        }
       },
       '.menu-section': {
         '.digi-proofs': {

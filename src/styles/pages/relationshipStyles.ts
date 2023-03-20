@@ -31,6 +31,8 @@ export const relationshipStyles: SystemStyleObject = {
         borderRadius: '20px',
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
+        img: { objectFit: 'cover' },
       },
     },
     '.sidebar': {
@@ -128,8 +130,8 @@ export const relationshipStyles: SystemStyleObject = {
         fontSize: '13px',
         lineHeight: '20px',
         color: '#49535B',
-        mb: '66px'
-      }
+        mb: '66px',
+      },
     },
   },
 };
