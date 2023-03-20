@@ -16,7 +16,7 @@ import { useCategories } from '@app/api/http/query/useCategories';
 import { usePatchCompanyBySoulId } from '@app/api/http/mutations/usePatchCompanyBySoulId';
 import { IMetaData, IOption } from '@app/types';
 import apiServices from '@app/api/http/apiServices';
-import { InputSM } from '@app/components/sm-input/InputSM';
+import InputSM from '@app/components/sm-input/InputSM';
 import { QueryKeys } from '@app/api/http/queryKeys';
 import { sendImageToAWS } from '@app/utils';
 import { useCustomToast } from '@app/hooks/useCustomToast';
@@ -27,17 +27,13 @@ const Edit = () => {
   const router = useRouter();
   const { companySoulId } = router.query;
 
-
   const { data, isSuccess, isLoading, isError, getActiveCategory, getSocialLink } =
     useCompanyBySoulId({
       soulId: companySoulId?.toString(),
     });
   const { getOptions } = useCategories();
 
-  const {
-    mutate,
-    isLoading: isLoadingMutate,
-  } = usePatchCompanyBySoulId();
+  const { mutate, isLoading: isLoadingMutate } = usePatchCompanyBySoulId();
 
   const [metaData, setMetaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
 
@@ -46,7 +42,7 @@ const Edit = () => {
   const [discord, setDiscord] = useState<string>('');
   const [instagram, setInstagram] = useState<string>('');
   const [site, setSite] = useState<string>('');
-  const [isLoadingCrend, setIsLoadingCrend] = useState(false)
+  const [isLoadingCrend, setIsLoadingCrend] = useState(false);
 
   const [logoImageFile, setLogoImageFile] = useState<File>();
   const [featuredImageFile, setFeaturedImageFile] = useState<File>();
@@ -89,7 +85,7 @@ const Edit = () => {
         let backgroundImageKey;
 
         if (logoImageFile || featuredImageFile || backgroundImageFile) {
-          setIsLoadingCrend(true)
+          setIsLoadingCrend(true);
           const imagesCredentials = await apiServices.getImageCredentials({
             soulId: companySoulId,
             imageType: {
@@ -130,9 +126,9 @@ const Edit = () => {
       }
     } catch (e) {
       walletToast();
-      setIsLoadingCrend(false)
+      setIsLoadingCrend(false);
     }
-    setIsLoadingCrend(false)
+    setIsLoadingCrend(false);
   };
 
   useEffect(() => {
@@ -144,10 +140,10 @@ const Edit = () => {
 
   useEffect(() => {
     if (isSuccess && !isError && data) {
-      setTwitter(getSocialLink('twitter').url ?? '');
-      setDiscord(getSocialLink('discord').url ?? '');
-      setInstagram(getSocialLink('instagram').url ?? '');
-      setSite(getSocialLink('site').url ?? '');
+      setTwitter(getSocialLink('twitter')?.url ?? '');
+      setDiscord(getSocialLink('discord')?.url ?? '');
+      setInstagram(getSocialLink('instagram')?.url ?? '');
+      setSite(getSocialLink('site')?.url ?? '');
 
       setDesk(data.description);
 
@@ -252,25 +248,27 @@ const Edit = () => {
           <InputSM
             type="discord"
             onChange={setDiscord}
-            value={discord}
             getSignature={getSignature}
-            isVerified={getSocialLink('discord').verified}
+            getInitData={getSocialLink}
           />
           <InputSM
             type="twitter"
             onChange={setTwitter}
-            value={twitter}
             getSignature={getSignature}
-            isVerified={getSocialLink('twitter').verified}
+            getInitData={getSocialLink}
           />
           <InputSM
             type="instagram"
             onChange={setInstagram}
-            value={instagram}
             getSignature={getSignature}
-            isVerified={getSocialLink('instagram').verified}
+            getInitData={getSocialLink}
           />
-          <InputSM type="site" onChange={setSite} value={site} getSignature={getSignature} />
+          <InputSM
+            type="site"
+            onChange={setSite}
+            getSignature={getSignature}
+            getInitData={getSocialLink}
+          />
         </VStack>
         <Button isLoading={isLoadingMutate || isLoadingCrend} w="20%" h="60px" onClick={onSave}>
           Update

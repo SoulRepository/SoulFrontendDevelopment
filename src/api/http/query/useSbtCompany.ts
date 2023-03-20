@@ -10,6 +10,7 @@ const initData: ISbtCompanyResponse = {
   uri: '',
   digiProofType: '',
   companies: [{ soulId: '', name: '', logo: '', address: '', verified: false }],
+  createdAt: new Date()
 };
 
 export const useSbtCompany = ({ soulId, sbtId }: { soulId?: string; sbtId?: string }) => {

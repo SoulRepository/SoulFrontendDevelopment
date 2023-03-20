@@ -103,6 +103,7 @@ export interface ISbtCompanyResponse {
   digiProofType: string;
   description: string;
   uri: string;
+  createdAt: Date
   companies: ISbtCompany[];
 }
 
