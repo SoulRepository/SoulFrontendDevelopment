@@ -1,4 +1,6 @@
 import type { socialMediaTypes } from '@app/types';
+import { IImageCredentialData } from '@app/types/httpTypes';
+import axios from 'axios';
 
 export const getImgPath = (imgName: string) => `/images/${imgName}`;
 
@@ -103,3 +105,26 @@ export const oauthUrlFactory = (
   return oauthUrl;
 };
 
+export const sendImageToAWS = async (data?: IImageCredentialData, imageFile?: File) => {
+  if (!data || !imageFile) {
+    return void 0;
+  }
+
+  const formData = new FormData();
+  Object.entries(data.fields).forEach(([key, value]) => {
+    formData.set(key, value);
+  });
+  formData.set('Content-Type', imageFile.type);
+  formData.set('file', imageFile);
+  try {
+    await axios.post(data.url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return data.fields.key;
+  } catch (e) {
+    console.log(e);
+  }
+};

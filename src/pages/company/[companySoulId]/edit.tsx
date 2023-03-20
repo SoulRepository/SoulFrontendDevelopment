@@ -14,11 +14,11 @@ import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
 import { Loader } from '@app/components/ui/loader/Loader';
 import { useCategories } from '@app/api/http/query/useCategories';
 import { usePatchCompanyBySoulId } from '@app/api/http/mutations/usePatchCompanyBySoulId';
-import { IOption } from '@app/types';
+import { IMetaData, IOption } from '@app/types';
 import apiServices from '@app/api/http/apiServices';
-import axios from 'axios';
 import { InputSM } from '@app/components/sm-input/InputSM';
 import { QueryKeys } from '@app/api/http/queryKeys';
+import { sendImageToAWS } from '@app/utils';
 
 const Edit = () => {
   const { checkIsOwner, signer, account } = useWallet();
@@ -26,50 +26,45 @@ const Edit = () => {
   const router = useRouter();
   const { companySoulId } = router.query;
 
+  const { data, isLoading, isSuccess, isError, getActiveCategory, getSocialLink } =
+    useCompanyBySoulId({
+      soulId: companySoulId?.toString(),
+    });
+  const { getOptions } = useCategories();
+
   const { mutate } = usePatchCompanyBySoulId();
 
-  const { data, isLoading, isSuccess, isError, getActiveCategory } = useCompanyBySoulId({
-    soulId: companySoulId?.toString(),
-  });
-
-  const isOwner = checkIsOwner(data?.address);
-
-  const [metaData, setMetaData] = useLocalStorageState<{ message: string; signature: string }>(
-    QueryKeys.metaData,
-  );
+  const [metaData, setMetaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
 
   const [desk, setDesk] = useState('' ?? data?.description);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [twitter, setTwitter] = useState<string | undefined>('');
-  const [discord, setDiscord] = useState<string | undefined>('');
-  const [instagram, setInstagram] = useState<string | undefined>('');
-  const [site, setSite] = useState<string | undefined>('');
+  const [twitter, setTwitter] = useState<string>('');
+  const [discord, setDiscord] = useState<string>('');
+  const [instagram, setInstagram] = useState<string>('');
+  const [site, setSite] = useState<string>('');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [logoImageFile, setLogoImageFile] = useState<File>();
   const [featuredImageFile, setFeaturedImageFile] = useState<File>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [backgroundImageFile, setBackgroundImageFile] = useState<File>();
   const [categories, setCategories] = useState<undefined | IOption[]>(undefined);
 
-  const { getOptions } = useCategories();
-
   const categoryOptions = useMemo(() => getOptions(), [getOptions]);
+
+  const isOwner = checkIsOwner(data?.address);
 
   const getSignature = useCallback(async () => {
     try {
       const message = 'For editing you need to sign this message.'.padEnd(50) + uuidv4();
       const signature = await signer?.signMessage(message);
-      if (!message || !signature) {
+      if (!message || !signature || !account) {
         throw new Error();
       }
-      setMetaData({ message, signature });
+      setMetaData({ message, signature, soulId: companySoulId!.toString(), account: account });
     } catch (e) {
       console.log('no');
     }
 
     return;
-  }, [setMetaData, signer]);
+  }, [setMetaData, signer, account]);
 
   const onSave = async () => {
     if (!metaData) {
@@ -81,42 +76,44 @@ const Edit = () => {
     const { message, signature } = metaData;
     try {
       if (typeof companySoulId === 'string' && signature && account) {
-        const imagesCredentials = await apiServices.getImageCredentials(
-          {
-            soulId: companySoulId,
-            imageType: {
-              forLogo: true,
-            },
-            accessData: { message, address: account, sign: signature },
+        const imagesCredentials = await apiServices.getImageCredentials({
+          soulId: companySoulId,
+          imageType: {
+            forLogo: !!logoImageFile,
+            forFeatured: !!featuredImageFile,
+            forBackground: !!backgroundImageFile,
           },
-          true,
-        );
-        if (imagesCredentials?.logo && featuredImageFile) {
-          const formData = new FormData();
-          Object.entries(imagesCredentials?.logo.fields).forEach(([key, value]) => {
-            formData.set(key, value);
-          });
-          formData.set('Content-Type', 'image/png');
-          formData.set('file', featuredImageFile, `featuredImageFile-${companySoulId}`);
+          accessData: { message, address: account, sign: signature },
+          isProxy: true,
+        });
 
-          try {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const data = await axios.post(imagesCredentials?.logo.url, formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            });
-          } catch (e) {
-            console.log(e);
-          }
-        }
+        const logoImageKey = await sendImageToAWS(imagesCredentials?.logo, logoImageFile);
+        const featuredImageKey = await sendImageToAWS(
+          imagesCredentials?.featured,
+          featuredImageFile,
+        );
+        const backgroundImageKey = await sendImageToAWS(
+          imagesCredentials?.background,
+          backgroundImageFile,
+        );
+
+        const links = [
+          { url: twitter, type: 'twitter' },
+          { url: discord, type: 'discord' },
+          { url: instagram, type: 'instagram' },
+          { url: site, type: 'site' },
+        ].filter(link => !!link.url);
 
         mutate({
           soulId: companySoulId,
           accessData: { message, address: account, sign: signature },
           companyInfo: {
+            logoImageKey,
+            featuredImageKey,
+            backgroundImageKey,
             description: desk,
             categoriesIds: categories?.map(item => Number(item.value)),
+            links,
           },
         });
       }
@@ -150,15 +147,10 @@ const Edit = () => {
 
   useEffect(() => {
     if (isSuccess && !isError && data) {
-      const twitter = data.links.find(item => item.type === 'twitter');
-      const discord = data.links.find(item => item.type === 'discord');
-      const instagram = data.links.find(item => item.type === 'instagram');
-      const site = data.links.find(item => item.type === 'site');
-
-      setTwitter(twitter?.url);
-      setDiscord(discord?.url);
-      setInstagram(instagram?.url);
-      setSite(site?.url);
+      setTwitter(getSocialLink('twitter').url ?? '');
+      setDiscord(getSocialLink('discord').url ?? '');
+      setInstagram(getSocialLink('instagram').url ?? '');
+      setSite(getSocialLink('site').url ?? '');
 
       setDesk(data.description);
 
@@ -265,14 +257,21 @@ const Edit = () => {
             onChange={setDiscord}
             value={discord}
             getSignature={getSignature}
-            isVerified={true}
+            isVerified={getSocialLink('discord').verified}
           />
-          <InputSM type="twitter" onChange={setTwitter} value={''} getSignature={getSignature} />
+          <InputSM
+            type="twitter"
+            onChange={setTwitter}
+            value={twitter}
+            getSignature={getSignature}
+            isVerified={getSocialLink('twitter').verified}
+          />
           <InputSM
             type="instagram"
             onChange={setInstagram}
             value={instagram}
             getSignature={getSignature}
+            isVerified={getSocialLink('instagram').verified}
           />
           <InputSM type="site" onChange={setSite} value={site} getSignature={getSignature} />
         </VStack>
