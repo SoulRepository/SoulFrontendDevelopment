@@ -9,7 +9,7 @@ export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
   px: mainPx,
   alignItems: 'center',
   justifyContent: 'center',
-  bgColor: isShowBg ? lightColor.headerBgColor : 'transparent',
+  background: isShowBg ? lightColor.headerBgColor : 'linear-gradient(0deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%)',
   position: isShowBg ? 'relative' : 'absolute',
   '.search': {
     mr: '95px',

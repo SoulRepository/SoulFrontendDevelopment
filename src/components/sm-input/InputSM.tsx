@@ -1,25 +1,37 @@
-import { Button, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { ChangeEventHandler, FC, memo, useEffect, useState } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
+import {
+  Button,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+} from '@chakra-ui/react';
 
 import { inputSMStyles } from '@app/components/sm-input/inputSMStyles';
-import { ChangeEventHandler, FC, useEffect, useState } from 'react';
-import type { socialMediaTypes } from '@app/types';
 import { socialMediaMetaData } from '@app/mockData';
-import { useSocialLinks } from '@app/api/http/query/useSocialLinks';
 import { windowOpen } from '@app/utils';
-import useLocalStorageState from 'use-local-storage-state';
+
+import { useSocialLinks } from '@app/api/http/query/useSocialLinks';
+
 import { QueryKeys } from '@app/api/http/queryKeys';
+import type { socialMediaTypes } from '@app/types';
+import {ISocialLink} from "@app/types/httpTypes";
 
 interface IInputSMProps {
   type: socialMediaTypes;
   onChange: (text: string, type: socialMediaTypes) => void;
-  value?: string;
-  isVerified?: boolean;
   getSignature?: () => void;
+  getInitData: (type: socialMediaTypes) => ISocialLink | undefined
 }
 
-export const InputSM: FC<IInputSMProps> = ({ type, onChange, value, isVerified, getSignature }) => {
-  const [inputText, setInputText] = useState(value);
-  const [isVerif, setIsVerif] = useState(isVerified);
+const InputSM: FC<IInputSMProps> = ({ type, onChange, getSignature, getInitData }) => {
+  const initData = getInitData(type)
+
+  const [inputText, setInputText] = useState(initData?.url);
+  const [isVerif, setIsVerif] = useState(initData?.verified);
+
 
   const Icon = socialMediaMetaData[type].icon;
 
@@ -50,29 +62,39 @@ export const InputSM: FC<IInputSMProps> = ({ type, onChange, value, isVerified, 
   };
 
   useEffect(() => {
-    setInputText(value);
-  }, [value]);
+    setInputText(initData?.url);
+    setIsVerif(initData?.verified);
+  }, [initData?.url, initData?.verified]);
 
   return (
-    <InputGroup sx={inputSMStyles}>
-      <InputLeftElement pointerEvents="none">
-        <Icon className="icon" />
-      </InputLeftElement>
-      <Input
-        disabled={isVerif}
-        value={inputText}
-        onChange={onChangeHandler}
-        type="text"
-        placeholder={type}
-      />
+    <Flex sx={inputSMStyles}>
+      <InputGroup className="input-group">
+        <InputLeftElement pointerEvents="none">
+          <Icon className="icon" />
+        </InputLeftElement>
+        <Input
+          disabled={isVerif}
+          value={inputText}
+          onChange={onChangeHandler}
+          type="text"
+          placeholder={type}
+        />
+        {isVerif && (
+          <InputRightElement>
+            <Flex className="verified">Verified</Flex>
+          </InputRightElement>
+        )}
+      </InputGroup>
       {type !== 'site' &&
-        (value && isVerif ? (
+        (isVerif ? (
           <Button onClick={onUnlinkHandler}>Unlink</Button>
         ) : (
           <Button isDisabled={isVerif || !data?.link} onClick={onAuthorizationHandler}>
             Authorization
           </Button>
         ))}
-    </InputGroup>
+    </Flex>
   );
 };
+
+export default memo(InputSM);

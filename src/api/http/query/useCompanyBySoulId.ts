@@ -1,9 +1,11 @@
-import { useWallet } from '@app/api/web3/providers/WalletProvider';
+import { useCallback } from 'react';
 import { useQuery } from 'react-query';
+
+import { useWallet } from '@app/api/web3/providers/WalletProvider';
 import { QueryKeys } from '@app/api/http/queryKeys';
 import SoulSearchApi from '@app/api/http/apiServices';
-import { useCallback } from 'react';
-import { IOption, socialMediaTypes } from '@app/types';
+
+import type { IOption, socialMediaTypes } from '@app/types';
 
 export const useCompanyBySoulId = ({ soulId }: { soulId?: string }) => {
   const { account, chainId } = useWallet();
@@ -13,8 +15,9 @@ export const useCompanyBySoulId = ({ soulId }: { soulId?: string }) => {
     () => SoulSearchApi.getCompanyBySoulId(soulId!),
     {
       retry: 2,
-      staleTime: 10000,
+      staleTime: 5000,
       enabled: !!soulId,
+      refetchOnWindowFocus: true,
     },
   );
 
@@ -30,8 +33,7 @@ export const useCompanyBySoulId = ({ soulId }: { soulId?: string }) => {
   );
 
   const getSocialLink = useCallback(
-    (type: socialMediaTypes) =>
-      data?.links.find(item => item.type === type) ?? { url: '', type: '', verified: false },
+    (type: socialMediaTypes) => data?.links.find(item => item.type === type),
     [data],
   );
 
