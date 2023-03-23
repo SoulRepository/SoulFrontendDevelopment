@@ -41,6 +41,7 @@ export const menuStyles: SystemStyleObject = {
   w: '280px',
   mr: '190px',
   '.menu-item': {
+    fontSize: '16px',
     color: 'white',
     transition: 'all 0.3s',
     _hover: {
