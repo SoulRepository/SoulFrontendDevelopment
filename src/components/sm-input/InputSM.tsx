@@ -1,5 +1,4 @@
 import { ChangeEventHandler, FC, memo, useEffect, useState } from 'react';
-import useLocalStorageState from 'use-local-storage-state';
 import {
   Button,
   Flex,
@@ -14,16 +13,14 @@ import { socialMediaMetaData } from '@app/mockData';
 import { windowOpen } from '@app/utils';
 
 import { useSocialLinks } from '@app/api/http/query/useSocialLinks';
-
-import { QueryKeys } from '@app/api/http/queryKeys';
 import type { socialMediaTypes } from '@app/types';
-import {ISocialLink} from "@app/types/httpTypes";
+import { ISocialLink } from '@app/types/httpTypes';
 
 interface IInputSMProps {
   type: socialMediaTypes;
   onChange: (text: string, type: socialMediaTypes) => void;
-  getSignature?: () => void;
-  getInitData: (type: socialMediaTypes) => ISocialLink | undefined
+  getSignature?: (withStorage: boolean) => void;
+  getInitData: (type: socialMediaTypes) => ISocialLink | undefined;
 }
 
 const InputSM: FC<IInputSMProps> = ({ type, onChange, getSignature, getInitData }) => {
@@ -34,8 +31,6 @@ const InputSM: FC<IInputSMProps> = ({ type, onChange, getSignature, getInitData 
 
 
   const Icon = socialMediaMetaData[type].icon;
-
-  const [metaData] = useLocalStorageState(QueryKeys.metaData);
 
   const { data } = useSocialLinks(type);
 
@@ -50,12 +45,13 @@ const InputSM: FC<IInputSMProps> = ({ type, onChange, getSignature, getInitData 
     setIsVerif(false);
   };
 
-  const onAuthorizationHandler = () => {
-    if (!metaData) {
-      getSignature?.();
+  const onAuthorizationHandler = async () => {
+    const meta = await getSignature?.(true);
 
+    if (!meta) {
       return;
     }
+
     data && windowOpen(data.link);
 
     return;
