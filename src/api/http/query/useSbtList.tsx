@@ -10,7 +10,7 @@ export const useSbtList = ({
   limit,
 }: {
   souldId: string;
-  digiProof: string;
+  digiProof?: string;
   limit?: number;
 }) => {
   const { account, chainId } = useWallet();
@@ -21,12 +21,18 @@ export const useSbtList = ({
     {
       retry: 2,
       staleTime: 10000,
-      enabled: !!souldId && !!digiProof
+      enabled: !!souldId,
     },
   );
 
   const getDigiProofWith = useCallback(
-    () => (sbtList.data ? sbtList.data.map(item => item.companies[0].logo) : []),
+    () =>
+      sbtList.data
+        ? sbtList.data.reduce<string[]>(
+            (acc, item) => ([...acc, ...item.companies.map(item => item.logo)].filter(Boolean) as string[]),
+            [],
+          )
+        : [],
     [sbtList.data],
   );
 

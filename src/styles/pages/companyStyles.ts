@@ -51,6 +51,7 @@ export const companyStyles: SystemStyleObject = {
             borderRadius: 'full',
             ml: '-10px',
             boxSize: '28px',
+            overflow: 'hidden'
           },
         },
       },

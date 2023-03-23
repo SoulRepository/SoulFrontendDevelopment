@@ -47,8 +47,7 @@ const CompanyPage = () => {
 
   const { getDigiProofWith } = useSbtList({
     souldId,
-    digiProof: 'Collaboration',
-    limit: 3,
+    limit: 5,
   });
 
   const dropdownMenuItem: IMenuItem[] = useMemo(
