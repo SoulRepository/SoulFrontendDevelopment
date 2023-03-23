@@ -11,7 +11,7 @@ export const footerStyles: SystemStyleObject = {
     alignItems: 'center',
     color: '#747B82',
     fontWeight: 400,
-    fontSize: '14px',
+    fontSize: { '2xl': '14px', xl: '12px' },
     lineHeight: '17px',
     '.accent': {
       color: '#0057FF',
@@ -24,19 +24,19 @@ export const footerStyles: SystemStyleObject = {
 export const footerMenuStyles: SystemStyleObject = {
   justifyContent: { '2xl': 'space-between', xl: 'space-evenly' },
   px: { '2xl': mainPx },
-  py: '93px',
+  py: { '2xl': '93px', xl: '63px' },
   w: '100%',
   '.h3-footer': {
     fontWeight: 600,
-    fontSize: '18px',
+    fontSize: { '2xl': '18px', xl: '16px' },
     lineHeight: '12px',
-    mb: '38px',
+    mb: { '2xl': '38px', xl: '28px' },
   },
   '.desk-column': {
     flexDirection: 'column',
     maxW: '273px',
     fontWeight: 400,
-    fontSize: '15px',
+    fontSize: { '2xl': '15px', xl: '13px' },
     lineHeight: '22px',
     '.logo': {
       position: 'relative',
@@ -47,7 +47,7 @@ export const footerMenuStyles: SystemStyleObject = {
   '.links-info': {
     flexDirection: 'column',
     '.links-list': {
-      fontSize: '14px',
+      fontSize: { '2xl': '14px', xl: '12px' },
       fontWeight: 500,
       lineHeight: '36px',
       color: '#49535B',
@@ -82,11 +82,13 @@ export const footerMenuStyles: SystemStyleObject = {
       color: 'white',
       mt: '10px',
       mr: '4px',
+      fontSize: { '2xl': '16px', xl: '14px' },
     },
     '.newsletter-input': {
       w: '320px',
       h: '50px',
       background: '#F5F7F9',
+      fontSize: { '2xl': '16px', xl: '14px' },
       border: '1px solid #CED1D5',
       _placeholder: {
         color: '#697280',
