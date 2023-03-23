@@ -9,9 +9,9 @@ import { useVerificationSocialLink } from '@app/api/http/mutations/useVerificati
 
 const Auth = () => {
   const { query } = useRouter();
-  const [metaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
+  const [metaData, , { removeItem }] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
 
-  const { mutate } = useVerificationSocialLink();
+  const { mutate, isSuccess: isSuccessMutate } = useVerificationSocialLink();
 
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -26,7 +26,11 @@ const Auth = () => {
         accessData: { message, address: account, sign: signature },
       });
     }
-  }, [query.code, query.state, metaData]);
+  }, [query.code, query.state, metaData, removeItem]);
+
+  useEffect(() => {
+    isSuccessMutate && removeItem();
+  }, [isSuccessMutate]);
 
   if (!isSuccess) {
     return null;

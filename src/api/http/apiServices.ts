@@ -125,7 +125,7 @@ const SoulSearchApi = {
     souldId,
     limit,
   }: {
-    digiProof: string;
+    digiProof?: string;
     souldId: string;
     limit?: number;
   }) => {

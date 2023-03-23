@@ -35,7 +35,7 @@ const Edit = () => {
 
   const { mutate, isLoading: isLoadingMutate } = usePatchCompanyBySoulId();
 
-  const [metaData, setMetaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
+  const [, setMetaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
 
   const [desk, setDesk] = useState('' ?? data?.description);
   const [twitter, setTwitter] = useState<string>('');
@@ -53,28 +53,40 @@ const Edit = () => {
 
   const isOwner = checkIsOwner(data?.address);
 
-  const getSignature = useCallback(async () => {
+  const getSignature = useCallback(async (withStorage = false) => {
     try {
-      const message = 'For editing you need to sign this message.'.padEnd(50) + uuidv4();
+      const timeStamp = Date.now()
+      const message = 'For editing you need to sign this message.'.padEnd(50) + uuidv4() + timeStamp;
       const signature = await signer?.signMessage(message);
       if (!message || !signature || !account) {
         walletToast();
 
         return;
       }
-      setMetaData({ message, signature, soulId: companySoulId!.toString(), account: account });
+      const metaData: IMetaData = {
+        message,
+        signature,
+        soulId: companySoulId!.toString(),
+        account: account,
+        timeStamp
+      };
+      if (withStorage) {
+        setMetaData(metaData);
+      }
+
+      return metaData
     } catch (e) {
       walletToast();
     }
 
     return;
-  }, [setMetaData, signer, account, walletToast]);
+  }, [signer, account, companySoulId, setMetaData, walletToast]);
 
   const onSave = async () => {
-    if (!metaData) {
-      getSignature();
+    const metaData = await getSignature()
 
-      return;
+    if (!metaData) {
+      return
     }
 
     const { message, signature } = metaData;
