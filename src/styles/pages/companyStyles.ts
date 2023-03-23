@@ -1,6 +1,6 @@
 import { SystemStyleObject } from '@chakra-ui/react';
 import { mainPx } from '@app/styles/styleVars';
-import {lightColor} from "@app/styles/colorScheme";
+import { lightColor } from '@app/styles/colorScheme';
 
 export const companyStyles: SystemStyleObject = {
   flexDirection: 'column',
@@ -12,11 +12,11 @@ export const companyStyles: SystemStyleObject = {
     h: '280px',
     w: '100%',
     img: {
-      objectFit: 'cover'
-    }
+      objectFit: 'cover',
+    },
   },
   '.company-section': {
-    px: mainPx,
+    px: {'2xl': mainPx, md: '14%'},
     mb: '100px',
     w: '100%',
     flexDirection: 'column',
@@ -29,12 +29,12 @@ export const companyStyles: SystemStyleObject = {
       '.avatar': {
         position: 'relative',
         overflow: 'hidden',
-        boxSize: '150px',
+        boxSize: {'2xl': '150px', md: '130px'},
         borderRadius: 'full',
         border: '9px solid #F4F7FA',
         img: {
-          objectFit: 'cover'
-        }
+          objectFit: 'cover',
+        },
       },
       '.menu-section': {
         '.digi-proofs': {
@@ -43,7 +43,7 @@ export const companyStyles: SystemStyleObject = {
           p: {
             mr: '17px',
             fontWeight: 500,
-            fontSize: '15px',
+            fontSize: { '2xl': '15px', md: '14px' },
           },
           '.digi-icon': {
             border: '3px solid white',
@@ -51,7 +51,7 @@ export const companyStyles: SystemStyleObject = {
             borderRadius: 'full',
             ml: '-10px',
             boxSize: '28px',
-            overflow: 'hidden'
+            overflow: 'hidden',
           },
         },
       },
@@ -64,12 +64,13 @@ export const companyStyles: SystemStyleObject = {
         '.address-section': {
           flexDirection: 'column',
           mb: '21px',
+          fontSize: { '2xl': '16px', md: '14px' },
           '.copy-icon': {
             cursor: 'pointer',
             ml: '10px',
             _hover: {
-              color: lightColor.highlighting
-            }
+              color: lightColor.highlighting,
+            },
           },
           '.tag': {
             h: '36px',
@@ -89,13 +90,13 @@ export const companyStyles: SystemStyleObject = {
           flexDirection: 'column',
           h2: {
             fontWeight: 600,
-            fontSize: '36px',
+            fontSize: { '2xl': '36px', md: '26px' },
             lineHeight: '43px',
           },
           p: {
             color: '#8F3DFF',
             fontWeight: 500,
-            fontSize: '16px',
+            fontSize: { '2xl': '16px', md: '14px' },
             lineHeight: '20px',
           },
         },
@@ -114,7 +115,7 @@ export const companyStyles: SystemStyleObject = {
           '.text': {
             minW: '279px',
             fontWeight: 400,
-            fontSize: '14px',
+            fontSize: { '2xl': '14px', md: '12px' },
             lineHeight: '17px',
           },
         },
@@ -122,6 +123,7 @@ export const companyStyles: SystemStyleObject = {
           flexDirection: 'column',
           mb: '20px',
           '.social-box': {
+            fontSize: { '2xl': '16px', md: '14px' },
             mb: '10px',
           },
         },
@@ -161,7 +163,7 @@ export const menuItemStyles = (isActive: boolean): SystemStyleObject => ({
   color: isActive ? '#0057FF' : '#041226',
   borderRadius: '6px',
   fontWeight: 600,
-  fontSize: '14px',
+  fontSize: { '2xl': '14px', md: '12px' },
   lineHeight: '17px',
   mr: '24px',
   cursor: 'pointer',

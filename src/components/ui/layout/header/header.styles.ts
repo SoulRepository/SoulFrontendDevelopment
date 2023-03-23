@@ -14,7 +14,7 @@ export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
     : 'linear-gradient(0deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%)',
   position: isShowBg ? 'relative' : 'absolute',
   '.search': {
-    mr: { '2xl': '95px', xl: '65px' },
+    mr: { '2xl': '95px', md: '65px' },
   },
   '.logo': {
     mr: '39px',
@@ -29,6 +29,7 @@ export const headerStyles = (isShowBg: boolean): SystemStyleObject => ({
     '.account': {
       textTransform: 'uppercase',
       cursor: 'pointer',
+      fontSize: { '2xl': '16px', md: '14px' },
       _hover: { color: lightColor.highlighting },
     },
     '.exit': {
@@ -44,9 +45,9 @@ export const menuStyles: SystemStyleObject = {
   alignItems: 'center',
   justifyContent: 'space-between',
   w: '280px',
-  mr: { '2xl': '160px', xl: '100px' },
+  mr: { '2xl': '160px', md: '100px' },
   '.menu-item': {
-    fontSize: { '2xl': '16px', xl: '14px' },
+    fontSize: { '2xl': '16px', md: '14px' },
     color: 'white',
     transition: 'all 0.3s',
     _hover: {

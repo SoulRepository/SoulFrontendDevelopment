@@ -140,7 +140,7 @@ const CompanyPage = () => {
                   onClick={() => scanTransaction(address, 'address')}
                 >
                   {nftAddress}
-                </Text>{' '}
+                </Text>
                 <CopyIcon className="copy-icon" onClick={onCopyHandler} />
               </Bullet>
             </Flex>

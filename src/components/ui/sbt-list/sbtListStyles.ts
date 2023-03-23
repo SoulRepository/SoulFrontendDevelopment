@@ -5,8 +5,8 @@ export const sbtListStyles: SystemStyleObject = {
   mb: '20px',
   mr: '26px',
   '.card': {
-    h: '250px',
-    w: '270px',
+    h: { '2xl': '250px', md: '190px' },
+    w: { '2xl': '270px', md: '185px' },
     borderRadius: '20px',
     mb: '20px',
 
@@ -20,8 +20,8 @@ export const sbtListStyles: SystemStyleObject = {
       w: '100%',
       h: '100%',
       img: {
-        objectFit: 'cover'
-      }
+        objectFit: 'cover',
+      },
     },
   },
   h3: {
