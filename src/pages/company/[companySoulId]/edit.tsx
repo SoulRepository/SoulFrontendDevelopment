@@ -180,7 +180,7 @@ const Edit = () => {
           Go back
         </Text>
         <VStack align="stretch" spacing={5}>
-          <Flex className="file-input-section">
+          <Flex className="file-input-section logo">
             <Text>Logo image</Text>
             <Text className="advice">
               The image will also be used for company avatar. 150*150 recommended
@@ -195,22 +195,17 @@ const Edit = () => {
               />
             </Flex>
           </Flex>
-          <Flex w="600px" className="file-input-section" borderRadius="full">
+          <Flex className="file-input-section featured" borderRadius="full">
             <Text>Featured image</Text>
             <Text className="advice">
               This image will be used for featuring your collection on the homepage, category pages,
               or other promotional areas of SoulSearch. 650 x 650 recommended
             </Text>
-            <FileInput
-              h="600px"
-              w="600px"
-              activeImgUrl={featuredImageUrl}
-              onChange={setFeaturedImageFile}
-            />
+            <FileInput activeImgUrl={featuredImageUrl} onChange={setFeaturedImageFile} />
           </Flex>
-          <Flex className="file-input-section" borderRadius="full">
+          <Flex className="file-input-section banner" borderRadius="full">
             <Text>Banner image</Text>
-            <Text w="600px" className="advice">
+            <Text className="advice">
               This image will appear at the top of your main page. Avoid including too much text in
               this banner image, as the dimensions change on different devices. 1400 x 280
               recommended
@@ -223,13 +218,13 @@ const Edit = () => {
           </Flex>
         </VStack>
         <VStack>
-          <Flex w="100%" flexDirection="column" mb="2px">
+          <Flex w="100%" flexDirection="column" mb="2px" fontSize="14px">
             <Text>Company name</Text>
-            <Input type="text" value={name} isDisabled />
+            <Input type="text" fontSize="14px" value={name} isDisabled />
           </Flex>
 
-          <Flex w="100%" flexDirection="column" mb="2px">
-            <Text>Category</Text>
+          <Flex w="100%" fontSize='14px' flexDirection="column" mb="2px">
+            <Text fontSize='14px'>Category</Text>
             <Select
               instanceId="edit_select"
               chakraStyles={selectStyles}
@@ -282,7 +277,13 @@ const Edit = () => {
             getInitData={getSocialLink}
           />
         </VStack>
-        <Button isLoading={isLoadingMutate || isLoadingCrend} w="20%" h="60px" onClick={onSave}>
+        <Button
+          className="update-button"
+          isLoading={isLoadingMutate || isLoadingCrend}
+          w="20%"
+          h="60px"
+          onClick={onSave}
+        >
           Update
         </Button>
       </VStack>
