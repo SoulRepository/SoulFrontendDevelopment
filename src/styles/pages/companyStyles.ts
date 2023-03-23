@@ -29,7 +29,7 @@ export const companyStyles: SystemStyleObject = {
       '.avatar': {
         position: 'relative',
         overflow: 'hidden',
-        boxSize: '142px',
+        boxSize: '150px',
         borderRadius: 'full',
         border: '9px solid #F4F7FA',
         img: {
