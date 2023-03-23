@@ -5,7 +5,6 @@ import { lightColor } from '@app/styles/colorScheme';
 export const footerStyles: SystemStyleObject = {
   flexDirection: 'column',
   '.copyright': {
-    mx: mainPx,
     borderTop: '1px solid #E7E7E7',
     py: '23px',
     justifyContent: 'center',
@@ -17,15 +16,16 @@ export const footerStyles: SystemStyleObject = {
     '.accent': {
       color: '#0057FF',
       fontWeight: 600,
-      pl: '5px'
-    }
+      pl: '5px',
+    },
   },
 };
 
 export const footerMenuStyles: SystemStyleObject = {
-  justifyContent: 'space-between',
-  px: mainPx,
+  justifyContent: { '2xl': 'space-between', xl: 'space-evenly' },
+  px: { '2xl': mainPx },
   py: '93px',
+  w: '100%',
   '.h3-footer': {
     fontWeight: 600,
     fontSize: '18px',
@@ -38,6 +38,11 @@ export const footerMenuStyles: SystemStyleObject = {
     fontWeight: 400,
     fontSize: '15px',
     lineHeight: '22px',
+    '.logo': {
+      position: 'relative',
+      w: '185px',
+      h: '27px',
+    },
   },
   '.links-info': {
     flexDirection: 'column',

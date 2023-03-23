@@ -43,7 +43,7 @@ export const Header: FC<IHeaderProps> = ({ isShowBg }) => {
     <Flex as="header" sx={headerStyles(isShowBg)}>
       <Flex className="logo">
         <Link href="/">
-          <Image width={185} height={27} src={getImgPath('logo-white.png')} alt="logo" />
+          <Image fill src={getImgPath('logo-white.png')} alt="logo" />
         </Link>
       </Flex>
       <Flex className="search">
