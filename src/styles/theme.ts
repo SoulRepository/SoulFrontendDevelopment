@@ -1,9 +1,4 @@
-import {
-  DeepPartial,
-  extendTheme,
-  theme as defaultTheme,
-  ThemeOverride,
-} from '@chakra-ui/react';
+import { DeepPartial, extendTheme, theme as defaultTheme, ThemeOverride } from '@chakra-ui/react';
 
 import { lightColor } from '@app/styles/colorScheme';
 
@@ -28,7 +23,8 @@ const themeConfig: DeepPartial<ThemeOverride> = {
   breakpoints: {
     sm: '375px',
     md: '768px',
-    xl: '1920px',
+    xl: '1440px',
+    '2xl': '1920px',
   },
   config: {
     initialColorMode: 'light',

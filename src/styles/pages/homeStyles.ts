@@ -9,7 +9,7 @@ export const HomeStyles: SystemStyleObject = {
   flexDirection: 'column',
   position: 'relative',
   py: '200px',
-  px: `calc(146px + ${mainPx})`,
+  px: { '2xl': `calc(146px + ${mainPx})`, md: mainPx },
   h1: {
     fontSize: '100px',
     fontWeight: 600,

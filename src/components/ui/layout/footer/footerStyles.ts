@@ -5,44 +5,49 @@ import { lightColor } from '@app/styles/colorScheme';
 export const footerStyles: SystemStyleObject = {
   flexDirection: 'column',
   '.copyright': {
-    mx: mainPx,
     borderTop: '1px solid #E7E7E7',
     py: '23px',
     justifyContent: 'center',
     alignItems: 'center',
     color: '#747B82',
     fontWeight: 400,
-    fontSize: '14px',
+    fontSize: { '2xl': '14px', md: '12px' },
     lineHeight: '17px',
     '.accent': {
       color: '#0057FF',
       fontWeight: 600,
-      pl: '5px'
-    }
+      pl: '5px',
+    },
   },
 };
 
 export const footerMenuStyles: SystemStyleObject = {
-  justifyContent: 'space-between',
-  px: mainPx,
-  py: '93px',
+  justifyContent: { '2xl': 'space-between', md: 'space-evenly' },
+  px: { '2xl': mainPx },
+  py: { '2xl': '93px', md: '63px' },
+  w: '100%',
   '.h3-footer': {
     fontWeight: 600,
-    fontSize: '18px',
+    fontSize: { '2xl': '18px', md: '16px' },
     lineHeight: '12px',
-    mb: '38px',
+    mb: { '2xl': '38px', md: '28px' },
   },
   '.desk-column': {
     flexDirection: 'column',
     maxW: '273px',
     fontWeight: 400,
-    fontSize: '15px',
+    fontSize: { '2xl': '15px', md: '13px' },
     lineHeight: '22px',
+    '.logo': {
+      position: 'relative',
+      w: '185px',
+      h: '27px',
+    },
   },
   '.links-info': {
     flexDirection: 'column',
     '.links-list': {
-      fontSize: '14px',
+      fontSize: { '2xl': '14px', md: '12px' },
       fontWeight: 500,
       lineHeight: '36px',
       color: '#49535B',
@@ -77,11 +82,13 @@ export const footerMenuStyles: SystemStyleObject = {
       color: 'white',
       mt: '10px',
       mr: '4px',
+      fontSize: { '2xl': '16px', md: '14px' },
     },
     '.newsletter-input': {
       w: '320px',
       h: '50px',
       background: '#F5F7F9',
+      fontSize: { '2xl': '16px', md: '14px' },
       border: '1px solid #CED1D5',
       _placeholder: {
         color: '#697280',

@@ -27,7 +27,7 @@ export const SbtList: FC<ISbtListProps> = ({ souldId, digiProof }) => {
   if (!data || !data.length) {
     return (
       <>
-        <Text fontSize="20px" color="#697280">
+        <Text fontSize="18px" color="#697280">
           No Digi-proof relationships yet
         </Text>
       </>

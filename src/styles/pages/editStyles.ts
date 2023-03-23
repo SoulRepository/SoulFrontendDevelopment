@@ -2,7 +2,6 @@ import { SystemStyleObject } from '@chakra-ui/react';
 import { ChakraStylesConfig } from 'chakra-react-select';
 
 export const editStyles: SystemStyleObject = {
-  // px: mainPx,
   py: '50px',
   w: '100%',
   alignItems: 'center',
@@ -28,12 +27,12 @@ export const editStyles: SystemStyleObject = {
     _disabled: {
       _hover: {
         background: 'linear-gradient(180deg, #6297FF -6.76%, #0057FF 106.76%)',
-      }
-    }
+      },
+    },
   },
   '.description': {
     flexDirection: 'column',
-
+    fontSize: { '2xl': '16px', md: '14px' },
     textarea: {
       bgColor: 'white',
       borderRadius: '6px',
@@ -45,9 +44,19 @@ export const editStyles: SystemStyleObject = {
   },
   '.file-input-section': {
     flexDirection: 'column',
-    '.advice': {
-      fontSize: '14px',
+    '&.logo': {
+      fontSize: { '2xl': '16px', md: '14px' },
     },
+    '&.featured': {
+      w: { '2xl': '600px', md: '500px' },
+      h: { '2xl': '600px', md: '500px' },
+    },
+    '.advice': {
+      fontSize: { '2xl': '14px', xl: '12px' },
+    },
+  },
+  '.update-button': {
+    fontSize: { '2xl': '16px', xl: '14px' },
   },
 };
 

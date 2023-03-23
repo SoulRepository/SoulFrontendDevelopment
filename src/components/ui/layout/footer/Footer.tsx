@@ -47,12 +47,13 @@ export const Footer = () => (
   <Flex sx={footerStyles}>
     <Flex as="footer" sx={footerMenuStyles}>
       <Flex className="desk-column">
-        <Image
-          width={185}
-          height={27}
-          src={getImgPath('logo-black.png')}
-          alt="logo"
-        />
+        <Flex className='logo'>
+          <Image
+            fill
+            src={getImgPath('logo-black.png')}
+            alt="logo"
+          />
+        </Flex>
         <Text pt="8px">
           Soul Search is a protocol that enables projects to verify their
           affiliations to protect both themselves and investors
