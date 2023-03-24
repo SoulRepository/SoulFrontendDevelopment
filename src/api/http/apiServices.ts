@@ -147,6 +147,18 @@ const SoulSearchApi = {
 
     return data;
   },
+
+  getNonce: async ({ soulId, address }: { soulId: string; address: string }) => {
+    const { data } = await $soulHttpClient.post<{ nonce: string }>(
+      `/companies/${soulId}/nonce`,
+      {},
+      {
+        headers: { 'x-web3-address': address },
+      },
+    );
+
+    return data;
+  },
 };
 
 export default SoulSearchApi;

@@ -1,25 +1,27 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import { v4 as uuidv4 } from 'uuid';
 import useLocalStorageState from 'use-local-storage-state';
-
 import { Select } from 'chakra-react-select';
 import { Button, Flex, Input, Text, Textarea, VStack } from '@chakra-ui/react';
 
 import { editStyles, selectStyles } from '@app/styles/pages/editStyles';
 import { FileInput } from '@app/components/ui';
+import { Loader } from '@app/components/ui/loader/Loader';
+import InputSM from '@app/components/sm-input/InputSM';
 
 import { useWallet } from '@app/api/web3/providers/WalletProvider';
+import { useCustomToast } from '@app/hooks/useCustomToast';
+import { useNonce } from '@app/api/http/query/useNonce';
 import { useCompanyBySoulId } from '@app/api/http/query/useCompanyBySoulId';
-import { Loader } from '@app/components/ui/loader/Loader';
 import { useCategories } from '@app/api/http/query/useCategories';
 import { usePatchCompanyBySoulId } from '@app/api/http/mutations/usePatchCompanyBySoulId';
-import { IMetaData, IOption } from '@app/types';
+
 import apiServices from '@app/api/http/apiServices';
-import InputSM from '@app/components/sm-input/InputSM';
 import { QueryKeys } from '@app/api/http/queryKeys';
 import { sendImageToAWS } from '@app/utils';
-import { useCustomToast } from '@app/hooks/useCustomToast';
+
+import type { IMetaData, IOption } from '@app/types';
+
 
 const Edit = () => {
   const { checkIsOwner, signer, account } = useWallet();
@@ -31,9 +33,12 @@ const Edit = () => {
     useCompanyBySoulId({
       soulId: companySoulId?.toString(),
     });
+
+  const { getNonce } = useNonce({ soulId: companySoulId?.toString() });
+
   const { getOptions } = useCategories();
 
-  const { mutate, isLoading: isLoadingMutate } = usePatchCompanyBySoulId();
+  const { mutate, isLoading: isLoadingMutate, isError: isErrorMutate } = usePatchCompanyBySoulId();
 
   const [, setMetaData] = useLocalStorageState<IMetaData>(QueryKeys.metaData);
 
@@ -53,40 +58,44 @@ const Edit = () => {
 
   const isOwner = checkIsOwner(data?.address);
 
-  const getSignature = useCallback(async (withStorage = false) => {
+  const getSignature = useCallback(async () => {
     try {
-      const timeStamp = Date.now()
-      const message = 'For editing you need to sign this message.'.padEnd(50) + uuidv4() + timeStamp;
-      const signature = await signer?.signMessage(message);
-      if (!message || !signature || !account) {
+      const nonce = getNonce();
+
+      if (!nonce) {
+        throw new Error();
+      }
+      const message = 'For editing you need to sign this message.';
+      const messageToSing = message + ' ' + nonce;
+
+      const signature = await signer?.signMessage(messageToSing);
+      if (!signature || !account) {
         walletToast();
 
         return;
       }
       const metaData: IMetaData = {
-        message,
         signature,
         soulId: companySoulId!.toString(),
         account: account,
-        timeStamp
+        message,
       };
-      if (withStorage) {
-        setMetaData(metaData);
-      }
 
-      return metaData
+      setMetaData(metaData);
+
+      return metaData;
     } catch (e) {
       walletToast();
     }
 
     return;
-  }, [signer, account, companySoulId, setMetaData, walletToast]);
+  }, [getNonce, signer, account, companySoulId, setMetaData, walletToast]);
 
   const onSave = async () => {
-    const metaData = await getSignature()
+    const metaData = await getSignature();
 
     if (!metaData) {
-      return
+      return;
     }
 
     const { message, signature } = metaData;
@@ -142,6 +151,10 @@ const Edit = () => {
     }
     setIsLoadingCrend(false);
   };
+
+  useEffect(() => {
+    isErrorMutate && errorToast();
+  }, [isErrorMutate]);
 
   useEffect(() => {
     if ((isSuccess && !isOwner) || isError) {
@@ -223,8 +236,8 @@ const Edit = () => {
             <Input type="text" fontSize="14px" value={name} isDisabled />
           </Flex>
 
-          <Flex w="100%" fontSize='14px' flexDirection="column" mb="2px">
-            <Text fontSize='14px'>Category</Text>
+          <Flex w="100%" fontSize="14px" flexDirection="column" mb="2px">
+            <Text fontSize="14px">Category</Text>
             <Select
               instanceId="edit_select"
               chakraStyles={selectStyles}
