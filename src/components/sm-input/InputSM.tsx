@@ -13,13 +13,14 @@ import { socialMediaMetaData } from '@app/mockData';
 import { windowOpen } from '@app/utils';
 
 import { useSocialLinks } from '@app/api/http/query/useSocialLinks';
+
 import type { socialMediaTypes } from '@app/types';
-import { ISocialLink } from '@app/types/httpTypes';
+import type { ISocialLink } from '@app/types/httpTypes';
 
 interface IInputSMProps {
   type: socialMediaTypes;
   onChange: (text: string, type: socialMediaTypes) => void;
-  getSignature?: (withStorage: boolean) => void;
+  getSignature?: () => void;
   getInitData: (type: socialMediaTypes) => ISocialLink | undefined;
 }
 
@@ -46,7 +47,7 @@ const InputSM: FC<IInputSMProps> = ({ type, onChange, getSignature, getInitData 
   };
 
   const onAuthorizationHandler = async () => {
-    const meta = await getSignature?.(true);
+    const meta = await getSignature?.();
 
     if (!meta) {
       return;

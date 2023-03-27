@@ -6,6 +6,7 @@ export enum QueryKeys {
   useSearchCompany = 'useSearchCompany',
   useCategories = 'useCategories',
   useSocialLinks = 'useCategories',
+  useNonce = 'useNonce',
 
   metaData = 'metaData',
 }

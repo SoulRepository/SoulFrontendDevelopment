@@ -47,7 +47,7 @@ const CompanyPage = () => {
 
   const { getDigiProofWith } = useSbtList({
     souldId,
-    limit: 5,
+    limit: 3,
   });
 
   const dropdownMenuItem: IMenuItem[] = useMemo(
@@ -124,15 +124,6 @@ const CompanyPage = () => {
         <Flex className="content-section">
           <Flex className="side-bar">
             <Flex className="address-section">
-              <Flex mb="10px">
-                {categories
-                  .filter((_, index) => index < 4)
-                  .map(({ name, shortName }, i) => (
-                    <Tooltip key={i} label={name} placement="top">
-                      <Flex className="tag">{shortName}</Flex>
-                    </Tooltip>
-                  ))}
-              </Flex>
               <Bullet w="270px">
                 <Text
                   className="copy-icon"
@@ -150,6 +141,17 @@ const CompanyPage = () => {
             </Flex>
             <Flex className="desc-section">
               <Text className="title">Description</Text>
+              <Flex mb="10px">
+                {categories
+                  .filter((_, index) => index < 4)
+                  .map(({ name, shortName }, i) => (
+                    <Bullet key={i} className="tag">
+                      <Tooltip label={name} placement="top">
+                        <Flex>{shortName}</Flex>
+                      </Tooltip>
+                    </Bullet>
+                  ))}
+              </Flex>
               <Text className="text">{description}</Text>
             </Flex>
             <Flex className="sm-section">

@@ -15,5 +15,4 @@ export interface IMetaData {
   signature: string;
   soulId: string;
   account: string;
-  timeStamp: number
 }

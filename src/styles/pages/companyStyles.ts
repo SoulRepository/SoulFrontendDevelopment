@@ -16,7 +16,7 @@ export const companyStyles: SystemStyleObject = {
     },
   },
   '.company-section': {
-    px: {'2xl': mainPx, md: '14%'},
+    px: { '2xl': mainPx, md: '14%' },
     mb: '100px',
     w: '100%',
     flexDirection: 'column',
@@ -29,7 +29,7 @@ export const companyStyles: SystemStyleObject = {
       '.avatar': {
         position: 'relative',
         overflow: 'hidden',
-        boxSize: {'2xl': '150px', md: '130px'},
+        boxSize: { '2xl': '150px', md: '130px' },
         borderRadius: 'full',
         border: '9px solid #F4F7FA',
         img: {
@@ -72,18 +72,6 @@ export const companyStyles: SystemStyleObject = {
               color: lightColor.highlighting,
             },
           },
-          '.tag': {
-            h: '36px',
-            px: '20px',
-            py: '12px',
-            bgColor: '#041226',
-            color: 'white',
-            borderRadius: 'full',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: '1px solid #f4f7fa',
-            mr: '-15px',
-          },
         },
         '.soulId-section': {
           mb: '17px',
@@ -117,6 +105,13 @@ export const companyStyles: SystemStyleObject = {
             fontWeight: 400,
             fontSize: { '2xl': '14px', md: '12px' },
             lineHeight: '17px',
+          },
+          '.tag': {
+            h: '33px',
+            px: '20px',
+            py: '10px',
+            mr: '10px',
+            fontSize: { '2xl': '16px', md: '14px' },
           },
         },
         '.sm-section': {
